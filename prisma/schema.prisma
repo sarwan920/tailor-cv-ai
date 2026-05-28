@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model CvProfile {
+  id          String       @id @default(uuid())
+  title       String
+  content     String       // Markdown content of the CV
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  tailoredCvs TailoredCv[]
+}
+
+model TailoredCv {
+  id              String    @id @default(uuid())
+  profileId       String
+  profile         CvProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  jobTitle        String
+  company         String
+  jobDescription  String
+  originalContent String
+  tailoredContent String
+  aiAnalysis      String    // JSON string containing extracted skills/keywords/metrics
+  createdAt       DateTime  @default(now())
+}
