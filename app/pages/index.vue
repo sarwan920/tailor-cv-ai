@@ -1,32 +1,53 @@
 <template>
-  <div class="marketing-page fade-in">
+  <div class="marketing-page dot-matrix-bg fade-in">
+    <!-- SVG Noise filter for film grain realism -->
+    <svg style="display: none;">
+      <filter id="noiseFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.035 0" />
+      </filter>
+    </svg>
+    <div class="noise-overlay"></div>
+
     <!-- Hero Section -->
     <section class="hero-section">
+      <!-- Premium Ambient Glimmer behind copy -->
+      <div class="left-ambient-glow"></div>
+
       <div class="hero-grid">
         <!-- Left Column: Copy & Actions -->
         <div class="hero-content-left">
+          <!-- Tiny floating magnetic AI tags -->
+          <div class="floating-ai-tag ft-left-1"><span>● Fact-Faithful</span></div>
+          <div class="floating-ai-tag ft-left-2"><span>● ATS Optimized</span></div>
+
           <div class="hero-pill">
             <span class="pill-dot"></span>
             <span class="pill-text">INTRODUCING CV TAILOR AI V1.0</span>
           </div>
-          <h1 class="display-title">
-            Refine your professional narrative.
+          
+          <h1 class="display-title display-title-futuristic">
+            <span class="reveal-line rl-1">Refine your</span>
+            <span class="reveal-line rl-2">professional</span>
+            <span class="reveal-line rl-3">narrative.</span>
           </h1>
-          <p class="hero-subtitle">
+          
+          <p class="hero-subtitle subtitle-fade-up">
             An executive-grade CV adaptation engine designed for modern developers and architects. 
             Extract required keywords, align credentials with LinkedIn requisitions in real-time, and pass ATS checkpoints—with zero data fabrication.
           </p>
-          <div class="hero-actions">
-            <NuxtLink to="/resume" class="btn btn-primary btn-lg flex-btn">
+          
+          <div class="hero-actions actions-fade-up">
+            <NuxtLink to="/resume" class="btn btn-primary btn-liquid btn-lg flex-btn">
               ENTER WORKSPACE &rarr;
             </NuxtLink>
-            <a href="#features" class="btn btn-secondary btn-lg flex-btn">
+            <a href="#features" class="btn btn-secondary btn-liquid btn-lg flex-btn">
               EXPLORE FEATURES
             </a>
           </div>
         </div>
         
-        <!-- Right Column: Animated 2D CV Adaptation Pipeline -->
+        <!-- Right Column: Interactive Parallax 3D Mockup -->
         <div class="hero-graphic-right">
           <ResumePipelineAnim />
         </div>
@@ -308,14 +329,76 @@ definePageMeta({
   color: var(--colors-primary);
 }
 
-.display-title {
+.left-ambient-glow {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  left: -12%;
+  top: 0%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(140, 132, 122, 0.12) 0%, rgba(234, 230, 220, 0) 75%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floating-ai-tag {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  animation: magnetic-drift 6s infinite ease-in-out alternate;
+}
+
+.floating-ai-tag span {
+  font-family: var(--font-family);
+  font-size: 0.55rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background-color: transparent;
+  border: 1px solid rgba(27, 25, 23, 0.12);
+  color: var(--colors-primary);
+}
+
+.ft-left-1 { top: -2%; left: 42%; animation-duration: 7s; }
+.ft-left-2 { top: 68%; left: -8%; animation-duration: 8s; animation-delay: -2.2s; }
+
+@keyframes magnetic-drift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(8px, -10px); }
+  100% { transform: translate(-6px, 4px); }
+}
+
+.display-title-futuristic {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 4.5rem;
+  font-size: 4.8rem !important;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  letter-spacing: -0.015em !important;
+  line-height: 1.05 !important;
   color: var(--colors-primary);
   margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.reveal-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: reveal-up-anim 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.rl-1 { animation-delay: 0.15s; }
+.rl-2 { animation-delay: 0.3s; }
+.rl-3 { animation-delay: 0.45s; }
+
+@keyframes reveal-up-anim {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-subtitle {
@@ -327,11 +410,25 @@ definePageMeta({
   text-align: left;
 }
 
+.subtitle-fade-up {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: reveal-up-anim 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  animation-delay: 0.65s;
+}
+
 .hero-actions {
   display: flex;
   gap: 16px;
   justify-content: flex-start;
   width: 100%;
+}
+
+.actions-fade-up {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: reveal-up-anim 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  animation-delay: 0.8s;
 }
 
 .hero-graphic-right {

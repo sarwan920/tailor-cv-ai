@@ -1,22 +1,61 @@
 <template>
-  <div class="viewport-cluster-container">
+  <div 
+    ref="viewport"
+    class="viewport-cluster-container"
+    @mousemove="handleMouseMove"
+    @mouseleave="handleMouseLeave"
+  >
     
-    <!-- 1. Ambient Soft Gold Depth Glow -->
-    <div class="ambient-gold-glow"></div>
+    <!-- 1. Spotlight Ambient Glow reacting to mouse coordinates -->
+    <div 
+      class="spotlight-glow"
+      :style="{ 
+        left: `${glowX}px`, 
+        top: `${glowY}px`
+      }"
+    ></div>
 
-    <!-- 2. Floating Background Constellation Skill Tags -->
+    <!-- 2. STUNNING SVG NEURAL NETWORK GRAPH (Behind the card) -->
+    <svg class="neural-network-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Defs for glowing shadow filters -->
+      <defs>
+        <filter id="glow-line" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <!-- Connecting Active Neural Pathways -->
+      <path class="path-glow p-route-1" d="M 80 120 L 220 200 L 380 130" />
+      <path class="path-glow p-route-2" d="M 120 320 L 220 200 L 410 280" />
+      <path class="path-glow p-route-3" d="M 220 200 L 220 50" />
+
+      <!-- Network Nodes (Pulsing circles) -->
+      <circle cx="80" cy="120" r="3" class="node-circle" />
+      <circle cx="380" cy="130" r="3" class="node-circle" />
+      <circle cx="120" cy="320" r="3" class="node-circle" />
+      <circle cx="410" cy="280" r="3" class="node-circle" />
+      <circle cx="220" cy="50" r="3.5" class="node-circle center-node" />
+    </svg>
+
+    <!-- 3. Floating Background Constellation Tags -->
     <div class="constellation-tag skill-docker"><span>Docker</span></div>
     <div class="constellation-tag skill-kube"><span>Kubernetes</span></div>
     <div class="constellation-tag skill-tf"><span>Terraform</span></div>
     <div class="constellation-tag skill-pg"><span>PostgreSQL</span></div>
 
-    <!-- 3. Layered 3D-Depth Card Cluster -->
-    <div class="card-cluster">
+    <!-- 4. Layered 3D Parallax Card Cluster -->
+    <div 
+      class="card-cluster"
+      :style="{ 
+        transform: `perspective(1000px) rotateY(${tiltX}deg) rotateX(${tiltY}deg) translateZ(10px)` 
+      }"
+    >
       
-      <!-- A. MAIN CV CARD (Bobbing, Scanning, White Drop Shadow) -->
-      <div class="main-cv-card animate-bob">
+      <!-- MAIN CV CARD (Bobbing, Holographic Scanning, White Paper shadow) -->
+      <div class="main-cv-card">
         
-        <!-- Translucent Scanning ATS Light Beam Sweep -->
+        <!-- Translucent Scanning ATS Holographic Light Beam Sweep -->
         <div class="scan-beam"></div>
 
         <div class="cv-page">
@@ -50,7 +89,7 @@
           </div>
         </div>
 
-        <!-- B. ATS SCORE BADGE (Overlaps top-right of main card, carries expanding green ripples) -->
+        <!-- ATS SCORE BADGE (Overlaps top-right of main card, carries expanding green ripples) -->
         <div class="ats-badge-wrapper">
           <div class="ripple-ring r1"></div>
           <div class="ripple-ring r2"></div>
@@ -62,8 +101,8 @@
 
       </div>
 
-      <!-- C. KEYWORD EXTRACTION OVERLAY (Semi-transparent dark panel partially overlapping the right side) -->
-      <div class="keyword-overlay-panel animate-bob-delayed">
+      <!-- KEYWORD EXTRACTION OVERLAY (Semi-transparent dark glass panel) -->
+      <div class="keyword-overlay-panel">
         <div class="overlay-header">
           <span class="material-icons overlay-icon">auto_awesome</span>
           <span class="overlay-title">ATS Extraction</span>
@@ -90,8 +129,48 @@
 </template>
 
 <script setup>
-// Pure GPU-accelerated CSS animations. 
-// Fully responsive and clear at any zoom level, avoiding Javascript event loops.
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const viewport = ref(null);
+const tiltX = ref(0);
+const tiltY = ref(0);
+const glowX = ref(0);
+const glowY = ref(0);
+
+// Reactive Parallax 3D mouse track hook
+const handleMouseMove = (e) => {
+  if (!viewport.value) return;
+  const rect = viewport.value.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  // Normalize cursor positions between -1 and 1
+  const normX = (x / rect.width) * 2 - 1;
+  const normY = (y / rect.height) * 2 - 1;
+  
+  // Dynamic rotate angles (max 10 degrees)
+  tiltX.value = Number((normX * 10).toFixed(2));
+  tiltY.value = Number((normY * -10).toFixed(2));
+  
+  // Glow spotlight tracking coordinates
+  glowX.value = x;
+  glowY.value = y;
+};
+
+// Return to equilibrium on cursor leave
+const handleMouseLeave = () => {
+  tiltX.value = 0;
+  tiltY.value = 0;
+};
+
+onMounted(() => {
+  // Set default spotlight coordinates inside the viewport center
+  if (viewport.value) {
+    const rect = viewport.value.getBoundingClientRect();
+    glowX.value = rect.width / 2;
+    glowY.value = rect.height / 2;
+  }
+});
 </script>
 
 <style scoped>
@@ -104,24 +183,80 @@
   align-items: center;
   overflow: visible;
   background-color: transparent;
+  cursor: default;
 }
 
-/* 1. Ambient Warm-Gold Radial Glow (Behind the cards) */
-.ambient-gold-glow {
+/* 1. Mouse-Tracking Spotlight Ambient Glow */
+.spotlight-glow {
   position: absolute;
-  width: 320px;
-  height: 320px;
+  width: 360px;
+  height: 360px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(179, 143, 77, 0.12) 0%, rgba(234, 230, 220, 0) 70%);
-  filter: blur(35px);
+  background: radial-gradient(circle, rgba(140, 132, 122, 0.12) 0%, rgba(234, 230, 220, 0) 70%);
+  filter: blur(40px);
   z-index: 0;
   pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: left 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 2. Floating Constellation Background Tags */
+/* 2. INTRICATE GLOWING NEURAL NETWORK SVG GRAPH */
+.neural-network-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.path-glow {
+  fill: none;
+  stroke: rgba(140, 132, 122, 0.25);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: draw-and-flow 8s infinite linear;
+}
+
+.p-route-1 { animation-delay: 0s; }
+.p-route-2 { animation-duration: 10s; animation-delay: -2s; }
+.p-route-3 { stroke: rgba(95, 107, 86, 0.4); stroke-width: 2; filter: url(#glow-line); animation-duration: 6s; }
+
+@keyframes draw-and-flow {
+  0% { stroke-dashoffset: 400; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.node-circle {
+  fill: var(--colors-secondary);
+  opacity: 0.4;
+  animation: node-pulse 3s infinite ease-in-out;
+}
+
+.center-node {
+  fill: var(--success);
+  opacity: 0.8;
+  animation: center-node-pulse 2s infinite ease-in-out;
+}
+
+@keyframes node-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+@keyframes center-node-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; box-shadow: 0 0 4px var(--success); }
+  50% { transform: scale(1.6); opacity: 1; }
+}
+
+/* 3. Floating Constellation Background Tags */
 .constellation-tag {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   opacity: 0.6;
   animation: constellation-drift 10s infinite ease-in-out alternate;
@@ -141,9 +276,9 @@
   box-shadow: 0 4px 16px rgba(27, 25, 23, 0.02);
 }
 
-.skill-docker { top: 12%; left: 4%; animation-duration: 9s; animation-delay: 0s; }
+.skill-docker { top: 10%; left: -2%; animation-duration: 9s; animation-delay: 0s; }
 .skill-kube { top: 78%; left: -6%; animation-duration: 11s; animation-delay: -2s; }
-.skill-tf { top: 16%; right: -2%; animation-duration: 10s; animation-delay: -1.5s; }
+.skill-tf { top: 12%; right: -6%; animation-duration: 10s; animation-delay: -1.5s; }
 .skill-pg { top: 82%; right: 4%; animation-duration: 12s; animation-delay: -3.5s; }
 
 @keyframes constellation-drift {
@@ -152,16 +287,18 @@
   100% { transform: translate(-6px, 4px) rotate(-1deg); }
 }
 
-/* 3. Layered Card Cluster */
+/* 4. Layered 3D Parallax Card Cluster */
 .card-cluster {
   position: relative;
   width: 100%;
   max-width: 440px;
   height: 380px;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* 3A. MAIN CV CARD */
@@ -176,23 +313,14 @@
   border-radius: var(--radius-lg);
   box-shadow: 0 25px 60px rgba(27, 25, 23, 0.08);
   overflow: hidden;
-  z-index: 3;
+  z-index: 4;
+  transform: translateZ(20px); /* 3D depth push */
+  animation: gentle-bob 6s ease-in-out infinite alternate;
 }
 
-/* Bobbing loop: translateY vertical movements */
-.animate-bob {
-  animation: bob-card 4s ease-in-out infinite;
-}
-
-.animate-bob-delayed {
-  animation: bob-card 4s ease-in-out infinite;
-  animation-delay: -0.8s; /* Parallax timing offset */
-}
-
-@keyframes bob-card {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
-  100% { transform: translateY(0); }
+@keyframes gentle-bob {
+  0% { transform: translateZ(20px) translateY(0); }
+  100% { transform: translateZ(20px) translateY(-8px); }
 }
 
 /* ATS Translucent Sweep Light beam */
@@ -329,6 +457,7 @@
   align-items: center;
   justify-content: center;
   z-index: 10;
+  transform: translateZ(40px); /* Extruded 3D depth */
 }
 
 .ats-chip {
@@ -396,14 +525,15 @@
   }
 }
 
-/* 3C. KEYWORD EXTRACTION OVERLAY (Semi-transparent dark panel) */
+/* 3C. KEYWORD EXTRACTION OVERLAY (Semi-transparent dark glass panel) */
 .keyword-overlay-panel {
   position: absolute;
   width: 170px;
   height: 190px;
   right: 15px;
   bottom: 30px;
-  background-color: rgba(27, 25, 23, 0.93); /* Deep Charcoal Gloss */
+  background-color: rgba(27, 25, 23, 0.93); /* Deep Charcoal Glassmorphism */
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(140, 132, 122, 0.25);
   border-radius: var(--radius-lg);
   box-shadow: 0 15px 35px rgba(27, 25, 23, 0.2);
@@ -411,7 +541,15 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  z-index: 4;
+  z-index: 5;
+  transform: translateZ(30px); /* 3D perspective push */
+  animation: overlay-bob 6s ease-in-out infinite alternate;
+  animation-delay: -1s;
+}
+
+@keyframes overlay-bob {
+  0% { transform: translateZ(30px) translateY(0); }
+  100% { transform: translateZ(30px) translateY(-5px); }
 }
 
 .overlay-header {
@@ -536,7 +674,7 @@
     bottom: 20px;
   }
 
-  .constellation-tag {
+  .constellation-tag, .neural-network-svg {
     display: none; /* Clean up layout on mobile devices */
   }
 }
