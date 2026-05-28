@@ -2,14 +2,14 @@
    SKINCARE MATTE DESIGN SYSTEM - GLOBAL CSS
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap');
 
 :root {
   /* Skincare Matte Core Palette */
   --colors-primary: #1B1917;     /* Graphite - Headlines and core text */
   --colors-secondary: #8C847A;   /* Stone Grey - Borders, captions, and metadata */
   --colors-tertiary: #3E3832;    /* Interactive Accent - Reserved exclusively for principal actions */
-  --colors-neutral: #ECE6D9;     /* Oat-cream - Page foundation */
+  --colors-neutral: #EAE6DC;     /* Warm cream/linen - Page foundation */
   --colors-surface: #F6F1E4;     /* Card/Container Background */
   --colors-on-primary: #F6F1E4;  /* Text on primary/tertiary colors */
 

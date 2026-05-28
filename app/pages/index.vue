@@ -7,7 +7,7 @@
         <div class="hero-content-left">
           <div class="hero-pill">
             <span class="pill-dot"></span>
-            <span class="pill-text">Introducing CV Tailor AI v1.0</span>
+            <span class="pill-text">INTRODUCING CV TAILOR AI V1.0</span>
           </div>
           <h1 class="display-title">
             Refine your professional narrative.
@@ -18,11 +18,10 @@
           </p>
           <div class="hero-actions">
             <NuxtLink to="/resume" class="btn btn-primary btn-lg flex-btn">
-              Enter Workspace
-              <span class="material-icons">arrow_forward</span>
+              ENTER WORKSPACE &rarr;
             </NuxtLink>
             <a href="#features" class="btn btn-secondary btn-lg flex-btn">
-              Explore Features
+              EXPLORE FEATURES
             </a>
           </div>
         </div>
@@ -286,35 +285,35 @@ definePageMeta({
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--colors-surface);
-  border: 1px solid var(--border-light);
-  padding: 6px 14px;
+  background-color: transparent;
+  border: 1px solid rgba(27, 25, 23, 0.18);
+  padding: 5px 12px;
   border-radius: 100px;
   margin-bottom: 24px;
 }
 
 .pill-dot {
-  width: 6px;
-  height: 6px;
-  background-color: var(--colors-tertiary);
+  width: 5px;
+  height: 5px;
+  background-color: var(--colors-primary);
   border-radius: 50%;
 }
 
 .pill-text {
   font-family: var(--font-family);
-  font-size: 0.68rem;
-  font-weight: 500;
+  font-size: 0.62rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
+  letter-spacing: 0.16em;
+  color: var(--colors-primary);
 }
 
 .display-title {
-  font-family: var(--font-family);
-  font-size: 3.6rem;
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 4.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
   color: var(--colors-primary);
   margin-bottom: 24px;
 }
