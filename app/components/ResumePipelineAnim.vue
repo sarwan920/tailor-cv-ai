@@ -16,50 +16,44 @@
         <div class="laser-dot dot-bottom"></div>
       </div>
 
-      <!-- LAYER 1: ORIGINAL (Underneath layer - Right side of scan) -->
+      <!-- LAYER 1: ORIGINAL (Carbon-style dark IDE editor - Right side of scan) -->
       <div class="document-layer layer-original">
-        <div class="a4-page">
-          <!-- Page Header -->
-          <div class="a4-header">
-            <div class="profile-block">
-              <div class="avatar-outline">AC</div>
-              <div class="meta-block">
-                <h3 class="original-title">Alex Carter</h3>
-                <p class="subtitle-weak">Developer</p>
-              </div>
+        <div class="ide-window">
+          <!-- IDE Header with macOS-style window controls -->
+          <div class="ide-header">
+            <div class="window-controls">
+              <span class="ctrl-dot red"></span>
+              <span class="ctrl-dot yellow"></span>
+              <span class="ctrl-dot green"></span>
             </div>
-            <div class="stats-badge-weak">
+            <span class="ide-title">master_cv.json</span>
+            <div class="ats-badge-weak">
               <span class="score-num-weak">45%</span>
               <span class="score-lbl-weak">ATS</span>
             </div>
           </div>
-
-          <div class="a4-divider"></div>
-
-          <!-- Section: Professional Summary -->
-          <div class="a4-section">
-            <h4 class="section-heading-weak">Professional Profile</h4>
-            <p class="text-weak highlighted-weak-bg">
-              Experienced developer responsible for deploying microservices and writing cloud scripts. Worked on database updates and maintenance.
-            </p>
-          </div>
-
-          <!-- Section: Technical Skills -->
-          <div class="a4-section">
-            <h4 class="section-heading-weak">Technical Skills</h4>
-            <div class="pills-row-weak">
-              <span class="pill-weak">Java</span>
-              <span class="pill-weak">Python</span>
-              <span class="pill-weak">Javascript</span>
-              <span class="pill-weak">SQL</span>
-              <span class="pill-weak">Cloud Platforms</span>
-              <span class="pill-weak">Containers</span>
+          
+          <!-- Code Syntax Highlighted Body -->
+          <div class="ide-body">
+            <div class="line-numbers">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
             </div>
+            <pre class="code-block"><code><span class="syntax-bracket">{</span>
+  <span class="syntax-key">"name"</span>: <span class="syntax-string">"Alex Carter"</span>,
+  <span class="syntax-key">"role"</span>: <span class="syntax-string error-squiggly">"Developer"</span>,
+  <span class="syntax-key">"summary"</span>: <span class="syntax-string">"Experienced dev. Responsible</span>
+             <span class="syntax-string">for microservice deploy."</span>,
+  <span class="syntax-key">"experience"</span>: <span class="syntax-bracket">[</span>
+    <span class="syntax-string">"Optimized database. Rewrote SQL</span>
+     <span class="syntax-string">so page loaded faster."</span>
+  <span class="syntax-bracket">]</span>,
+  <span class="syntax-key">"skills"</span>: <span class="syntax-bracket">[</span><span class="syntax-string">"Java"</span>, <span class="syntax-string">"SQL"</span>, <span class="syntax-string">"Containers"</span><span class="syntax-bracket">]</span>
+<span class="syntax-bracket">}</span></code></pre>
           </div>
         </div>
       </div>
 
-      <!-- LAYER 2: TAILORED (Clipped Overlay layer - Left side of scan) -->
+      <!-- LAYER 2: TAILORED (Pristine executive CV page - Left side of scan) -->
       <div class="document-layer layer-tailored">
         <div class="a4-page tailored-bg">
           <!-- Page Header -->
@@ -83,7 +77,7 @@
           <div class="a4-section">
             <h4 class="section-heading-strong">Professional Profile</h4>
             <p class="text-strong highlighted-success-bg">
-              Cloud-native <strong class="keyword-highlight">Staff Systems Engineer</strong> with 8+ years of expertise architecting high-availability <strong class="keyword-highlight">AWS ECS</strong> microservices. Spearheaded database optimization, reducing API latency by <strong class="keyword-highlight">42%</strong>.
+              Cloud-native <strong class="keyword-highlight">Staff Systems Engineer</strong> with 8+ years of expertise architecting high-availability <strong class="keyword-highlight">AWS ECS</strong> microservices. Spearheaded ScyllaDB migration, reducing API latency by <strong class="keyword-highlight">42%</strong>.
             </p>
           </div>
 
@@ -126,7 +120,7 @@
 /* Compact A4 Page Mockup Container */
 .a4-document-container {
   width: 100%;
-  max-width: 430px;
+  max-width: 440px;
   height: 350px;
   position: relative;
   background-color: #FFFFFF;
@@ -146,8 +140,9 @@
   height: 100%;
 }
 
+/* Synthesized double layer split view */
 .layer-original {
-  background-color: var(--colors-surface);
+  background-color: var(--colors-primary); /* Graphite Core Primary Dark */
   z-index: 1;
 }
 
@@ -165,11 +160,11 @@
   width: 2px;
   z-index: 10;
   background: linear-gradient(180deg, 
-    rgba(140, 132, 122, 0.1) 0%, 
+    rgba(95, 107, 86, 0.1) 0%, 
     var(--colors-secondary) 25%, 
-    var(--colors-primary) 50%, 
+    #FFFFFF 50%, 
     var(--colors-secondary) 75%, 
-    rgba(140, 132, 122, 0.1) 100%
+    rgba(95, 107, 86, 0.1) 100%
   );
   animation: sweep-line 6.5s infinite ease-in-out alternate;
   pointer-events: none;
@@ -181,7 +176,7 @@
   bottom: 0;
   left: -15px;
   width: 32px;
-  background: radial-gradient(circle at center, rgba(140, 132, 122, 0.12) 0%, rgba(140, 132, 122, 0) 65%);
+  background: radial-gradient(circle at center, rgba(140, 132, 122, 0.15) 0%, rgba(140, 132, 122, 0) 65%);
 }
 
 .laser-dot {
@@ -190,7 +185,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--colors-primary);
+  background-color: #FFFFFF;
   box-shadow: 0 0 6px 1px var(--colors-secondary);
 }
 
@@ -208,7 +203,109 @@
   100% { clip-path: inset(0 0% 0 0); }
 }
 
-/* Compact Document Formatting Styles */
+/* CARBON IDE STYLINGS (Dark editor layout) */
+.ide-window {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #171513; /* Deep Slate Graphite */
+  font-family: 'Consolas', 'Monaco', monospace;
+  box-sizing: border-box;
+}
+
+.ide-header {
+  height: 38px;
+  background-color: #110F0E;
+  border-bottom: 1px solid rgba(140, 132, 122, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.window-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.ctrl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.ctrl-dot.red { background-color: #964B43; }
+.ctrl-dot.yellow { background-color: #B38F4D; }
+.ctrl-dot.green { background-color: #5F6B56; }
+
+.ide-title {
+  color: var(--colors-secondary);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.ats-badge-weak {
+  border: 1px solid rgba(140, 132, 122, 0.3);
+  border-radius: 2px;
+  padding: 1px 4px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.score-num-weak {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--colors-secondary);
+}
+
+.score-lbl-weak {
+  font-size: 0.45rem;
+  text-transform: uppercase;
+  color: var(--colors-secondary);
+  opacity: 0.8;
+}
+
+.ide-body {
+  flex: 1;
+  display: flex;
+  padding: 16px;
+  overflow: hidden;
+  gap: 12px;
+}
+
+.line-numbers {
+  display: flex;
+  flex-direction: column;
+  color: rgba(140, 132, 122, 0.35);
+  font-size: 0.68rem;
+  text-align: right;
+  user-select: none;
+  line-height: 1.5;
+}
+
+.code-block {
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: #ECE6D9; /* Oat Cream Code */
+  overflow: hidden;
+}
+
+/* Syntax Highlighting */
+.syntax-bracket { color: #8C847A; }
+.syntax-key { color: #B38F4D; }     /* Ochre Key */
+.syntax-string { color: #A6A097; }  /* Light Grey String */
+.error-squiggly {
+  border-bottom: 1.5px dotted var(--danger);
+  color: var(--danger);
+}
+
+/* PRISTINE TAILORED DOCUMENT STYLINGS (Light paper layout) */
 .a4-page {
   padding: var(--spacing-md) var(--spacing-md) 12px;
   font-family: var(--font-family);
@@ -223,7 +320,6 @@
   background-color: #FFFFFF;
 }
 
-/* Compact Header */
 .a4-header {
   display: flex;
   justify-content: space-between;
@@ -262,51 +358,16 @@
   flex-direction: column;
 }
 
-.original-title {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--colors-secondary);
-}
-
 .tailored-title {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--colors-primary);
 }
 
-.subtitle-weak {
-  font-size: 0.65rem;
-  color: var(--colors-secondary);
-  opacity: 0.7;
-}
-
 .subtitle-strong {
   font-size: 0.65rem;
   font-weight: 500;
   color: var(--colors-tertiary);
-}
-
-/* Compact Stats Badges */
-.stats-badge-weak {
-  border: 1px solid var(--border-light);
-  border-radius: 3px;
-  padding: 2px 6px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.score-num-weak {
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: var(--colors-secondary);
-}
-
-.score-lbl-weak {
-  font-size: 0.45rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--colors-secondary);
 }
 
 .stats-badge-strong {
@@ -333,7 +394,6 @@
   font-weight: 700;
 }
 
-/* Horizontal Dividers */
 .a4-divider {
   height: 1px;
   background-color: var(--border-light);
@@ -344,19 +404,10 @@
   background-color: var(--colors-secondary);
 }
 
-/* A4 Sections */
 .a4-section {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.section-heading-weak {
-  font-size: 0.58rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--colors-secondary);
 }
 
 .section-heading-strong {
@@ -367,14 +418,6 @@
   color: var(--colors-primary);
 }
 
-/* Body Text blocks */
-.text-weak {
-  font-size: 0.65rem;
-  color: var(--colors-secondary);
-  line-height: 1.45;
-  font-weight: 300;
-}
-
 .text-strong {
   font-size: 0.65rem;
   color: var(--colors-primary);
@@ -382,33 +425,11 @@
   font-weight: 400;
 }
 
-/* Block highlighting fades */
-.highlighted-weak-bg {
-  border-left: 1.5px solid var(--warning);
-  padding-left: 6px;
-}
-
 .highlighted-success-bg {
   border-left: 2px solid var(--success);
   background-color: rgba(95, 107, 86, 0.03);
   padding: 4px 8px;
   border-radius: 0 3px 3px 0;
-}
-
-/* Skills Pills Row */
-.pills-row-weak {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.pill-weak {
-  font-size: 0.58rem;
-  color: var(--colors-secondary);
-  background-color: rgba(140, 132, 122, 0.04);
-  border: 1px solid var(--border-light);
-  padding: 1px 4px;
-  border-radius: 2px;
 }
 
 .pills-row-strong {
@@ -433,7 +454,7 @@
   border-bottom: 1px dashed var(--success);
 }
 
-/* Background Decorative Floating Badges - Centered closer to compact container */
+/* Background Decorative Floating Badges */
 .decor-badge {
   position: absolute;
   z-index: 0;
