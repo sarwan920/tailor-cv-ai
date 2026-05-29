@@ -58,17 +58,17 @@
     <section class="metrics-section">
       <div class="section-container">
         <div class="metrics-grid">
-          <div class="metric-card glass-panel">
+          <div class="metric-card glass-panel scroll-reveal">
             <span class="metric-num">99.4%</span>
             <span class="metric-label">ATS Parse Success</span>
             <p class="metric-desc">Perfect compatibility with standard parsing engines (Workday, Greenhouse, Taleo).</p>
           </div>
-          <div class="metric-card glass-panel">
+          <div class="metric-card glass-panel scroll-reveal reveal-delay-1">
             <span class="metric-num">2.4x</span>
             <span class="metric-label">More Interview Invites</span>
             <p class="metric-desc">Rephrased competencies immediately signal your relevance to hiring managers.</p>
           </div>
-          <div class="metric-card glass-panel">
+          <div class="metric-card glass-panel scroll-reveal reveal-delay-2">
             <span class="metric-num">0%</span>
             <span class="metric-label">Fabricated Data</span>
             <p class="metric-desc">A strict fact-faithful translation policy. We optimize representation, never invent history.</p>
@@ -80,14 +80,14 @@
     <!-- Features Section -->
     <section id="features" class="features-section">
       <div class="section-container">
-        <div class="section-header">
+        <div class="section-header scroll-reveal">
           <span class="section-tag">Capabilities</span>
           <h2 class="section-title">Architected for clarity. Built for conversion.</h2>
           <p class="section-desc">Traditional resume builders generate bloated templates. We focus on semantic optimization and high-fidelity output.</p>
         </div>
 
         <div class="features-grid">
-          <div class="feature-card glass-panel">
+          <div class="feature-card glass-panel scroll-reveal">
             <div class="feature-icon-wrapper">
               <span class="material-icons feature-icon">auto_awesome</span>
             </div>
@@ -95,7 +95,7 @@
             <p>Our custom-tuned Gemini prompts rewrite accomplishments to match job qualifications without fabricating skills, education, or companies.</p>
           </div>
 
-          <div class="feature-card glass-panel">
+          <div class="feature-card glass-panel scroll-reveal reveal-delay-1">
             <div class="feature-icon-wrapper">
               <span class="material-icons feature-icon">analytics</span>
             </div>
@@ -103,7 +103,7 @@
             <p>Paste any LinkedIn or Indeed job description. The AI parses required skills, matching and highlighting your existing expertise dynamically.</p>
           </div>
 
-          <div class="feature-card glass-panel">
+          <div class="feature-card glass-panel scroll-reveal reveal-delay-2">
             <div class="feature-icon-wrapper">
               <span class="material-icons feature-icon">tune</span>
             </div>
@@ -117,13 +117,13 @@
     <!-- How It Works Section -->
     <section id="workflow" class="workflow-section">
       <div class="section-container">
-        <div class="section-header">
+        <div class="section-header scroll-reveal">
           <span class="section-tag">System Architecture</span>
           <h2 class="section-title">Three steps to your next interview.</h2>
         </div>
 
         <div class="workflow-timeline">
-          <div class="workflow-step">
+          <div class="workflow-step scroll-reveal">
             <div class="step-num-badge">01</div>
             <div class="step-content">
               <h5>Define Your Master Narrative</h5>
@@ -131,7 +131,7 @@
             </div>
           </div>
 
-          <div class="workflow-step">
+          <div class="workflow-step scroll-reveal reveal-delay-1">
             <div class="step-num-badge">02</div>
             <div class="step-content">
               <h5>Sync Target Job Requisition</h5>
@@ -139,7 +139,7 @@
             </div>
           </div>
 
-          <div class="workflow-step">
+          <div class="workflow-step scroll-reveal reveal-delay-2">
             <div class="step-num-badge">03</div>
             <div class="step-content">
               <h5>Refine & Print in Matte Studio</h5>
@@ -153,14 +153,14 @@
     <!-- Pricing Section -->
     <section id="pricing" class="pricing-section">
       <div class="section-container">
-        <div class="section-header">
+        <div class="section-header scroll-reveal">
           <span class="section-tag">Investment</span>
           <h2 class="section-title">Transparent pricing for serious builders.</h2>
         </div>
 
         <div class="pricing-grid">
           <!-- Free Plan -->
-          <div class="pricing-card glass-panel">
+          <div class="pricing-card glass-panel scroll-reveal">
             <div class="pricing-header">
               <span class="plan-name">Core Baseline</span>
               <span class="plan-price">$0</span>
@@ -184,13 +184,13 @@
                 Standard PDF Export
               </li>
             </ul>
-            <NuxtLink to="/resume" class="btn btn-secondary w-100 mt-24">
+            <NuxtLink to="/resume" class="btn btn-secondary btn-liquid w-100 mt-24">
               Get Started
             </NuxtLink>
           </div>
 
           <!-- Recommended Pro Plan (Single Tertiary Highlight Accent Button) -->
-          <div class="pricing-card glass-panel popular-card">
+          <div class="pricing-card glass-panel popular-card scroll-reveal reveal-delay-1">
             <div class="pricing-badge">Recommended</div>
             <div class="pricing-header">
               <span class="plan-name">Matte Studio Pro</span>
@@ -219,13 +219,13 @@
                 Priority Adaptation Log History
               </li>
             </ul>
-            <NuxtLink to="/resume" class="btn btn-primary w-100 mt-24">
+            <NuxtLink to="/resume" class="btn btn-primary btn-liquid w-100 mt-24">
               Unlock Studio Pro
             </NuxtLink>
           </div>
 
           <!-- Enterprise Plan -->
-          <div class="pricing-card glass-panel">
+          <div class="pricing-card glass-panel scroll-reveal reveal-delay-2">
             <div class="pricing-header">
               <span class="plan-name">Corporate</span>
               <span class="plan-price">Custom</span>
@@ -249,7 +249,7 @@
                 Dedicated Support
               </li>
             </ul>
-            <a href="mailto:support@cvtailorai.com" class="btn btn-secondary w-100 mt-24">
+            <a href="mailto:support@cvtailorai.com" class="btn btn-secondary btn-liquid w-100 mt-24">
               Contact Sales
             </a>
           </div>
@@ -260,8 +260,27 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+
 definePageMeta({
   layout: 'default'
+});
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-active');
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  document.querySelectorAll('.scroll-reveal').forEach(el => {
+    observer.observe(el);
+  });
 });
 </script>
 
@@ -776,4 +795,83 @@ definePageMeta({
     display: none;
   }
 }
+
+/* ==========================================
+   SCROLL REVEAL & MICRO-ANIMATION SYSTEMS
+   ========================================== */
+
+/* Universal Scroll Reveal properties */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.scroll-reveal.reveal-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered Delay offsets */
+.reveal-delay-1 { transition-delay: 0.15s !important; }
+.reveal-delay-2 { transition-delay: 0.3s !important; }
+.reveal-delay-3 { transition-delay: 0.45s !important; }
+
+/* Micro-Interaction: Metric card subtle glow on hover */
+.metric-card {
+  transition: border-color var(--transition-normal), background-color var(--transition-normal);
+}
+
+.metric-card:hover {
+  border-color: var(--colors-primary) !important;
+  background-color: var(--colors-surface) !important;
+}
+
+/* Micro-Interaction: Rotating feature icons */
+.feature-card {
+  transition: border-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.feature-card:hover {
+  border-color: var(--colors-primary) !important;
+}
+
+.feature-icon {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.18) rotate(6deg);
+  color: var(--colors-primary);
+}
+
+/* Micro-Interaction: Dynamic pricing scale upgrades */
+.pricing-card {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15), border-color 0.3s ease !important;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: var(--colors-primary) !important;
+}
+
+.popular-card {
+  box-shadow: 0 8px 30px rgba(95, 107, 86, 0.03) !important;
+}
+
+.popular-card:hover {
+  box-shadow: 0 12px 36px rgba(95, 107, 86, 0.08) !important;
+}
+
+/* Dynamic workflow timeline indicators pulse */
+.step-num-badge {
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.workflow-step:hover .step-num-badge {
+  border-color: var(--success);
+  background-color: var(--colors-neutral);
+  transform: scale(1.08);
+}
+
 </style>
