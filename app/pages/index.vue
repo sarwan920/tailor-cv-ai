@@ -800,22 +800,39 @@ onMounted(() => {
    SCROLL REVEAL & MICRO-ANIMATION SYSTEMS
    ========================================== */
 
-/* Universal Scroll Reveal properties */
+/* Universal Scroll Reveal properties - Awwwards Inset Mask Wipe */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  clip-path: inset(8% 0 8% 0);
+  transform: scale(0.97) translateY(16px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .scroll-reveal.reveal-active {
   opacity: 1;
-  transform: translateY(0);
+  clip-path: inset(0% 0 0% 0);
+  transform: scale(1) translateY(0);
 }
 
 /* Staggered Delay offsets */
-.reveal-delay-1 { transition-delay: 0.15s !important; }
-.reveal-delay-2 { transition-delay: 0.3s !important; }
-.reveal-delay-3 { transition-delay: 0.45s !important; }
+.reveal-delay-1 { transition-delay: 0.14s !important; }
+.reveal-delay-2 { transition-delay: 0.28s !important; }
+.reveal-delay-3 { transition-delay: 0.42s !important; }
+
+/* Micro-Interaction: Focal Lens Focus Blur reveal on metric stats */
+.metric-num {
+  letter-spacing: -0.03em;
+  filter: blur(4px);
+  transition: letter-spacing 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.reveal-active .metric-num {
+  letter-spacing: 0;
+  filter: blur(0);
+}
 
 /* Micro-Interaction: Metric card subtle glow on hover */
 .metric-card {
@@ -829,7 +846,7 @@ onMounted(() => {
 
 /* Micro-Interaction: Rotating feature icons */
 .feature-card {
-  transition: border-color var(--transition-normal), transform var(--transition-normal);
+  transition: border-color var(--transition-normal), background-color var(--transition-normal), transform var(--transition-normal);
 }
 
 .feature-card:hover {
@@ -872,6 +889,18 @@ onMounted(() => {
   border-color: var(--success);
   background-color: var(--colors-neutral);
   transform: scale(1.08);
+}
+
+/* Moving dotted connector lines representing AI flow */
+.workflow-step:not(:last-child)::after {
+  background: linear-gradient(90deg, var(--colors-secondary) 60%, transparent 40%) !important;
+  background-size: 8px 1px !important;
+  animation: flow-line-dots 0.8s linear infinite !important;
+}
+
+@keyframes flow-line-dots {
+  0% { background-position: 0px 0px; }
+  100% { background-position: -8px 0px; }
 }
 
 </style>
