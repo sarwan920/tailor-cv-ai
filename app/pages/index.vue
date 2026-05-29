@@ -58,19 +58,19 @@
     <section class="metrics-section">
       <div class="section-container">
         <div class="metrics-grid">
-          <div class="metric-card glass-panel scroll-reveal">
-            <span class="metric-num">99.4%</span>
-            <span class="metric-label">ATS Parse Success</span>
+          <div class="metric-card glass-panel premium-card-3d scroll-reveal">
+            <span class="metric-num extrude-child">99.4%</span>
+            <span class="metric-label extrude-child">ATS Parse Success</span>
             <p class="metric-desc">Perfect compatibility with standard parsing engines (Workday, Greenhouse, Taleo).</p>
           </div>
-          <div class="metric-card glass-panel scroll-reveal reveal-delay-1">
-            <span class="metric-num">2.4x</span>
-            <span class="metric-label">More Interview Invites</span>
+          <div class="metric-card glass-panel premium-card-3d scroll-reveal reveal-delay-1">
+            <span class="metric-num extrude-child">2.4x</span>
+            <span class="metric-label extrude-child">More Interview Invites</span>
             <p class="metric-desc">Rephrased competencies immediately signal your relevance to hiring managers.</p>
           </div>
-          <div class="metric-card glass-panel scroll-reveal reveal-delay-2">
-            <span class="metric-num">0%</span>
-            <span class="metric-label">Fabricated Data</span>
+          <div class="metric-card glass-panel premium-card-3d scroll-reveal reveal-delay-2">
+            <span class="metric-num extrude-child">0%</span>
+            <span class="metric-label extrude-child">Fabricated Data</span>
             <p class="metric-desc">A strict fact-faithful translation policy. We optimize representation, never invent history.</p>
           </div>
         </div>
@@ -87,27 +87,27 @@
         </div>
 
         <div class="features-grid">
-          <div class="feature-card glass-panel scroll-reveal">
-            <div class="feature-icon-wrapper">
+          <div class="feature-card glass-panel premium-card-3d scroll-reveal">
+            <div class="feature-icon-wrapper extrude-child">
               <span class="material-icons feature-icon">auto_awesome</span>
             </div>
-            <h4>Fact-Faithful Translation</h4>
+            <h4 class="extrude-child">Fact-Faithful Translation</h4>
             <p>Our custom-tuned Gemini prompts rewrite accomplishments to match job qualifications without fabricating skills, education, or companies.</p>
           </div>
 
-          <div class="feature-card glass-panel scroll-reveal reveal-delay-1">
-            <div class="feature-icon-wrapper">
+          <div class="feature-card glass-panel premium-card-3d scroll-reveal reveal-delay-1">
+            <div class="feature-icon-wrapper extrude-child">
               <span class="material-icons feature-icon">analytics</span>
             </div>
-            <h4>Real-time ATS Keyword Mapping</h4>
+            <h4 class="extrude-child">Real-time ATS Keyword Mapping</h4>
             <p>Paste any LinkedIn or Indeed job description. The AI parses required skills, matching and highlighting your existing expertise dynamically.</p>
           </div>
 
-          <div class="feature-card glass-panel scroll-reveal reveal-delay-2">
-            <div class="feature-icon-wrapper">
+          <div class="feature-card glass-panel premium-card-3d scroll-reveal reveal-delay-2">
+            <div class="feature-icon-wrapper extrude-child">
               <span class="material-icons feature-icon">tune</span>
             </div>
-            <h4>Interactive Custom Directives</h4>
+            <h4 class="extrude-child">Interactive Custom Directives</h4>
             <p>Fine-tune the output tone to your exact standard. Request an "Executive Tone," double down on "Cloud Metrics," or restrict length easily.</p>
           </div>
         </div>
@@ -160,8 +160,8 @@
 
         <div class="pricing-grid">
           <!-- Free Plan -->
-          <div class="pricing-card glass-panel scroll-reveal">
-            <div class="pricing-header">
+          <div class="pricing-card glass-panel premium-card-3d scroll-reveal">
+            <div class="pricing-header extrude-child">
               <span class="plan-name">Core Baseline</span>
               <span class="plan-price">$0</span>
               <span class="plan-desc">For developers preparing their initial outline.</span>
@@ -190,9 +190,9 @@
           </div>
 
           <!-- Recommended Pro Plan (Single Tertiary Highlight Accent Button) -->
-          <div class="pricing-card glass-panel popular-card scroll-reveal reveal-delay-1">
-            <div class="pricing-badge">Recommended</div>
-            <div class="pricing-header">
+          <div class="pricing-card glass-panel popular-card premium-card-3d scroll-reveal reveal-delay-1">
+            <div class="pricing-badge extrude-child">Recommended</div>
+            <div class="pricing-header extrude-child">
               <span class="plan-name">Matte Studio Pro</span>
               <span class="plan-price">$9<span class="price-cycle">/mo</span></span>
               <span class="plan-desc">For active job seekers targeting multiple roles.</span>
@@ -225,8 +225,8 @@
           </div>
 
           <!-- Enterprise Plan -->
-          <div class="pricing-card glass-panel scroll-reveal reveal-delay-2">
-            <div class="pricing-header">
+          <div class="pricing-card glass-panel premium-card-3d scroll-reveal reveal-delay-2">
+            <div class="pricing-header extrude-child">
               <span class="plan-name">Corporate</span>
               <span class="plan-price">Custom</span>
               <span class="plan-desc">For recruitment teams and career agencies.</span>
@@ -834,23 +834,44 @@ onMounted(() => {
   filter: blur(0);
 }
 
-/* Micro-Interaction: Metric card subtle glow on hover */
-.metric-card {
-  transition: border-color var(--transition-normal), background-color var(--transition-normal);
+/* ==========================================
+   3D LAYERED CARD EXTRUSION SYSTEM
+   ========================================== */
+
+.premium-card-3d {
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0);
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              border-color 0.4s ease, 
+              background-color 0.4s ease, 
+              box-shadow 0.5s ease !important;
 }
 
-.metric-card:hover {
+.premium-card-3d:hover {
+  transform: perspective(800px) rotateX(5deg) rotateY(-5deg) translateY(-8px);
   border-color: var(--colors-primary) !important;
-  background-color: var(--colors-surface) !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0 16px 40px rgba(27, 25, 23, 0.05) !important;
 }
 
-/* Micro-Interaction: Rotating feature icons */
-.feature-card {
-  transition: border-color var(--transition-normal), background-color var(--transition-normal), transform var(--transition-normal);
+/* Layered child elements pushed further in Z space on hover */
+.premium-card-3d .extrude-child {
+  transform: translateZ(0px);
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), color 0.3s ease;
 }
 
-.feature-card:hover {
-  border-color: var(--colors-primary) !important;
+.premium-card-3d:hover .extrude-child {
+  transform: translateZ(20px);
+}
+
+/* Specific extrusions details */
+.feature-icon-wrapper {
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+
+.premium-card-3d:hover .feature-icon-wrapper {
+  transform: translateZ(25px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(27, 25, 23, 0.04);
 }
 
 .feature-icon {
@@ -860,16 +881,6 @@ onMounted(() => {
 .feature-card:hover .feature-icon {
   transform: scale(1.18) rotate(6deg);
   color: var(--colors-primary);
-}
-
-/* Micro-Interaction: Dynamic pricing scale upgrades */
-.pricing-card {
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15), border-color 0.3s ease !important;
-}
-
-.pricing-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  border-color: var(--colors-primary) !important;
 }
 
 .popular-card {
