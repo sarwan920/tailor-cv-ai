@@ -31,10 +31,20 @@
       </div>
 
       <div class="sidebar-footer">
-        <button @click="showApiSettings = true" class="btn btn-secondary api-btn w-100 flex-btn">
-          <span class="material-icons">vpn_key</span>
-          {{ hasApiKey ? 'Key Configured' : 'Configure Key' }}
-        </button>
+        <div v-if="auth.user.value" class="sidebar-user-info">
+          <span class="material-icons user-icon">account_circle</span>
+          <span class="sidebar-user-email">{{ auth.user.value.email }}</span>
+        </div>
+        <div class="sidebar-footer-buttons">
+          <BaseButton @click="showApiSettings = true" variant="secondary" class="api-btn w-100 flex-btn">
+            <span class="material-icons">vpn_key</span>
+            {{ hasApiKey ? 'Key Set' : 'Configure Key' }}
+          </BaseButton>
+          <BaseButton @click="auth.logout" variant="danger" class="w-100 flex-btn mt-8">
+            <span class="material-icons">logout</span>
+            Sign Out
+          </BaseButton>
+        </div>
       </div>
     </aside>
 
@@ -75,8 +85,8 @@
           </p>
         </div>
         <div class="modal-footer">
-          <button @click="showApiSettings = false" class="btn btn-secondary">Cancel</button>
-          <button @click="saveApiKey" class="btn btn-primary">Save Key</button>
+          <BaseButton @click="showApiSettings = false" variant="secondary">Cancel</BaseButton>
+          <BaseButton @click="saveApiKey" variant="primary">Save Key</BaseButton>
         </div>
       </div>
     </div>
@@ -86,7 +96,9 @@
 <script setup>
 import '@/assets/css/main.css';
 import { ref, onMounted } from 'vue';
+import { useAuth } from '@/composables/useAuth';
 
+const auth = useAuth();
 const showApiSettings = ref(false);
 const apiKeyInput = ref('');
 const hasApiKey = ref(false);
@@ -126,5 +138,33 @@ function saveApiKey() {
     margin-left: 0 !important;
     padding: 0 !important;
   }
+}
+
+.sidebar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--spacing-md);
+  padding: 0 var(--spacing-sm);
+}
+
+.user-icon {
+  font-size: 20px;
+  color: var(--colors-secondary);
+}
+
+.sidebar-user-email {
+  font-size: 0.68rem;
+  color: var(--colors-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mt-8 {
+  margin-top: 8px;
 }
 </style>

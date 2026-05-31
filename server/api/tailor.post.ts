@@ -1,8 +1,10 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '../utils/db';
+import { requireSessionUser } from '../utils/auth';
 
 export default defineEventHandler(async (event) => {
   try {
+    const user = await requireSessionUser(event);
     const body = await readBody(event);
     const { profileId, jobTitle, company, jobDescription, geminiApiKey, options } = body;
 
@@ -22,6 +24,13 @@ export default defineEventHandler(async (event) => {
       throw createError({
         statusCode: 404,
         statusMessage: 'CV profile not found',
+      });
+    }
+
+    if (profile.userId !== user.id) {
+      throw createError({
+        statusCode: 403,
+        statusMessage: 'Forbidden. You do not own this CV profile.',
       });
     }
 

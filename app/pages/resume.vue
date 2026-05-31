@@ -13,15 +13,29 @@
       <div class="workspace-pane glass-panel">
         <div class="pane-action-header">
           <span class="editor-lbl">Markdown / Plain Text</span>
-          <button @click="loadDemoCV" class="btn btn-secondary btn-xs flex-btn">
-            <span class="material-icons" style="font-size: 13px;">lightbulb</span>
-            Load Sample Template
-          </button>
+          <div class="editor-header-actions">
+            <BaseButton @click="triggerFileInput" variant="secondary" size="xs" class="flex-btn mr-6">
+              <span class="material-icons" style="font-size: 13px;">upload_file</span>
+              Upload File
+            </BaseButton>
+            <BaseButton @click="loadDemoCV" variant="secondary" size="xs" class="flex-btn">
+              <span class="material-icons" style="font-size: 13px;">lightbulb</span>
+              Load Sample Template
+            </BaseButton>
+            <input 
+              type="file" 
+              ref="fileInput" 
+              accept=".txt,.md,.markdown,.pdf" 
+              style="display: none;" 
+              @change="handleFileUpload" 
+            />
+          </div>
         </div>
         <textarea 
           v-model="masterCv.content" 
           @input="onContentChange"
           class="workspace-editor-textarea flex-editor"
+          :class="{ 'validation-error': showValidationError && !masterCv.content.trim() }"
           placeholder="Paste or write your master CV here..."
         ></textarea>
       </div>
@@ -41,16 +55,16 @@
     <div class="step-navigation-footer">
       <div></div> <!-- Spacer -->
       <!-- Highlight Interactive CTA -->
-      <button @click="navigateNext" class="btn btn-primary btn-lg flex-btn" :disabled="!masterCv.content.trim()">
+      <BaseButton @click="handleNextClick" variant="primary" size="lg" class="flex-btn">
         Next: Tailor a Job
         <span class="material-icons">arrow_forward</span>
-      </button>
+      </BaseButton>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { marked } from 'marked';
 import { useMasterCv } from '~/composables/useCvState';
@@ -61,6 +75,159 @@ definePageMeta({
 
 const router = useRouter();
 const masterCv = useMasterCv();
+const fileInput = ref(null);
+const showValidationError = ref(false);
+
+function handleNextClick() {
+  if (!masterCv.value.content || !masterCv.value.content.trim()) {
+    showValidationError.value = true;
+    alert('Please enter or upload your resume experience first in the editor panel before moving to tailoring.');
+    return;
+  }
+  navigateNext();
+}
+
+function triggerFileInput() {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+}
+
+function loadPdfJS() {
+  return new Promise((resolve, reject) => {
+    if (window['pdfjs-dist/build/pdf']) {
+      resolve(window['pdfjs-dist/build/pdf']);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
+    script.onload = () => {
+      const pdfjs = window['pdfjs-dist/build/pdf'];
+      pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+      resolve(pdfjs);
+    };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function extractTextFromPDF(arrayBuffer) {
+  const pdfjs = await loadPdfJS();
+  const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
+  const pdf = await loadingTask.promise;
+  let fullText = '';
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    const items = textContent.items;
+    
+    if (items.length === 0) continue;
+
+    // Group items by vertical y coordinate (transform[5])
+    // Note: PDF coordinate system y increases from bottom to top
+    const linesMap = new Map();
+    const yThreshold = 5; // tolerance for baseline alignment in points
+
+    items.forEach(item => {
+      if (!item.str || item.str.trim() === '') return;
+      
+      const y = item.transform[5];
+      const x = item.transform[4];
+      
+      // Find an existing line group that is close to this y baseline
+      let foundKey = null;
+      for (const existingY of linesMap.keys()) {
+        if (Math.abs(existingY - y) < yThreshold) {
+          foundKey = existingY;
+          break;
+        }
+      }
+      
+      if (foundKey !== null) {
+        linesMap.get(foundKey).push({ x, str: item.str });
+      } else {
+        linesMap.set(y, [{ x, str: item.str }]);
+      }
+    });
+
+    // Sort baselines from top to bottom (highest y is top of page)
+    const sortedBaselines = Array.from(linesMap.keys()).sort((a, b) => b - a);
+    
+    let lastY = null;
+    sortedBaselines.forEach(y => {
+      const lineItems = linesMap.get(y);
+      // Sort items on this line from left to right
+      lineItems.sort((a, b) => a.x - b.x);
+      
+      // Merge items in the line with appropriate spacing
+      let lineText = '';
+      let lastX = null;
+      
+      lineItems.forEach(item => {
+        if (lastX !== null) {
+          const spacing = item.x - lastX;
+          // If there is a noticeable gap between items on the same line, add a space
+          if (spacing > 6) {
+            lineText += ' ';
+          }
+        }
+        lineText += item.str;
+        // Estimate the end coordinate of this segment to determine spacing to next item
+        // Approximate character width is ~5 points
+        lastX = item.x + (item.str.length * 5);
+      });
+      
+      // Check vertical gap to previous line to insert paragraph breaks
+      if (lastY !== null) {
+        const gap = lastY - y;
+        if (gap > 18) { // standard line gap threshold for paragraphs
+          fullText += '\n';
+        }
+      }
+      
+      fullText += lineText + '\n';
+      lastY = y;
+    });
+    
+    fullText += '\n\n'; // page break spacing
+  }
+  
+  return fullText.trim();
+}
+
+async function handleFileUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const isPdf = file.type === 'application/pdf' || file.name.endsWith('.pdf');
+
+  if (isPdf) {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      if (e.target?.result) {
+        try {
+          const text = await extractTextFromPDF(e.target.result);
+          masterCv.value.content = text;
+          onContentChange(); // Trigger debounced auto-save to API
+        } catch (err) {
+          console.error('PDF parsing error:', err);
+          alert('Failed to extract text from PDF. Please make sure the PDF has selectable text.');
+        }
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        masterCv.value.content = e.target.result;
+        onContentChange(); // Trigger debounced auto-save to API
+      }
+    };
+    reader.readAsText(file);
+  }
+}
 
 onMounted(() => {
   if (!masterCv.value.content) {
@@ -284,5 +451,19 @@ Passion-driven and result-oriented Senior Fullstack Engineer with 6+ years of ex
   .pane-preview-body {
     height: 320px;
   }
+}
+
+.editor-header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.mr-6 {
+  margin-right: 6px;
+}
+
+.validation-error {
+  border: 1px solid var(--danger) !important;
+  background-color: rgba(150, 75, 67, 0.03) !important;
 }
 </style>

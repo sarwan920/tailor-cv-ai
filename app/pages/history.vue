@@ -16,10 +16,10 @@
         <span class="material-icons empty-icon">receipt_long</span>
         <h3>No Logs Found</h3>
         <p>You haven't tailored your resume for any positions yet. Run your first adaptation in "Tailor a Job" to start building your log history.</p>
-        <button @click="routeToTailor" class="btn btn-primary mt-16 flex-btn mx-auto">
+        <BaseButton @click="routeToTailor" variant="primary" class="mt-16 flex-btn mx-auto">
           <span class="material-icons">auto_awesome</span>
           Start Tailoring
-        </button>
+        </BaseButton>
       </div>
     </div>
 

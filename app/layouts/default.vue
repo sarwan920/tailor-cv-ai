@@ -17,10 +17,24 @@
 
         <!-- Primary CTA: Single Load-Bearing Tertiary Accent Button -->
         <div class="header-cta">
-          <NuxtLink to="/resume" class="btn btn-primary btn-sm flex-btn">
-            Start Refining
-            <span class="material-icons" style="font-size: 14px;">arrow_forward</span>
-          </NuxtLink>
+          <template v-if="auth.user.value">
+            <div class="user-nav-group">
+              <span class="user-email no-mobile">{{ auth.user.value.email }}</span>
+              <BaseButton to="/resume" variant="primary" size="sm" class="flex-btn">
+                Workspace
+                <span class="material-icons" style="font-size: 14px;">arrow_forward</span>
+              </BaseButton>
+              <BaseButton @click="auth.logout" variant="secondary" size="sm" class="flex-btn">
+                Sign Out
+              </BaseButton>
+            </div>
+          </template>
+          <template v-else>
+            <BaseButton to="/login" variant="primary" size="sm" class="flex-btn">
+              Sign In
+              <span class="material-icons" style="font-size: 14px;">login</span>
+            </BaseButton>
+          </template>
         </div>
       </div>
     </header>
@@ -50,7 +64,8 @@
 </template>
 
 <script setup>
-// Public layout default shell
+import { useAuth } from '@/composables/useAuth';
+const auth = useAuth();
 </script>
 
 <style scoped>
@@ -201,6 +216,27 @@
   .footer-container {
     flex-direction: column;
     text-align: center;
+  }
+}
+
+.user-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-email {
+  font-family: var(--font-family);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--colors-secondary);
+}
+
+@media (max-width: 768px) {
+  .no-mobile {
+    display: none !important;
   }
 }
 </style>

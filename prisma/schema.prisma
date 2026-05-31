@@ -6,6 +6,25 @@ datasource db {
   provider = "sqlite"
 }
 
+model User {
+  id        String      @id @default(uuid())
+  email     String      @unique
+  password  String      // Securely hashed using PBKDF2
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  profiles  CvProfile[]
+  sessions  Session[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
 model CvProfile {
   id          String       @id @default(uuid())
   title       String
@@ -13,6 +32,8 @@ model CvProfile {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   tailoredCvs TailoredCv[]
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model TailoredCv {

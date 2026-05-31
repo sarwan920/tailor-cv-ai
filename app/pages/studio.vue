@@ -6,15 +6,15 @@
         <span class="material-icons empty-icon">analytics</span>
         <h3>Tailoring Studio</h3>
         <p>No job-specific adaptations have been loaded yet. Head over to the "Tailor a Job" workspace to optimize your resume for your target LinkedIn requisition.</p>
-        <button @click="routeToTailor" class="btn btn-primary mt-16 flex-btn mx-auto">
+        <BaseButton @click="routeToTailor" variant="primary" class="mt-16 flex-btn mx-auto">
           <span class="material-icons">auto_awesome</span>
           Go to Tailoring Workspace
-        </button>
+        </BaseButton>
       </div>
     </div>
 
     <!-- Active Optimization Studio Workspace -->
-    <div v-else class="step-layout fade-in">
+    <div v-else class="step-layout fade-in no-print">
       <div class="step-instruction flex-header-row">
         <div>
           <h2>
@@ -24,10 +24,10 @@
           <p class="instruction-desc">Compare original versus tailored CV, view the optimization report, and export your polished resume.</p>
         </div>
         <!-- Secondary Action Button -->
-        <button @click="resetStudio" class="btn btn-secondary btn-sm flex-btn">
+        <BaseButton @click="resetStudio" variant="secondary" size="sm" class="flex-btn">
           <span class="material-icons">refresh</span>
           Match Another Job
-        </button>
+        </BaseButton>
       </div>
 
       <!-- ATS Scorecard Dashboard Widget -->
@@ -90,28 +90,31 @@
           <div class="pane-action-header flex-between">
             <div class="workspace-tabs-row">
               <button 
-                @click="rightTab = 'preview'" 
+                @click="setTab('preview')" 
                 class="workspace-tab-trigger" 
                 :class="{ active: rightTab === 'preview' }"
-              >Live Preview</button>
+              >Preview</button>
               <button 
-                @click="rightTab = 'edit'" 
+                @click="setTab('diff')" 
+                class="workspace-tab-trigger" 
+                :class="{ active: rightTab === 'diff' }"
+              >GitHub Diff</button>
+              <button 
+                @click="setTab('edit')" 
                 class="workspace-tab-trigger" 
                 :class="{ active: rightTab === 'edit' }"
               >Edit Markdown</button>
             </div>
 
             <div class="workspace-actions-row">
-              <span class="stat-word-badge mr-12">{{ getWordCount(tailoredContent) }} words</span>
-              <button @click="copyToClipboard(tailoredContent)" class="btn btn-secondary btn-xs flex-btn mr-6">
-                <span class="material-icons" style="font-size: 13px;">content_copy</span>
-                Copy Markdown
-              </button>
+              <span class="stat-word-badge mr-12 no-mobile-badge">{{ getWordCount(tailoredContent) }} words</span>
+              <BaseButton @click="copyToClipboard(tailoredContent)" variant="secondary" size="sm" class="icon-only-btn mr-6" title="Copy Markdown">
+                <span class="material-icons" style="font-size: 16px;">content_copy</span>
+              </BaseButton>
               <!-- This is the single interactive highlight CTA of this screen -->
-              <button @click="triggerPrint" class="btn btn-primary btn-xs flex-btn">
-                <span class="material-icons" style="font-size: 13px;">print</span>
-                PDF/Print
-              </button>
+              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="icon-only-btn" title="PDF/Print">
+                <span class="material-icons" style="font-size: 16px;">print</span>
+              </BaseButton>
             </div>
           </div>
           
@@ -119,6 +122,15 @@
             <!-- Live Preview -->
             <div v-show="rightTab === 'preview'" class="markdown-preview-pad">
               <div class="markdown-preview light-theme-preview" v-html="renderedTailored"></div>
+            </div>
+
+            <!-- GitHub Diff View -->
+            <div v-show="rightTab === 'diff'" class="markdown-preview-pad">
+              <div class="diff-title-header">
+                <span class="diff-icon material-icons">difference</span>
+                <span>Track Changes: <del class="diff-removed">Red represents original text</del> and <ins class="diff-added">Green represents tailored improvements</ins>.</span>
+              </div>
+              <div class="markdown-preview light-theme-preview" v-html="diffHtml"></div>
             </div>
 
             <!-- Edit Markdown -->
@@ -163,8 +175,86 @@ const tailoredContent = useTailoredContent();
 const tailoredAnalysis = useTailoredAnalysis();
 
 const rightTab = ref('preview');
+const diffHtml = ref('');
 const isPrintLayoutActive = ref(false);
 const printContent = ref('');
+
+function setTab(tab) {
+  rightTab.value = tab;
+  if (tab === 'diff') {
+    generateDiff();
+  }
+}
+
+function loadDiffJS() {
+  return new Promise((resolve, reject) => {
+    if (window.Diff) {
+      resolve(window.Diff);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.2.0/diff.min.js';
+    script.onload = () => resolve(window.Diff);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function generateDiff() {
+  try {
+    diffHtml.value = '<p style="color: var(--colors-secondary); font-style: italic; padding: 12px;">Comparing baselines and generating revision differences...</p>';
+    const Diff = await loadDiffJS();
+    const originalText = masterCv.value.content || '';
+    const tailoredText = tailoredContent.value || '';
+    
+    // Perform word-level diffing
+    const changes = Diff.diffWords(originalText, tailoredText);
+    
+    let diffMarkdown = '';
+    changes.forEach((part) => {
+      const value = part.value;
+      if (part.added || part.removed) {
+        const tagOpen = part.added ? '<ins class="diff-added">' : '<del class="diff-removed">';
+        const tagClose = part.added ? '</ins>' : '</del>';
+        
+        // Split chunk into lines to ensure markdown list and heading syntax stays structural
+        const lines = value.split('\n');
+        const processedLines = lines.map((line) => {
+          if (!line.trim()) return line;
+          
+          // Keep bullet list markers (-/+/1.) or headers (#/##) outside of our highlight tags
+          const match = line.match(/^(\s*(?:-\s+|\*\s+|\d+\.\s+|#+\s+))(.*)/);
+          if (match) {
+            const prefix = match[1];
+            const content = match[2];
+            return `${prefix}${tagOpen}${escapeHtml(content)}${tagClose}`;
+          } else {
+            return `${tagOpen}${escapeHtml(line)}${tagClose}`;
+          }
+        });
+        
+        diffMarkdown += processedLines.join('\n');
+      } else {
+        diffMarkdown += escapeHtml(part.value);
+      }
+    });
+    
+    // Parse the generated HTML markdown using marked.parse
+    diffHtml.value = marked.parse(diffMarkdown);
+  } catch (err) {
+    console.error('Diff generation error:', err);
+    diffHtml.value = '<p class="warning-text">Failed to generate revision differences.</p>';
+  }
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 function routeToTailor() {
   router.push('/tailor');
@@ -466,17 +556,21 @@ function triggerPrint() {
 
 .workspace-tabs-row {
   display: flex;
-  gap: 4px;
+  background-color: rgba(27, 25, 23, 0.04);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  align-items: center;
 }
 
 .workspace-tab-trigger {
   background: none;
-  border: 1px solid transparent;
+  border: none;
   font-family: var(--font-family);
   font-weight: 500;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   color: var(--colors-secondary);
@@ -490,13 +584,29 @@ function triggerPrint() {
 
 .workspace-tab-trigger.active {
   color: var(--colors-primary);
-  background-color: var(--colors-neutral);
-  border-color: var(--border-light);
+  background-color: var(--colors-surface);
+  box-shadow: 0 1px 3px rgba(27, 25, 23, 0.08);
 }
 
 .workspace-actions-row {
   display: flex;
   align-items: center;
+}
+
+.icon-only-btn {
+  padding: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--radius-md) !important;
+}
+
+@media (max-width: 768px) {
+  .no-mobile-badge {
+    display: none !important;
+  }
 }
 
 .mr-6 {
@@ -553,6 +663,158 @@ function triggerPrint() {
     border-right: none;
     border-bottom: 1px solid var(--border-light);
     padding-bottom: 16px;
+  }
+}
+
+.diff-title-header {
+  font-family: var(--font-family);
+  font-size: 0.78rem;
+  color: var(--colors-secondary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diff-title-header ins.diff-added {
+  background-color: rgba(95, 107, 86, 0.22) !important;
+  color: #2F382A !important;
+  text-decoration: none !important;
+  padding: 1px 4px !important;
+  border-radius: 2px !important;
+}
+
+.diff-title-header del.diff-removed {
+  background-color: rgba(150, 75, 67, 0.18) !important;
+  color: #8A3D35 !important;
+  text-decoration: line-through !important;
+  padding: 1px 4px !important;
+  border-radius: 2px !important;
+}
+
+.diff-icon {
+  font-size: 18px;
+  color: var(--success);
+}
+
+:deep(.markdown-preview ins.diff-added) {
+  background-color: rgba(95, 107, 86, 0.22) !important; /* Sage green addition */
+  color: #2F382A !important;
+  text-decoration: none !important;
+  padding: 1px 4px !important;
+  border-radius: 2px !important;
+  display: inline;
+}
+
+:deep(.markdown-preview del.diff-removed) {
+  background-color: rgba(150, 75, 67, 0.18) !important; /* Terracotta red deletion */
+  color: #8A3D35 !important;
+  text-decoration: line-through !important;
+  padding: 1px 4px !important;
+  border-radius: 2px !important;
+  display: inline;
+}
+
+/* One-Page Direct Printing Styles */
+@media print {
+  /* Absolute isolation: Hide everything except the print-only container */
+  body * {
+    visibility: hidden !important;
+  }
+
+  .print-mode-layout-only,
+  .print-mode-layout-only * {
+    visibility: visible !important;
+  }
+
+  .print-mode-layout-only {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  body, html {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 8.5pt !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .markdown-preview {
+    font-family: var(--font-family), 'Jost', sans-serif !important;
+    font-size: 8.5pt !important;
+    line-height: 1.25 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .markdown-preview h1 {
+    font-size: 14pt !important;
+    font-weight: 600 !important;
+    margin-top: 0 !important;
+    margin-bottom: 4pt !important;
+    padding-bottom: 2pt !important;
+    border-bottom: 1.5px solid #000000 !important;
+    color: #000000 !important;
+  }
+
+  .markdown-preview h2 {
+    font-size: 10.5pt !important;
+    font-weight: 600 !important;
+    margin-top: 6pt !important;
+    margin-bottom: 3pt !important;
+    border-bottom: 1px solid #8C847A !important;
+    padding-bottom: 1pt !important;
+    color: #000000 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  .markdown-preview p {
+    font-size: 8.5pt !important;
+    margin-bottom: 3pt !important;
+    color: #000000 !important;
+  }
+
+  .markdown-preview ul, .markdown-preview ol {
+    margin-bottom: 3pt !important;
+    padding-left: 10pt !important;
+  }
+
+  .markdown-preview li {
+    font-size: 8.5pt !important;
+    margin-bottom: 1pt !important;
+    color: #000000 !important;
+  }
+
+  .markdown-preview strong {
+    font-weight: 600 !important;
+    color: #000000 !important;
+  }
+
+  .markdown-preview hr {
+    margin: 4pt 0 !important;
+    border: none !important;
+    border-top: 1px solid #8C847A !important;
+  }
+
+  @page {
+    size: portrait;
+    margin: 0.4in 0.5in 0.4in 0.5in !important;
   }
 }
 </style>

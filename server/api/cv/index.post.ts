@@ -1,7 +1,9 @@
 import { prisma } from '../../utils/db';
+import { requireSessionUser } from '../../utils/auth';
 
 export default defineEventHandler(async (event) => {
   try {
+    const user = await requireSessionUser(event);
     const body = await readBody(event);
     const { title, content } = body;
 
@@ -16,6 +18,7 @@ export default defineEventHandler(async (event) => {
       data: {
         title,
         content,
+        userId: user.id,
       },
     });
     return newProfile;

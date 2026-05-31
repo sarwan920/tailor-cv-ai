@@ -1,8 +1,15 @@
 import { prisma } from '../../utils/db';
+import { requireSessionUser } from '../../utils/auth';
 
 export default defineEventHandler(async (event) => {
   try {
+    const user = await requireSessionUser(event);
     const history = await prisma.tailoredCv.findMany({
+      where: {
+        profile: {
+          userId: user.id
+        }
+      },
       include: {
         profile: {
           select: {
@@ -15,7 +22,7 @@ export default defineEventHandler(async (event) => {
     return history;
   } catch (error: any) {
     throw createError({
-      statusCode: 500,
+      statusCode: error.statusCode || 500,
       statusMessage: error.message || 'Failed to fetch tailored CV history',
     });
   }

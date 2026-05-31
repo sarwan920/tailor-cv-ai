@@ -55,20 +55,22 @@
           
           <div class="form-double-row">
             <div class="form-group flex-1">
-              <label class="form-label">Target Job Title</label>
+              <label class="form-label">Target Job Title <span class="required-mark">*</span></label>
               <input 
                 v-model="form.jobTitle" 
                 type="text" 
                 class="form-input" 
+                :class="{ 'validation-error': showValidationError && !form.jobTitle.trim() }"
                 placeholder="e.g. Lead Frontend Architect"
               />
             </div>
             <div class="form-group flex-1 ml-16">
-              <label class="form-label">Target Company</label>
+              <label class="form-label">Target Company <span class="required-mark">*</span></label>
               <input 
                 v-model="form.company" 
                 type="text" 
                 class="form-input" 
+                :class="{ 'validation-error': showValidationError && !form.company.trim() }"
                 placeholder="e.g. Google"
               />
             </div>
@@ -87,26 +89,27 @@
         <!-- Job Description Specifications -->
         <div class="workspace-pane glass-panel">
           <div class="pane-action-header">
-            <span class="editor-lbl">LinkedIn Job Description Specifications</span>
+            <span class="editor-lbl">LinkedIn Job Description Specifications <span class="required-mark">*</span></span>
           </div>
           <textarea 
             v-model="form.jobDescription" 
             class="workspace-editor-textarea flex-editor"
+            :class="{ 'validation-error': showValidationError && !form.jobDescription.trim() }"
             placeholder="Paste the full job description text from LinkedIn here..."
           ></textarea>
         </div>
       </div>
 
       <div class="step-navigation-footer">
-        <button @click="navigateBack" class="btn btn-secondary btn-lg flex-btn">
+        <BaseButton @click="navigateBack" variant="secondary" size="lg" class="flex-btn">
           <span class="material-icons">arrow_back</span>
           Back to CV
-        </button>
+        </BaseButton>
         <!-- This is the single interactive highlight CTA of this screen -->
-        <button @click="triggerTailor" class="btn btn-primary btn-lg flex-btn" :disabled="!form.jobTitle.trim() || !form.company.trim() || !form.jobDescription.trim()">
+        <BaseButton @click="handleTailorClick" variant="primary" size="lg" class="flex-btn" :loading="isTailoring">
           <span class="material-icons mr-6">auto_awesome</span>
           Initiate AI Tailoring
-        </button>
+        </BaseButton>
       </div>
     </div>
   </div>
@@ -137,6 +140,16 @@ const tailoredContent = useTailoredContent();
 const tailoredAnalysis = useTailoredAnalysis();
 const isTailoring = useIsTailoring();
 const tailoringStep = useTailoringStep();
+const showValidationError = ref(false);
+
+function handleTailorClick() {
+  if (!form.value.jobTitle.trim() || !form.value.company.trim() || !form.value.jobDescription.trim()) {
+    showValidationError.value = true;
+    alert('Please fill out all mandatory fields marked with a red asterisk (*) to initiate tailoring.');
+    return;
+  }
+  triggerTailor();
+}
 
 function navigateBack() {
   router.push('/resume');
@@ -457,5 +470,16 @@ async function triggerTailor() {
     margin-left: 0;
     margin-top: 16px;
   }
+}
+
+.required-mark {
+  color: var(--danger);
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+.validation-error {
+  border: 1px solid var(--danger) !important;
+  background-color: rgba(150, 75, 67, 0.03) !important;
 }
 </style>

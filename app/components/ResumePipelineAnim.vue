@@ -5,8 +5,7 @@
     @mousemove="handleMouseMove"
     @mouseleave="handleMouseLeave"
   >
-    
-    <!-- 1. Spotlight Ambient Glow reacting to mouse coordinates -->
+    <!-- Spotlight Mouse tracking glow -->
     <div 
       class="spotlight-glow"
       :style="{ 
@@ -15,121 +14,148 @@
       }"
     ></div>
 
-    <!-- 2. STUNNING SVG NEURAL NETWORK GRAPH (Behind the card) -->
-    <svg class="neural-network-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-      <!-- Defs for glowing shadow filters -->
-      <defs>
-        <filter id="glow-line" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-
-      <!-- Connecting Active Neural Pathways -->
-      <path class="path-glow p-route-1" d="M 80 120 L 220 200 L 380 130" />
-      <path class="path-glow p-route-2" d="M 120 320 L 220 200 L 410 280" />
-      <path class="path-glow p-route-3" d="M 220 200 L 220 50" />
-
-      <!-- Network Nodes (Pulsing circles) -->
-      <circle cx="80" cy="120" r="3" class="node-circle" />
-      <circle cx="380" cy="130" r="3" class="node-circle" />
-      <circle cx="120" cy="320" r="3" class="node-circle" />
-      <circle cx="410" cy="280" r="3" class="node-circle" />
-      <circle cx="220" cy="50" r="3.5" class="node-circle center-node" />
-    </svg>
-
-    <!-- 3. Floating Background Constellation Tags -->
-    <div class="constellation-tag skill-docker"><span>Docker</span></div>
-    <div class="constellation-tag skill-kube"><span>Kubernetes</span></div>
-    <div class="constellation-tag skill-tf"><span>Terraform</span></div>
-    <div class="constellation-tag skill-pg"><span>PostgreSQL</span></div>
-
-    <!-- 4. Layered 3D Parallax Card Cluster -->
+    <!-- SIDE-BY-SIDE RESUME PAPERS (3D Parallax Canvas) -->
     <div 
-      class="card-cluster"
+      class="comparison-canvas"
       :style="{ 
-        transform: `perspective(1000px) rotateY(${tiltX}deg) rotateX(${tiltY}deg) translateZ(10px)` 
+        transform: `perspective(1000px) rotateY(${tiltX}deg) rotateX(${tiltY}deg)` 
       }"
     >
       
-      <!-- MAIN CV CARD (Bobbing, Holographic Scanning, White Paper shadow) -->
-      <div class="main-cv-card">
+      <!-- LEFT CARD: MASTER BASELINE PROFILE -->
+      <div class="resume-card card-left">
+        <div class="card-badge">MASTER BASELINE</div>
         
-        <!-- Translucent Scanning ATS Holographic Light Beam Sweep -->
-        <div class="scan-beam"></div>
+        <!-- Synced vertical laser scan sweep line for left card ONLY -->
+        <div class="card-scan-laser" :class="{ active: pipelineState === 'parsing' || pipelineState === 'mapping' }"></div>
 
-        <div class="cv-page">
-          <!-- CV Header -->
+        <div class="cv-paper">
+          <!-- Candidate Header -->
           <div class="cv-header">
-            <div class="avatar-circle">AC</div>
-            <div class="profile-details">
-              <h4 class="candidate-name">Alex Carter</h4>
-              <p class="candidate-title">Staff Cloud Engineer</p>
-            </div>
+            <h4 class="cv-name">Alex Carter</h4>
+            <p class="cv-title">Systems Engineer</p>
           </div>
-
+          
           <div class="cv-divider"></div>
-
-          <!-- Professional Summary section with bolded keywords -->
+          
+          <!-- Career Narrative -->
           <div class="cv-section">
-            <h5 class="section-title">Professional Profile</h5>
-            <p class="section-text">
-              Cloud-native <strong class="keyword-highlight">Staff Systems Engineer</strong> with 8+ years of expertise architecting high-availability <strong class="keyword-highlight">AWS ECS</strong> microservices. Fact-faithful narrative optimized for executive parsed credentials.
+            <span class="section-lbl">Career Narrative</span>
+            <p class="section-txt">
+              Systems engineer with baseline experience in maintaining virtual machines, configuring databases, and writing bash scripts.
             </p>
           </div>
 
-          <!-- Core Skills Row -->
+          <!-- Technical Skills -->
           <div class="cv-section">
-            <h5 class="section-title">Technical Skills</h5>
-            <div class="skills-row">
-              <span class="skill-pill">AWS ECS</span>
-              <span class="skill-pill">Terraform</span>
-              <span class="skill-pill">Kubernetes</span>
+            <span class="section-lbl">Technical Skills</span>
+            <div class="skills-wrap">
+              <span class="skill-tag">Linux</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">Bash</span>
             </div>
           </div>
         </div>
-
-        <!-- ATS SCORE BADGE (Overlaps top-right of main card, carries expanding green ripples) -->
-        <div class="ats-badge-wrapper">
-          <div class="ripple-ring r1"></div>
-          <div class="ripple-ring r2"></div>
-          <div class="ats-chip">
-            <span class="ats-number">98%</span>
-            <span class="ats-label">ATS Rank</span>
-          </div>
-        </div>
-
       </div>
 
-      <!-- KEYWORD EXTRACTION OVERLAY (Semi-transparent dark glass panel) -->
-      <div class="keyword-overlay-panel">
-        <div class="overlay-header">
-          <span class="material-icons overlay-icon">auto_awesome</span>
-          <span class="overlay-title">ATS Extraction</span>
+      <!-- RIGHT CARD: OPTIMIZED TAILORED PROFILE -->
+      <div class="resume-card card-right" :class="pipelineState">
+        <div class="card-badge highlight-badge">GEMINI OPTIMIZED</div>
+
+        <!-- Synced vertical laser scan sweep line for right card ONLY -->
+        <div class="card-scan-laser" :class="{ active: pipelineState === 'mapping' }"></div>
+
+        <!-- ATS Match Score Badge overlay in corner -->
+        <div class="ats-match-badge" :class="{ success: pipelineState === 'success' }">
+          <svg class="score-svg" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="16" class="score-bg-ring" stroke="rgba(27, 25, 23, 0.05)" stroke-width="3" />
+            <circle 
+              cx="18" 
+              cy="18" 
+              r="16" 
+              class="score-fill-ring" 
+              :stroke="pipelineState === 'success' ? 'var(--success)' : 'var(--colors-secondary)'"
+              stroke-width="3" 
+              stroke-linecap="round"
+              :stroke-dasharray="`${(atsScore / 100) * 100.5} 100.5`"
+              transform="rotate(-90 18 18)"
+            />
+          </svg>
+          <div class="score-text">
+            <span class="score-num">{{ atsScore }}%</span>
+            <span class="score-lbl">MATCH</span>
+          </div>
         </div>
-        <div class="extracted-tags-list">
-          <div class="tag-outline t1">
-            <span class="dot"></span>
-            AWS ECS
+        
+        <div class="cv-paper">
+          <!-- Candidate Header -->
+          <div class="cv-header">
+            <h4 class="cv-name">Alex Carter</h4>
+            <!-- Role transitions automatically -->
+            <p class="cv-title title-animated" v-if="pipelineState === 'success'">Staff Cloud Engineer</p>
+            <p class="cv-title loading-line" v-else-if="pipelineState === 'parsing' || pipelineState === 'mapping'"></p>
+            <p class="cv-title" v-else>Systems Engineer</p>
           </div>
-          <div class="tag-outline t2">
-            <span class="dot"></span>
-            TERRAFORM
+          
+          <div class="cv-divider"></div>
+          
+          <!-- Career Narrative -->
+          <div class="cv-section">
+            <span class="section-lbl">Career Narrative</span>
+            
+            <p class="section-txt" v-if="pipelineState === 'original'">
+              Systems engineer with baseline experience in maintaining virtual machines, configuring databases, and writing bash scripts.
+            </p>
+            <div class="loading-wrap" v-else-if="pipelineState === 'parsing' || pipelineState === 'mapping'">
+              <span class="loading-line w-100"></span>
+              <span class="loading-line w-85"></span>
+              <span class="loading-line w-55"></span>
+            </div>
+            <p class="section-txt animation-reveal" v-else>
+              Cloud-native <strong class="cv-highlight">Staff Cloud Engineer</strong> with 8+ years of expertise architecting high-availability <strong class="cv-highlight">AWS ECS</strong> container clusters and Terraform IaC deployments.
+            </p>
           </div>
-          <div class="tag-outline t3">
-            <span class="dot"></span>
-            KUBERNETES
+
+          <!-- Technical Skills -->
+          <div class="cv-section">
+            <span class="section-lbl">Technical Skills</span>
+            
+            <div class="skills-wrap" v-if="pipelineState === 'original'">
+              <span class="skill-tag">Linux</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">Bash</span>
+            </div>
+            <div class="loading-wrap flex-row" v-else-if="pipelineState === 'parsing' || pipelineState === 'mapping'">
+              <span class="loading-pill"></span>
+              <span class="loading-pill"></span>
+              <span class="loading-pill"></span>
+            </div>
+            <div class="skills-wrap animation-reveal" v-else>
+              <span class="skill-tag success-tag">AWS ECS</span>
+              <span class="skill-tag success-tag">Terraform</span>
+              <span class="skill-tag success-tag">Kubernetes</span>
+            </div>
           </div>
         </div>
       </div>
 
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+
+const props = defineProps({
+  pipelineState: {
+    type: String,
+    default: null
+  },
+  atsScore: {
+    type: Number,
+    default: null
+  }
+});
 
 const viewport = ref(null);
 const tiltX = ref(0);
@@ -137,39 +163,97 @@ const tiltY = ref(0);
 const glowX = ref(0);
 const glowY = ref(0);
 
-// Reactive Parallax 3D mouse track hook
+// Fallback internal loop states if parent props are not passed
+const localPipelineState = ref('original'); // 'original' | 'parsing' | 'mapping' | 'success'
+const localAtsScore = ref(45);
+
+const pipelineState = computed(() => props.pipelineState !== null ? props.pipelineState : localPipelineState.value);
+const atsScore = computed(() => props.atsScore !== null ? props.atsScore : localAtsScore.value);
+
+let loopInterval = null;
+let scoreTimer = null;
+
+// Synced animation loop (running locally ONLY when component is decoupled/standalone)
+function startPipelineLoop() {
+  const cycleDuration = 9000; // 9 seconds cycles
+  
+  const runCycle = () => {
+    localPipelineState.value = 'original';
+    localAtsScore.value = 45;
+    
+    setTimeout(() => {
+      localPipelineState.value = 'parsing';
+      
+      setTimeout(() => {
+        localPipelineState.value = 'mapping';
+        
+        const startScore = 45;
+        const endScore = 98;
+        const steps = 30;
+        const stepDuration = 2000 / steps;
+        let currentStep = 0;
+        
+        if (scoreTimer) clearInterval(scoreTimer);
+        scoreTimer = setInterval(() => {
+          currentStep++;
+          if (currentStep >= steps) {
+            clearInterval(scoreTimer);
+            localAtsScore.value = endScore;
+          } else {
+            localAtsScore.value = Math.floor(startScore + (endScore - startScore) * (currentStep / steps));
+          }
+        }, stepDuration);
+        
+      }, 1500);
+
+      setTimeout(() => {
+        localPipelineState.value = 'success';
+        localAtsScore.value = 98;
+      }, 3500);
+      
+    }, 2500);
+  };
+
+  runCycle();
+  loopInterval = setInterval(runCycle, cycleDuration);
+}
+
+// 3D Parallax mouse tracker
 const handleMouseMove = (e) => {
   if (!viewport.value) return;
   const rect = viewport.value.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
   
-  // Normalize cursor positions between -1 and 1
   const normX = (x / rect.width) * 2 - 1;
   const normY = (y / rect.height) * 2 - 1;
   
-  // Dynamic rotate angles (max 10 degrees)
-  tiltX.value = Number((normX * 10).toFixed(2));
-  tiltY.value = Number((normY * -10).toFixed(2));
+  tiltX.value = Number((normX * 4).toFixed(2));
+  tiltY.value = Number((normY * -4).toFixed(2));
   
-  // Glow spotlight tracking coordinates
   glowX.value = x;
   glowY.value = y;
 };
 
-// Return to equilibrium on cursor leave
 const handleMouseLeave = () => {
   tiltX.value = 0;
   tiltY.value = 0;
 };
 
 onMounted(() => {
-  // Set default spotlight coordinates inside the viewport center
   if (viewport.value) {
     const rect = viewport.value.getBoundingClientRect();
     glowX.value = rect.width / 2;
     glowY.value = rect.height / 2;
   }
+  if (props.pipelineState === null) {
+    startPipelineLoop();
+  }
+});
+
+onUnmounted(() => {
+  if (loopInterval) clearInterval(loopInterval);
+  if (scoreTimer) clearInterval(scoreTimer);
 });
 </script>
 
@@ -186,222 +270,128 @@ onMounted(() => {
   cursor: default;
 }
 
-/* 1. Mouse-Tracking Spotlight Ambient Glow */
+/* Premium Spotlight mouse tracking glow */
 .spotlight-glow {
   position: absolute;
-  width: 360px;
-  height: 360px;
+  width: 400px;
+  height: 400px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(140, 132, 122, 0.12) 0%, rgba(234, 230, 220, 0) 70%);
   filter: blur(40px);
   z-index: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: left 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: left 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 2. INTRICATE GLOWING NEURAL NETWORK SVG GRAPH */
-.neural-network-svg {
-  position: absolute;
+/* 3D Parallax comparison canvas */
+.comparison-canvas {
   width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-.path-glow {
-  fill: none;
-  stroke: rgba(140, 132, 122, 0.25);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: draw-and-flow 8s infinite linear;
-}
-
-.p-route-1 { animation-delay: 0s; }
-.p-route-2 { animation-duration: 10s; animation-delay: -2s; }
-.p-route-3 { stroke: rgba(95, 107, 86, 0.4); stroke-width: 2; filter: url(#glow-line); animation-duration: 6s; }
-
-@keyframes draw-and-flow {
-  0% { stroke-dashoffset: 400; }
-  100% { stroke-dashoffset: 0; }
-}
-
-.node-circle {
-  fill: var(--colors-secondary);
-  opacity: 0.4;
-  animation: node-pulse 3s infinite ease-in-out;
-}
-
-.center-node {
-  fill: var(--success);
-  opacity: 0.8;
-  animation: center-node-pulse 2s infinite ease-in-out;
-}
-
-@keyframes node-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.4); opacity: 0.6; }
-}
-
-@keyframes center-node-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.7; box-shadow: 0 0 4px var(--success); }
-  50% { transform: scale(1.6); opacity: 1; }
-}
-
-/* 3. Floating Constellation Background Tags */
-.constellation-tag {
-  position: absolute;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.6;
-  animation: constellation-drift 10s infinite ease-in-out alternate;
-}
-
-.constellation-tag span {
-  font-family: var(--font-family);
-  font-size: 0.65rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 5px 12px;
-  border-radius: 100px;
-  background-color: var(--colors-surface);
-  border: 1px solid var(--border-light);
-  color: var(--colors-primary);
-  box-shadow: 0 4px 16px rgba(27, 25, 23, 0.02);
-}
-
-.skill-docker { top: 10%; left: -2%; animation-duration: 9s; animation-delay: 0s; }
-.skill-kube { top: 78%; left: -6%; animation-duration: 11s; animation-delay: -2s; }
-.skill-tf { top: 12%; right: -6%; animation-duration: 10s; animation-delay: -1.5s; }
-.skill-pg { top: 82%; right: 4%; animation-duration: 12s; animation-delay: -3.5s; }
-
-@keyframes constellation-drift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(8px, -12px) rotate(1deg); }
-  100% { transform: translate(-6px, 4px) rotate(-1deg); }
-}
-
-/* 4. Layered 3D Parallax Card Cluster */
-.card-cluster {
-  position: relative;
-  width: 100%;
-  max-width: 440px;
-  height: 380px;
-  z-index: 3;
+  max-width: 580px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  position: relative;
+  overflow: visible;
+  z-index: 3;
   transform-style: preserve-3d;
-  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: var(--spacing-md);
 }
 
-/* 3A. MAIN CV CARD */
-.main-cv-card {
-  position: absolute;
-  width: 320px;
-  height: 280px;
-  left: 10px;
-  top: 40px;
+/* Clean Resume Card Layout */
+.resume-card {
+  width: 48%;
+  height: 380px;
   background-color: #FFFFFF;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  box-shadow: 0 25px 60px rgba(27, 25, 23, 0.08);
-  overflow: hidden;
-  z-index: 4;
-  transform: translateZ(20px); /* 3D depth push */
-  animation: gentle-bob 6s ease-in-out infinite alternate;
+  box-shadow: 0 10px 30px rgba(27, 25, 23, 0.03);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px 20px;
+  box-sizing: border-box;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
 }
 
-@keyframes gentle-bob {
-  0% { transform: translateZ(20px) translateY(0); }
-  100% { transform: translateZ(20px) translateY(-8px); }
+.card-left {
+  background-color: #F8F5EE; /* Baseline premium warm cream */
+  border-color: rgba(27, 25, 23, 0.08);
 }
 
-/* ATS Translucent Sweep Light beam */
-.scan-beam {
+.card-right.success {
+  border-color: var(--success);
+  box-shadow: 0 12px 35px rgba(95, 107, 86, 0.08);
+}
+
+.card-badge {
   position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, 
-    rgba(95, 107, 86, 0) 0%, 
-    rgba(95, 107, 86, 0.7) 40%, 
-    rgba(95, 107, 86, 0.7) 60%, 
-    rgba(95, 107, 86, 0) 100%
-  );
-  box-shadow: 0 0 10px 1px rgba(95, 107, 86, 0.5);
-  z-index: 5;
-  animation: scan-sweep 3.5s linear infinite;
-  pointer-events: none;
+  top: -10px;
+  left: 20px;
+  font-family: var(--font-family);
+  font-size: 0.52rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background-color: var(--colors-primary);
+  color: var(--colors-surface);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  box-shadow: 0 2px 6px rgba(27, 25, 23, 0.08);
 }
 
-@keyframes scan-sweep {
-  0% { top: -2%; opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { top: 102%; opacity: 0; }
+.highlight-badge {
+  background-color: var(--colors-primary);
 }
 
-/* Document inside Main CV Card */
-.cv-page {
-  padding: 20px;
+.card-right.success .highlight-badge {
+  background-color: var(--success);
+}
+
+/* Inner CV Paper Styling */
+.cv-paper {
   display: flex;
   flex-direction: column;
   height: 100%;
-  box-sizing: border-box;
   justify-content: space-between;
-  text-align: left;
 }
 
 .cv-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatar-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: var(--colors-surface);
-  border: 1px solid var(--border-color);
-  color: var(--colors-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.profile-details {
-  display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
-.candidate-name {
-  font-size: 0.88rem;
-  font-weight: 600;
+.cv-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: var(--colors-primary);
-  line-height: 1.2;
+  line-height: 1.1;
+  margin: 0;
 }
 
-.candidate-title {
-  font-size: 0.68rem;
-  font-weight: 500;
+.cv-title {
+  font-family: var(--font-family);
+  font-size: 0.65rem;
+  font-weight: 600;
   color: var(--colors-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.cv-title.title-animated {
+  color: var(--success);
+  animation: fade-in-up 0.4s ease forwards;
 }
 
 .cv-divider {
   height: 1px;
-  background-color: var(--border-light);
-  margin: 4px 0;
+  background-color: rgba(27, 25, 23, 0.06);
+  margin: 10px 0;
 }
 
 .cv-section {
@@ -410,272 +400,224 @@ onMounted(() => {
   gap: 4px;
 }
 
-.section-title {
-  font-size: 0.6rem;
-  font-weight: 600;
+.section-lbl {
+  font-family: var(--font-family);
+  font-size: 0.52rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--colors-primary);
 }
 
-.section-text {
-  font-size: 0.68rem;
+.section-txt {
+  font-family: var(--font-family);
+  font-size: 0.65rem;
   color: var(--colors-secondary);
   line-height: 1.45;
   font-weight: 300;
+  margin: 0;
 }
 
-.keyword-highlight {
+.cv-highlight {
   color: var(--colors-primary);
   font-weight: 600;
-  border-bottom: 1.5px dashed var(--success);
+  background-color: rgba(95, 107, 86, 0.08);
+  border-bottom: 1px dashed var(--success);
+  padding: 0 1px;
 }
 
-.skills-row {
+/* Skills section tags */
+.skills-wrap {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
-.skill-pill {
-  font-size: 0.58rem;
-  font-weight: 500;
-  color: var(--colors-primary);
-  background-color: var(--colors-surface);
-  border: 1px solid var(--colors-secondary);
-  padding: 1px 6px;
-  border-radius: 2px;
-}
-
-/* 3B. ATS SCORE BADGE */
-.ats-badge-wrapper {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 68px;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transform: translateZ(40px); /* Extruded 3D depth */
-}
-
-.ats-chip {
-  position: relative;
-  background-color: var(--colors-surface);
-  border: 1px solid var(--colors-primary);
-  border-radius: 50%;
-  width: 52px;
-  height: 52px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(27, 25, 23, 0.1);
-  z-index: 2;
-}
-
-.ats-number {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--colors-primary);
-  line-height: 1;
-  margin-bottom: 2px;
-}
-
-.ats-label {
-  font-size: 0.42rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--success);
-  letter-spacing: 0.05em;
-}
-
-/* Green Ripple Expanding Pulse Rings */
-.ripple-ring {
-  position: absolute;
-  border: 1.5px solid var(--success);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0;
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  bottom: 6px;
-}
-
-.r1 {
-  animation: ripple-expand 2.6s infinite ease-out;
-}
-
-.r2 {
-  animation: ripple-expand 2.6s infinite ease-out;
-  animation-delay: 1.3s;
-}
-
-@keyframes ripple-expand {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.75;
-  }
-  100% {
-    transform: scale(2.2);
-    opacity: 0;
-  }
-}
-
-/* 3C. KEYWORD EXTRACTION OVERLAY (Semi-transparent dark glass panel) */
-.keyword-overlay-panel {
-  position: absolute;
-  width: 170px;
-  height: 190px;
-  right: 15px;
-  bottom: 30px;
-  background-color: rgba(27, 25, 23, 0.93); /* Deep Charcoal Glassmorphism */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(140, 132, 122, 0.25);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 15px 35px rgba(27, 25, 23, 0.2);
-  padding: 14px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  z-index: 5;
-  transform: translateZ(30px); /* 3D perspective push */
-  animation: overlay-bob 6s ease-in-out infinite alternate;
-  animation-delay: -1s;
-}
-
-@keyframes overlay-bob {
-  0% { transform: translateZ(30px) translateY(0); }
-  100% { transform: translateZ(30px) translateY(-5px); }
-}
-
-.overlay-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid rgba(140, 132, 122, 0.15);
-  padding-bottom: 6px;
-}
-
-.overlay-icon {
-  font-size: 11px;
-  color: var(--colors-neutral);
-  animation: pulse-gear 2.5s infinite ease-in-out;
-}
-
-@keyframes pulse-gear {
-  0%, 100% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.15) rotate(45deg); opacity: 1; }
-}
-
-.overlay-title {
-  color: var(--colors-secondary);
-  font-size: 0.58rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.extracted-tags-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-  justify-content: center;
-}
-
-.tag-outline {
+.skill-tag {
   font-family: var(--font-family);
-  font-size: 0.58rem;
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: var(--colors-secondary);
+  background-color: var(--colors-surface);
+  border: 1px solid rgba(27, 25, 23, 0.08);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+}
+
+.card-left .skill-tag {
+  background-color: rgba(27, 25, 23, 0.03);
+}
+
+.success-tag {
+  color: #2F382A !important;
+  background-color: rgba(95, 107, 86, 0.08) !important;
+  border: 1px solid rgba(95, 107, 86, 0.3) !important;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--colors-neutral);
-  border: 1px solid rgba(236, 230, 217, 0.2);
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
+}
+
+/* Micro-animations & sweeps */
+.animation-reveal {
+  animation: fade-in-up 0.5s ease forwards;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Center Sweep Laser */
+.card-scan-laser {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: var(--radius-lg);
+}
+
+.card-scan-laser.active {
+  opacity: 1;
+}
+
+.card-scan-laser::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(95, 107, 86, 0), rgba(95, 107, 86, 0.7), rgba(95, 107, 86, 0));
+  box-shadow: 0 0 10px 2px var(--success);
+  animation: vertical-laser-sweep 2.2s infinite linear;
+}
+
+@keyframes vertical-laser-sweep {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* Shimmer / loading indicators on Right Card */
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.loading-wrap.flex-row {
+  flex-direction: row;
+  gap: 6px;
+}
+
+.loading-line {
+  height: 6px;
+  background: linear-gradient(90deg, #F0EAE1 25%, #E5DCCE 50%, #F0EAE1 75%);
+  background-size: 200% 100%;
+  animation: shimmer-pulse 1.4s infinite;
+  border-radius: var(--radius-xs);
+  display: block;
+}
+
+.loading-pill {
+  width: 32px;
+  height: 12px;
+  background: linear-gradient(90deg, #F0EAE1 25%, #E5DCCE 50%, #F0EAE1 75%);
+  background-size: 200% 100%;
+  animation: shimmer-pulse 1.4s infinite;
+  border-radius: var(--radius-xs);
+}
+
+.w-100 { width: 100%; }
+.w-85 { width: 85%; }
+.w-55 { width: 55%; }
+
+@keyframes shimmer-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Simple Circular Score Overlay Badge */
+.ats-match-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 48px;
+  height: 48px;
+  background-color: var(--colors-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(27, 25, 23, 0.05);
   display: flex;
   align-items: center;
-  gap: 6px;
-  opacity: 0;
-  animation: fade-in-up-loop 7.5s infinite ease-in-out;
+  justify-content: center;
+  z-index: 5;
+  transition: all 0.4s ease;
 }
 
-.tag-outline .dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: var(--success);
-  box-shadow: 0 0 6px 1.5px var(--success);
+.ats-match-badge.success {
+  border-color: var(--success);
+  box-shadow: 0 4px 12px rgba(95, 107, 86, 0.1);
 }
 
-/* Staggered Delay parameters for fadeInUp tag highlights */
-.t1 { animation-delay: 0.6s; }
-.t2 { animation-delay: 1.8s; }
-.t3 { animation-delay: 3s; }
-
-@keyframes fade-in-up-loop {
-  0%, 10% {
-    opacity: 0;
-    transform: translateY(8px);
-    border-color: rgba(236, 230, 217, 0.2);
-  }
-  20%, 80% {
-    opacity: 1;
-    transform: translateY(0);
-    border-color: rgba(95, 107, 86, 0.4);
-  }
-  90%, 100% {
-    opacity: 0;
-    transform: translateY(-4px);
-    border-color: rgba(236, 230, 217, 0.2);
-  }
+.score-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-/* Responsive viewports scaling */
+.score-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.score-num {
+  font-family: var(--font-family);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--colors-primary);
+}
+
+.score-lbl {
+  font-size: 0.22rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--colors-secondary);
+  margin-top: 1px;
+}
+
+.ats-match-badge.success .score-num {
+  color: var(--success);
+}
+
+/* Tablet & Mobile constraints */
 @media (max-width: 900px) {
   .viewport-cluster-container {
-    height: 380px;
+    height: auto;
+    padding: var(--spacing-sm) 0;
   }
 
-  .card-cluster {
-    max-width: 96%;
-    height: 320px;
+  .comparison-canvas {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: var(--spacing-md);
   }
 
-  .main-cv-card {
-    width: 270px;
-    height: 240px;
-    left: 0;
-    top: 30px;
+  .resume-card {
+    width: 100%;
+    height: 350px;
   }
 
-  .cv-page {
-    padding: 14px;
-  }
-
-  .candidate-name { font-size: 0.78rem; }
-  .candidate-title { font-size: 0.6rem; }
-  .section-text { font-size: 0.6rem; }
-  .skill-pill { font-size: 0.52rem; }
-
-  .ats-badge-wrapper {
-    top: -16px;
-    right: -16px;
-  }
-
-  .keyword-overlay-panel {
-    width: 140px;
-    height: 160px;
-    right: 5px;
-    bottom: 20px;
-  }
-
-  .constellation-tag, .neural-network-svg {
-    display: none; /* Clean up layout on mobile devices */
+  .scan-sweep-laser {
+    display: none; /* remove laser on stacked layout for clean view */
   }
 }
 </style>

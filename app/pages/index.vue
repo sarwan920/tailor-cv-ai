@@ -17,9 +17,11 @@
       <div class="hero-grid">
         <!-- Left Column: Copy & Actions -->
         <div class="hero-content-left">
-          <!-- Tiny floating magnetic AI tags -->
-          <div class="floating-ai-tag ft-left-1"><span>● Fact-Faithful</span></div>
-          <div class="floating-ai-tag ft-left-2"><span>● ATS Optimized</span></div>
+          <!-- Real-Time Activity Trust Badge -->
+          <div class="system-activity-badge">
+            <span class="activity-pulse-dot"></span>
+            <span class="activity-label">Active adaptations today: <strong>1,492</strong></span>
+          </div>
 
           <div class="hero-pill">
             <span class="pill-dot"></span>
@@ -29,7 +31,7 @@
           <h1 class="display-title display-title-futuristic">
             <span class="reveal-line rl-1">Refine your</span>
             <span class="reveal-line rl-2">professional</span>
-            <span class="reveal-line rl-3">narrative.</span>
+            <span class="reveal-line rl-3"><span class="accent-serif">narrative.</span></span>
           </h1>
           
           <p class="hero-subtitle subtitle-fade-up">
@@ -38,18 +40,88 @@
           </p>
           
           <div class="hero-actions actions-fade-up">
-            <NuxtLink to="/resume" class="btn btn-primary btn-liquid btn-lg flex-btn">
+            <BaseButton to="/resume" variant="primary" size="lg" liquid class="flex-btn">
               ENTER WORKSPACE &rarr;
-            </NuxtLink>
-            <a href="#features" class="btn btn-secondary btn-liquid btn-lg flex-btn">
+            </BaseButton>
+            <BaseButton to="#features" variant="secondary" size="lg" liquid class="flex-btn">
               EXPLORE FEATURES
-            </a>
+            </BaseButton>
           </div>
         </div>
         
         <!-- Right Column: Interactive Parallax 3D Mockup -->
         <div class="hero-graphic-right">
-          <ResumePipelineAnim />
+          <ResumePipelineAnim :pipelineState="pipelineState" :atsScore="atsScore" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Seamless Infinite Logo Marquee Section -->
+    <section class="ats-marquee-section no-print">
+      <div class="section-container">
+        <div class="marquee-label">TRUSTED COMPATIBILITY WITH 10+ CORPORATE ATS PARSING ENGINES</div>
+        <div class="marquee-viewport">
+          <div class="marquee-track">
+            <!-- First set -->
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-workday">cloud_queue</span>
+              <span class="logo-text">Workday</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-greenhouse">park</span>
+              <span class="logo-text">Greenhouse</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-lever">tune</span>
+              <span class="logo-text">Lever</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-taleo">blur_on</span>
+              <span class="logo-text">Oracle Taleo</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-icims">filter_tilt_shift</span>
+              <span class="logo-text">iCIMS</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-bamboohr">spa</span>
+              <span class="logo-text">BambooHR</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-smartrecruiters">auto_awesome_mosaic</span>
+              <span class="logo-text">SmartRecruiters</span>
+            </div>
+            
+            <!-- Second duplicated set for seamless looping -->
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-workday">cloud_queue</span>
+              <span class="logo-text">Workday</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-greenhouse">park</span>
+              <span class="logo-text">Greenhouse</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-lever">tune</span>
+              <span class="logo-text">Lever</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-taleo">blur_on</span>
+              <span class="logo-text">Oracle Taleo</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-icims">filter_tilt_shift</span>
+              <span class="logo-text">iCIMS</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-bamboohr">spa</span>
+              <span class="logo-text">BambooHR</span>
+            </div>
+            <div class="marquee-logo-card">
+              <span class="material-icons logo-icon text-smartrecruiters">auto_awesome_mosaic</span>
+              <span class="logo-text">SmartRecruiters</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -184,14 +256,13 @@
                 Standard PDF Export
               </li>
             </ul>
-            <NuxtLink to="/resume" class="btn btn-secondary btn-liquid w-100 mt-24">
+            <BaseButton to="/resume" variant="secondary" liquid class="w-100 mt-24">
               Get Started
-            </NuxtLink>
+            </BaseButton>
           </div>
 
-          <!-- Recommended Pro Plan (Single Tertiary Highlight Accent Button) -->
           <div class="pricing-card glass-panel popular-card premium-card-3d scroll-reveal reveal-delay-1">
-            <div class="pricing-badge extrude-child">Recommended</div>
+            <div class="pricing-badge">Recommended</div>
             <div class="pricing-header extrude-child">
               <span class="plan-name">Matte Studio Pro</span>
               <span class="plan-price">$9<span class="price-cycle">/mo</span></span>
@@ -219,9 +290,9 @@
                 Priority Adaptation Log History
               </li>
             </ul>
-            <NuxtLink to="/resume" class="btn btn-primary btn-liquid w-100 mt-24">
+            <BaseButton to="/resume" variant="primary" liquid class="w-100 mt-24">
               Unlock Studio Pro
-            </NuxtLink>
+            </BaseButton>
           </div>
 
           <!-- Enterprise Plan -->
@@ -249,9 +320,9 @@
                 Dedicated Support
               </li>
             </ul>
-            <a href="mailto:support@cvtailorai.com" class="btn btn-secondary btn-liquid w-100 mt-24">
+            <BaseButton to="mailto:support@cvtailorai.com" variant="secondary" liquid class="w-100 mt-24">
               Contact Sales
-            </a>
+            </BaseButton>
           </div>
         </div>
       </div>
@@ -260,11 +331,67 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 definePageMeta({
   layout: 'default'
 });
+
+const pipelineState = ref('original'); // 'original' | 'parsing' | 'mapping' | 'success'
+const atsScore = ref(45);
+
+let loopInterval = null;
+let scoreTimer = null;
+
+// Synced animation loop
+function startPipelineLoop() {
+  const cycleDuration = 9000; // 9 seconds cycles
+  
+  const runCycle = () => {
+    // 1. Initial State (0s - 2.5s)
+    pipelineState.value = 'original';
+    atsScore.value = 45;
+    
+    // 2. Start Parsing (at 2.5s)
+    setTimeout(() => {
+      pipelineState.value = 'parsing';
+      
+      // 3. Start Semantic Mapping (at 4s)
+      setTimeout(() => {
+        pipelineState.value = 'mapping';
+        
+        // Count up score smoothly from 45% to 98%
+        const startScore = 45;
+        const endScore = 98;
+        const steps = 30;
+        const stepDuration = 2000 / steps;
+        let currentStep = 0;
+        
+        if (scoreTimer) clearInterval(scoreTimer);
+        scoreTimer = setInterval(() => {
+          currentStep++;
+          if (currentStep >= steps) {
+            clearInterval(scoreTimer);
+            atsScore.value = endScore;
+          } else {
+            atsScore.value = Math.floor(startScore + (endScore - startScore) * (currentStep / steps));
+          }
+        }, stepDuration);
+        
+      }, 1500);
+
+      // 4. Adaptation Success (at 6s)
+      setTimeout(() => {
+        pipelineState.value = 'success';
+        atsScore.value = 98;
+      }, 3500);
+      
+    }, 2500);
+  };
+
+  runCycle();
+  loopInterval = setInterval(runCycle, cycleDuration);
+}
 
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
@@ -281,6 +408,13 @@ onMounted(() => {
   document.querySelectorAll('.scroll-reveal').forEach(el => {
     observer.observe(el);
   });
+
+  startPipelineLoop();
+});
+
+onUnmounted(() => {
+  if (loopInterval) clearInterval(loopInterval);
+  if (scoreTimer) clearInterval(scoreTimer);
 });
 </script>
 
@@ -302,6 +436,25 @@ onMounted(() => {
 .hero-section {
   padding: 80px 0 40px;
   background-color: var(--colors-neutral);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(27, 25, 23, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 25, 23, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 95%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 95%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .hero-grid {
@@ -672,7 +825,7 @@ onMounted(() => {
   position: absolute;
   top: -12px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(1px);
   background-color: var(--colors-primary);
   color: var(--colors-on-primary);
   font-family: var(--font-family);
@@ -682,6 +835,12 @@ onMounted(() => {
   letter-spacing: 0.2em;
   padding: 4px 12px;
   border-radius: 100px;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.3s ease;
+  z-index: 10;
+}
+
+.premium-card-3d:hover .pricing-badge {
+  transform: translateX(-50%) translateZ(25px);
 }
 
 .pricing-header {
@@ -783,6 +942,8 @@ onMounted(() => {
     margin: 0 auto;
   }
 
+
+
   .metrics-grid, 
   .features-grid, 
   .workflow-timeline, 
@@ -812,7 +973,7 @@ onMounted(() => {
 
 .scroll-reveal.reveal-active {
   opacity: 1;
-  clip-path: inset(0% 0 0% 0);
+  clip-path: inset(-20px 0 -20px 0);
   transform: scale(1) translateY(0);
 }
 
@@ -914,4 +1075,154 @@ onMounted(() => {
   100% { background-position: -8px 0px; }
 }
 
+/* Hero section luxury refinements */
+.system-activity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(95, 107, 86, 0.08);
+  border: 1px solid rgba(95, 107, 86, 0.2);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 18px;
+  animation: fade-in-scale 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes fade-in-scale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.activity-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--success);
+  box-shadow: 0 0 6px 1.5px var(--success);
+  animation: pulse-dot-ping 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot-ping {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.6); opacity: 1; }
+}
+
+.activity-label {
+  font-family: var(--font-family);
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--colors-primary);
+}
+
+.accent-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Seamless Marquee Styles */
+.ats-marquee-section {
+  width: 100%;
+  padding: 32px 0 24px;
+  background-color: var(--colors-surface);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden;
+  text-align: center;
+}
+
+.marquee-label {
+  font-family: var(--font-family);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--colors-secondary);
+  margin-bottom: 24px;
+}
+
+.marquee-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* Faded mask overlays starting and ending */
+.marquee-viewport::before,
+.marquee-viewport::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.marquee-viewport::before {
+  left: 0;
+  background: linear-gradient(to right, var(--colors-surface), transparent);
+}
+
+.marquee-viewport::after {
+  right: 0;
+  background: linear-gradient(to left, var(--colors-surface), transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 40px;
+  width: max-content;
+  animation: marquee-scroll 24s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-logo-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--colors-neutral);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 8px 20px;
+  box-shadow: 0 4px 12px rgba(27, 25, 23, 0.01);
+  transition: all var(--transition-fast);
+}
+
+.marquee-logo-card:hover {
+  border-color: var(--colors-primary);
+  transform: translateY(-1px);
+}
+
+.logo-icon {
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.logo-text {
+  font-family: var(--font-family);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--colors-primary);
+  text-transform: uppercase;
+}
+
+/* Minimal specific icon color shifts */
+.text-workday { color: #005CB9; }
+.text-greenhouse { color: var(--success); }
+.text-lever { color: var(--colors-primary); }
+.text-taleo { color: #E84D2A; }
+.text-icims { color: #007BB6; }
+.text-bamboohr { color: #84BD00; }
+.text-smartrecruiters { color: #00A651; }
 </style>
