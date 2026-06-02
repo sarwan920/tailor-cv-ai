@@ -3,14 +3,17 @@ import path from 'path';
 
 let prisma: PrismaClient;
 
-if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
+const databaseUrl = process.env.DATABASE_URL || '';
+const isLibSQL = databaseUrl.startsWith('libsql://') || databaseUrl.startsWith('https://') || databaseUrl.startsWith('http://');
+
+if (isLibSQL) {
   // Production / Turso Cloud
   const { createClient } = require('@libsql/client');
   const { PrismaLibSQL } = require('@prisma/adapter-libsql');
 
   const libsql = createClient({
-    url: process.env.TURSO_DATABASE_URL,
-    authToken: process.env.TURSO_AUTH_TOKEN,
+    url: databaseUrl,
+    authToken: process.env.TURSO_AUTH_TOKEN || process.env.DATABASE_AUTH_TOKEN || '',
   });
 
   const adapter = new PrismaLibSQL(libsql);
