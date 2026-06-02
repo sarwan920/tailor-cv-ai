@@ -1,20 +1,20 @@
 <template>
-  <div class="step-layout fade-in">
+  <div class="flex flex-col gap-6 fade-in">
     <div class="step-instruction">
-      <h2>
-        <span class="material-icons mr-8 text-stone align-bottom">folder_open</span>
+      <h2 class="text-[1.5rem] font-light text-primary">
+        <span class="material-icons mr-2 text-secondary align-bottom">folder_open</span>
         Master Resume Editor
       </h2>
-      <p class="instruction-desc">This is your baseline resume experience. AI will reference this text to re-write and highlight key competencies—nothing is fabricated or invented.</p>
+      <p class="text-[0.88rem] text-secondary mt-1">This is your baseline resume experience. AI will reference this text to re-write and highlight key competencies—nothing is fabricated or invented.</p>
     </div>
 
-    <div class="split-workspace-columns">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[68vh]">
       <!-- Write CV -->
-      <div class="workspace-pane glass-panel">
-        <div class="pane-action-header">
-          <span class="editor-lbl">Markdown / Plain Text</span>
-          <div class="editor-header-actions">
-            <BaseButton @click="triggerFileInput" variant="secondary" size="xs" class="flex-btn mr-6">
+      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+        <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+          <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Markdown / Plain Text</span>
+          <div class="flex items-center">
+            <BaseButton @click="triggerFileInput" variant="secondary" size="xs" class="flex-btn mr-1.5">
               <span class="material-icons" style="font-size: 13px;">upload_file</span>
               Upload File
             </BaseButton>
@@ -34,25 +34,25 @@
         <textarea 
           v-model="masterCv.content" 
           @input="onContentChange"
-          class="workspace-editor-textarea flex-editor"
-          :class="{ 'validation-error': showValidationError && !masterCv.content.trim() }"
+          class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.9rem] p-5 leading-relaxed resize-none outline-none min-h-[240px] lg:min-h-full"
+          :class="showValidationError && !masterCv.content.trim() ? 'border border-danger bg-danger/5' : ''"
           placeholder="Paste or write your master CV here..."
         ></textarea>
       </div>
 
       <!-- Preview CV -->
-      <div class="workspace-pane glass-panel">
-        <div class="pane-action-header">
-          <span class="editor-lbl">Live CV Preview</span>
-          <span class="stat-word-badge">{{ getWordCount(masterCv.content) }} words</span>
+      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+        <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+          <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Live CV Preview</span>
+          <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
         </div>
-        <div class="pane-preview-body overflow-y-scroll">
+        <div class="flex-1 p-4 bg-neutral overflow-y-auto h-[320px] lg:h-auto">
           <div class="markdown-preview dark-preview" v-html="renderedMaster"></div>
         </div>
       </div>
     </div>
 
-    <div class="step-navigation-footer">
+    <div class="flex justify-between items-center mt-2.5 border-t border-secondary/25 pt-8">
       <div></div> <!-- Spacer -->
       <!-- Highlight Interactive CTA -->
       <BaseButton @click="handleNextClick" variant="primary" size="lg" class="flex-btn">
@@ -331,139 +331,3 @@ Passion-driven and result-oriented Senior Fullstack Engineer with 6+ years of ex
 }
 </script>
 
-<style scoped>
-.step-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.step-instruction h2 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-}
-
-.title-icon {
-  font-size: 1.7rem;
-  color: var(--colors-secondary);
-}
-
-.instruction-desc {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  margin-top: 4px;
-}
-
-.split-workspace-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  height: 68vh;
-}
-
-.workspace-pane {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  padding: 0 !important;
-}
-
-.pane-action-header {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border-light);
-  background-color: var(--colors-surface);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.editor-lbl {
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-}
-
-.stat-word-badge {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  color: var(--colors-secondary);
-}
-
-.workspace-editor-textarea {
-  width: 100%;
-  flex: 1;
-  background-color: transparent;
-  border: none;
-  color: var(--colors-primary);
-  font-family: monospace;
-  font-size: 0.9rem;
-  padding: 20px;
-  line-height: 1.6;
-  resize: none;
-  outline: none;
-}
-
-.flex-editor {
-  min-height: 100%;
-}
-
-.pane-preview-body {
-  flex: 1;
-  padding: var(--spacing-md);
-  background-color: var(--colors-neutral);
-}
-
-.overflow-y-scroll {
-  overflow-y: auto;
-}
-
-.step-navigation-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  border-top: 1px solid var(--border-light);
-  padding-top: var(--spacing-lg);
-}
-
-.flex-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-@media (max-width: 900px) {
-  .split-workspace-columns {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  
-  .workspace-editor-textarea {
-    min-height: 240px;
-    height: auto;
-  }
-  
-  .pane-preview-body {
-    height: 320px;
-  }
-}
-
-.editor-header-actions {
-  display: flex;
-  align-items: center;
-}
-
-.mr-6 {
-  margin-right: 6px;
-}
-
-.validation-error {
-  border: 1px solid var(--danger) !important;
-  background-color: rgba(150, 75, 67, 0.03) !important;
-}
-</style>

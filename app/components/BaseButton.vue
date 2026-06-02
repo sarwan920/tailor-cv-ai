@@ -3,14 +3,14 @@
     :is="componentType"
     v-bind="componentProps"
     :class="[
-      'btn',
+      'inline-flex items-center justify-center gap-2 font-sans font-normal text-[0.72rem] uppercase tracking-[0.24em] rounded border transition-all duration-150 select-none cursor-pointer disabled:cursor-not-allowed',
       variantClass,
       sizeClass,
-      { 'btn-liquid': liquid, 'is-loading': loading }
+      { 'btn-liquid': liquid, 'opacity-70': loading }
     ]"
     :disabled="componentType === 'button' ? (disabled || loading ? true : null) : null"
   >
-    <span v-if="loading" class="btn-loader-spinner"></span>
+    <span v-if="loading" class="w-3.5 h-3.5 border-2 border-current border-b-transparent rounded-full inline-block animate-spin"></span>
     <slot v-else />
   </component>
 </template>
@@ -78,32 +78,28 @@ const componentProps = computed(() => {
 });
 
 const variantClass = computed(() => {
-  return props.variant ? `btn-${props.variant}` : '';
+  switch (props.variant) {
+    case 'primary':
+      return 'bg-tertiary text-on-primary border-tertiary hover:bg-primary hover:border-primary disabled:bg-secondary disabled:border-secondary disabled:opacity-50 active:translate-y-[1px]';
+    case 'danger':
+      return 'bg-transparent text-danger border-danger hover:bg-danger hover:text-on-primary';
+    case 'secondary':
+    default:
+      return 'bg-transparent text-primary border-secondary hover:bg-surface hover:border-primary disabled:opacity-40';
+  }
 });
 
 const sizeClass = computed(() => {
-  return props.size && props.size !== 'md' ? `btn-${props.size}` : '';
+  switch (props.size) {
+    case 'xs':
+      return 'px-3.5 py-2 text-[0.68rem] tracking-[0.18em] rounded-sm';
+    case 'sm':
+      return 'px-4 py-2.5 text-[0.7rem] tracking-[0.2em] rounded-sm';
+    case 'lg':
+      return 'px-7 py-3.5 text-[0.76rem] tracking-[0.24em] rounded-lg';
+    case 'md':
+    default:
+      return 'px-5 py-3 rounded-md';
+  }
 });
 </script>
-
-<style scoped>
-.btn-loader-spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid currentColor;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  animation: rotation 0.8s linear infinite;
-}
-
-.is-loading {
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-@keyframes rotation {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>

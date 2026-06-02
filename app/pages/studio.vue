@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- Empty State if no tailored CV has been generated/loaded yet -->
-    <div v-if="!tailoredResult" class="empty-studio-container fade-in">
-      <div class="empty-studio-card glass-panel text-center">
-        <span class="material-icons empty-icon">analytics</span>
-        <h3>Tailoring Studio</h3>
-        <p>No job-specific adaptations have been loaded yet. Head over to the "Tailor a Job" workspace to optimize your resume for your target LinkedIn requisition.</p>
-        <BaseButton @click="routeToTailor" variant="primary" class="mt-16 flex-btn mx-auto">
+    <div v-if="!tailoredResult" class="flex items-center justify-center min-h-[70vh] fade-in">
+      <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-secondary/25 rounded-lg">
+        <span class="material-icons text-[3.5rem] text-secondary mb-5">analytics</span>
+        <h3 class="text-[1.5rem] font-light mb-3">Tailoring Studio</h3>
+        <p class="text-[0.88rem] text-secondary leading-relaxed">No job-specific adaptations have been loaded yet. Head over to the "Tailor a Job" workspace to optimize your resume for your target LinkedIn requisition.</p>
+        <BaseButton @click="routeToTailor" variant="primary" class="mt-4 flex-btn mx-auto">
           <span class="material-icons">auto_awesome</span>
           Go to Tailoring Workspace
         </BaseButton>
@@ -14,14 +14,14 @@
     </div>
 
     <!-- Active Optimization Studio Workspace -->
-    <div v-else class="step-layout fade-in no-print">
-      <div class="step-instruction flex-header-row">
+    <div v-else class="flex flex-col gap-6 fade-in no-print">
+      <div class="flex justify-between items-center">
         <div>
-          <h2>
-            <span class="material-icons mr-8 text-stone align-bottom">analytics</span>
+          <h2 class="text-[1.5rem] font-light text-primary">
+            <span class="material-icons mr-2 text-secondary align-bottom">analytics</span>
             AI Tailoring Studio
           </h2>
-          <p class="instruction-desc">Compare original versus tailored CV, view the optimization report, and export your polished resume.</p>
+          <p class="text-[0.88rem] text-secondary mt-1">Compare original versus tailored CV, view the optimization report, and export your polished resume.</p>
         </div>
         <!-- Secondary Action Button -->
         <BaseButton @click="resetStudio" variant="secondary" size="sm" class="flex-btn">
@@ -31,40 +31,40 @@
       </div>
 
       <!-- ATS Scorecard Dashboard Widget -->
-      <section class="ats-scorecard-widget glass-panel">
-        <div class="scorecard-header-row">
-          <div class="scorecard-lbl">
-            <span class="score-glow-pulse"></span>
-            <h4>ATS Compatibility Report</h4>
+      <section class="p-4 md:py-4 md:px-8 bg-surface border border-secondary/25 rounded-lg">
+        <div class="flex justify-between items-center border-b border-secondary/25 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-success"></span>
+            <h4 class="text-[0.72rem] font-medium uppercase tracking-[0.24em] text-secondary">ATS Compatibility Report</h4>
           </div>
-          <span class="ats-match-tag">96% ATS MATCH RATING</span>
+          <span class="bg-transparent border border-success text-success font-sans font-medium text-[0.68rem] tracking-[0.18em] py-1 px-2.5 rounded-sm">96% ATS MATCH RATING</span>
         </div>
 
-        <div class="scorecard-body-grid">
-          <div class="score-analysis-box border-right-pane">
-            <h5>Matched Competencies</h5>
-            <div class="competencies-tags-wrap">
-              <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="competency-tag">
-                <span class="material-icons mr-4" style="font-size: 13px;">check_circle</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="border-r-0 md:border-r border-secondary/25 pr-0 md:pr-6">
+            <h5 class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Matched Competencies</h5>
+            <div class="flex flex-wrap gap-1.5">
+              <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="bg-neutral border border-secondary/25 text-primary text-[0.72rem] font-normal py-1 px-2 rounded-sm inline-flex items-center">
+                <span class="material-icons mr-1" style="font-size: 13px;">check_circle</span>
                 {{ skill }}
               </span>
             </div>
           </div>
 
-          <div class="score-analysis-box border-right-pane">
-            <h5>Integrated Keywords</h5>
-            <div class="competencies-tags-wrap">
-              <span v-for="kw in tailoredAnalysis.keywordsHighlighted" :key="kw" class="keyword-tag">
+          <div class="border-r-0 md:border-r border-secondary/25 pr-0 md:pr-6">
+            <h5 class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Integrated Keywords</h5>
+            <div class="flex flex-wrap gap-1.5">
+              <span v-for="kw in tailoredAnalysis.keywordsHighlighted" :key="kw" class="bg-neutral border border-secondary/25 text-primary font-mono text-[0.7rem] py-0.5 px-1.5 rounded-sm">
                 {{ kw }}
               </span>
             </div>
           </div>
 
-          <div class="score-analysis-box">
-            <h5>Revisions Summary</h5>
-            <ul class="revisions-list">
-              <li v-for="adj in tailoredAnalysis.adjustmentsMade" :key="adj">
-                <span class="material-icons mr-6 text-stone" style="font-size: 11px;">arrow_right</span>
+          <div>
+            <h5 class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Revisions Summary</h5>
+            <ul class="pl-0 list-none flex flex-col gap-1.5">
+              <li v-for="adj in tailoredAnalysis.adjustmentsMade" :key="adj" class="text-[0.78rem] text-primary leading-normal flex items-start">
+                <span class="material-icons mr-1.5 text-secondary" style="font-size: 11px; margin-top: 3px;">arrow_right</span>
                 {{ adj }}
               </li>
             </ul>
@@ -73,62 +73,62 @@
       </section>
 
       <!-- Comparative Panes -->
-      <div class="split-workspace-columns editor-workspace-height mt-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[52vh] mt-3">
         <!-- Left: Original Referencing -->
-        <div class="workspace-pane glass-panel">
-          <div class="pane-action-header">
-            <span class="editor-lbl">Original Master CV</span>
-            <span class="stat-word-badge">{{ getWordCount(masterCv.content) }} words</span>
+        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+          <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+            <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Original Master CV</span>
+            <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
           </div>
-          <div class="pane-preview-body overflow-y-scroll">
+          <div class="flex-1 p-4 bg-neutral overflow-y-auto">
             <div class="markdown-preview dark-preview" v-html="renderedMaster"></div>
           </div>
         </div>
 
         <!-- Right: Editable Tailored Output -->
-        <div class="workspace-pane glass-panel">
-          <div class="pane-action-header flex-between">
-            <div class="workspace-tabs-row">
+        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+          <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+            <div class="flex bg-primary/5 p-0.5 rounded-md border border-secondary/25 items-center">
               <button 
                 @click="setTab('preview')" 
-                class="workspace-tab-trigger" 
+                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-3 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)]" 
                 :class="{ active: rightTab === 'preview' }"
               >Preview</button>
               <button 
                 @click="setTab('diff')" 
-                class="workspace-tab-trigger" 
+                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-3 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)]" 
                 :class="{ active: rightTab === 'diff' }"
               >GitHub Diff</button>
               <button 
                 @click="setTab('edit')" 
-                class="workspace-tab-trigger" 
+                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-3 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)]" 
                 :class="{ active: rightTab === 'edit' }"
               >Edit Markdown</button>
             </div>
 
-            <div class="workspace-actions-row">
-              <span class="stat-word-badge mr-12 no-mobile-badge">{{ getWordCount(tailoredContent) }} words</span>
-              <BaseButton @click="copyToClipboard(tailoredContent)" variant="secondary" size="sm" class="icon-only-btn mr-6" title="Copy Markdown">
+            <div class="flex items-center">
+              <span class="font-sans text-[0.72rem] text-secondary mr-3 hidden sm:inline">{{ getWordCount(tailoredContent) }} words</span>
+              <BaseButton @click="copyToClipboard(tailoredContent)" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! mr-1.5" title="Copy Markdown">
                 <span class="material-icons" style="font-size: 16px;">content_copy</span>
               </BaseButton>
               <!-- This is the single interactive highlight CTA of this screen -->
-              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="icon-only-btn" title="PDF/Print">
+              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md!" title="PDF/Print">
                 <span class="material-icons" style="font-size: 16px;">print</span>
               </BaseButton>
             </div>
           </div>
           
-          <div class="pane-preview-body overflow-y-scroll pad-0">
+          <div class="flex-1 p-0 bg-neutral overflow-hidden flex flex-col">
             <!-- Live Preview -->
-            <div v-show="rightTab === 'preview'" class="markdown-preview-pad">
+            <div v-show="rightTab === 'preview'" class="h-full overflow-y-auto p-4 bg-neutral">
               <div class="markdown-preview light-theme-preview" v-html="renderedTailored"></div>
             </div>
 
             <!-- GitHub Diff View -->
-            <div v-show="rightTab === 'diff'" class="markdown-preview-pad">
-              <div class="diff-title-header">
-                <span class="diff-icon material-icons">difference</span>
-                <span>Track Changes: <del class="diff-removed">Red represents original text</del> and <ins class="diff-added">Green represents tailored improvements</ins>.</span>
+            <div v-show="rightTab === 'diff'" class="h-full overflow-y-auto p-4 bg-neutral">
+              <div class="font-sans text-[0.78rem] text-secondary mb-3 flex items-center gap-2">
+                <span class="text-[18px] text-success material-icons">difference</span>
+                <span>Track Changes: <del class="bg-danger/18 text-[#8A3D35] line-through px-1 py-0.5 rounded-[2px] no-underline">Red represents original text</del> and <ins class="bg-success/22 text-[#2F382A] px-1 py-0.5 rounded-[2px] no-underline">Green represents tailored improvements</ins>.</span>
               </div>
               <div class="markdown-preview light-theme-preview" v-html="diffHtml"></div>
             </div>
@@ -137,7 +137,7 @@
             <textarea 
               v-show="rightTab === 'edit'" 
               v-model="tailoredContent" 
-              class="workspace-editor-textarea"
+              class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.9rem] p-5 leading-relaxed resize-none outline-none h-full"
               placeholder="# Styled Markdown..."
             ></textarea>
           </div>
@@ -304,399 +304,6 @@ function triggerPrint() {
 </script>
 
 <style scoped>
-.step-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.step-instruction h2 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-}
-
-.instruction-desc {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  margin-top: 4px;
-}
-
-.flex-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Empty Studio UI */
-.empty-studio-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 70vh;
-}
-
-.empty-studio-card {
-  max-width: 520px;
-  width: 100%;
-  text-align: center;
-  padding: 40px !important;
-}
-
-.empty-icon {
-  font-size: 3.5rem;
-  color: var(--colors-secondary);
-  margin-bottom: 20px;
-}
-
-.empty-studio-card h3 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  margin-bottom: 12px;
-}
-
-.empty-studio-card p {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  line-height: 1.6;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.split-workspace-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  height: 60vh;
-}
-
-.workspace-pane {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  padding: 0 !important;
-}
-
-.pane-action-header {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border-light);
-  background-color: var(--colors-surface);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.editor-lbl {
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-}
-
-.stat-word-badge {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  color: var(--colors-secondary);
-}
-
-.workspace-editor-textarea {
-  width: 100%;
-  flex: 1;
-  background-color: transparent;
-  border: none;
-  color: var(--colors-primary);
-  font-family: monospace;
-  font-size: 0.9rem;
-  padding: 20px;
-  line-height: 1.6;
-  resize: none;
-  outline: none;
-}
-
-.pane-preview-body {
-  flex: 1;
-  padding: var(--spacing-md);
-  background-color: var(--colors-neutral);
-}
-
-.overflow-y-scroll {
-  overflow-y: auto;
-}
-
-.flex-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.mt-12 { margin-top: 12px; }
-.mt-16 { margin-top: 16px; }
-
-/* STEP 3 Specific Scorecard Layouts */
-.ats-scorecard-widget {
-  padding: var(--spacing-md) var(--spacing-lg);
-}
-
-.scorecard-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
-}
-
-.scorecard-lbl {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.scorecard-lbl h4 {
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--colors-secondary);
-}
-
-.score-glow-pulse {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--success);
-}
-
-.ats-match-tag {
-  background-color: transparent;
-  border: 1px solid var(--success);
-  color: var(--success);
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-}
-
-.scorecard-body-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
-  gap: 24px;
-}
-
-.score-analysis-box h5 {
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-  margin-bottom: 10px;
-}
-
-.border-right-pane {
-  border-right: 1px solid var(--border-light);
-  padding-right: 24px;
-}
-
-.competencies-tags-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.competency-tag {
-  background-color: var(--colors-neutral);
-  border: 1px solid var(--border-light);
-  color: var(--colors-primary);
-  font-size: 0.72rem;
-  font-weight: 400;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  display: inline-flex;
-  align-items: center;
-}
-
-.keyword-tag {
-  background-color: var(--colors-neutral);
-  border: 1px solid var(--border-light);
-  color: var(--colors-primary);
-  font-family: monospace;
-  font-size: 0.7rem;
-  padding: 3px 6px;
-  border-radius: var(--radius-sm);
-}
-
-.revisions-list {
-  padding-left: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.revisions-list li {
-  font-size: 0.78rem;
-  color: var(--colors-primary);
-  line-height: 1.4;
-  display: flex;
-  align-items: flex-start;
-}
-
-.editor-workspace-height {
-  height: 52vh;
-}
-
-.workspace-tabs-row {
-  display: flex;
-  background-color: rgba(27, 25, 23, 0.04);
-  padding: 3px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
-  align-items: center;
-}
-
-.workspace-tab-trigger {
-  background: none;
-  border: none;
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  color: var(--colors-secondary);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.workspace-tab-trigger:hover {
-  color: var(--colors-primary);
-}
-
-.workspace-tab-trigger.active {
-  color: var(--colors-primary);
-  background-color: var(--colors-surface);
-  box-shadow: 0 1px 3px rgba(27, 25, 23, 0.08);
-}
-
-.workspace-actions-row {
-  display: flex;
-  align-items: center;
-}
-
-.icon-only-btn {
-  padding: 0 !important;
-  width: 28px !important;
-  height: 28px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: var(--radius-md) !important;
-}
-
-@media (max-width: 768px) {
-  .no-mobile-badge {
-    display: none !important;
-  }
-}
-
-.mr-6 {
-  margin-right: 6px;
-}
-
-.mr-12 {
-  margin-right: 12px;
-}
-
-.pad-0 {
-  padding: 0 !important;
-}
-
-.markdown-preview-pad {
-  height: 100%;
-  overflow-y: auto;
-  padding: var(--spacing-md);
-  background-color: var(--colors-neutral);
-}
-
-.light-theme-preview {
-  border: 1px solid var(--border-light);
-}
-
-/* Printing styles only */
-.print-mode-layout-only {
-  background-color: #FFFFFF;
-  color: #000000;
-  min-height: 100vh;
-  width: 100%;
-}
-
-@media (max-width: 900px) {
-  .split-workspace-columns {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  
-  .workspace-editor-textarea {
-    min-height: 240px;
-    height: auto;
-  }
-  
-  .pane-preview-body {
-    height: 320px;
-  }
-  
-  .scorecard-body-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .border-right-pane {
-    border-right: none;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 16px;
-  }
-}
-
-.diff-title-header {
-  font-family: var(--font-family);
-  font-size: 0.78rem;
-  color: var(--colors-secondary);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.diff-title-header ins.diff-added {
-  background-color: rgba(95, 107, 86, 0.22) !important;
-  color: #2F382A !important;
-  text-decoration: none !important;
-  padding: 1px 4px !important;
-  border-radius: 2px !important;
-}
-
-.diff-title-header del.diff-removed {
-  background-color: rgba(150, 75, 67, 0.18) !important;
-  color: #8A3D35 !important;
-  text-decoration: line-through !important;
-  padding: 1px 4px !important;
-  border-radius: 2px !important;
-}
-
-.diff-icon {
-  font-size: 18px;
-  color: var(--success);
-}
-
 :deep(.markdown-preview ins.diff-added) {
   background-color: rgba(95, 107, 86, 0.22) !important; /* Sage green addition */
   color: #2F382A !important;
@@ -749,7 +356,7 @@ function triggerPrint() {
   }
 
   .markdown-preview {
-    font-family: var(--font-family), 'Jost', sans-serif !important;
+    font-family: 'Jost', sans-serif !important;
     font-size: 8.5pt !important;
     line-height: 1.25 !important;
     padding: 0 !important;

@@ -1,36 +1,36 @@
 <template>
   <div>
     <!-- Loading Animation (Runs inside the container when AI is tailoring) -->
-    <div v-if="isTailoring" class="stepper-loader glass-panel no-print">
-      <div class="loader-ring-wrapper">
-        <div class="loader-ring">
-          <span class="material-icons loader-spin-icon">sync</span>
+    <div v-if="isTailoring" class="flex justify-center items-center p-10 md:p-5 min-h-[480px] bg-surface border border-secondary/25 rounded-lg no-print">
+      <div class="max-w-[480px] w-full text-center">
+        <div class="relative w-12 h-12 mx-auto mb-6 flex items-center justify-center">
+          <span class="material-icons text-[2.2rem] text-tertiary animate-spin">sync</span>
         </div>
-        <h3>AI Tailoring Engine Active</h3>
-        <p class="loader-subtitle">Rephrasing accomplishments and mapping keywords...</p>
+        <h3 class="text-[1.4rem] font-light text-primary tracking-wide mb-1.5">AI Tailoring Engine Active</h3>
+        <p class="text-[0.85rem] text-secondary mb-8">Rephrasing accomplishments and mapping keywords...</p>
         
-        <div class="loader-sub-steps">
-          <div class="sub-step" :class="loaderStepClass(1)">
-            <span class="sub-bullet">
-              <span class="material-icons" style="font-size: 14px;">{{ loaderStepIcon(1) }}</span>
+        <div class="flex flex-col gap-4 text-left max-w-[320px] mx-auto p-4 bg-neutral border border-secondary/25 rounded-md">
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 1 ? 'text-primary font-medium' : (tailoringStep > 1 ? 'text-success' : '')">
+            <span class="flex items-center justify-center w-5 h-5">
+              <span class="material-icons text-[14px]" :class="tailoringStep === 1 ? 'animate-spin text-tertiary' : (tailoringStep > 1 ? 'text-success' : '')">{{ loaderStepIcon(1) }}</span>
             </span>
             <span>Parsing LinkedIn Job Description...</span>
           </div>
-          <div class="sub-step" :class="loaderStepClass(2)">
-            <span class="sub-bullet">
-              <span class="material-icons" style="font-size: 14px;">{{ loaderStepIcon(2) }}</span>
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 2 ? 'text-primary font-medium' : (tailoringStep > 2 ? 'text-success' : '')">
+            <span class="flex items-center justify-center w-5 h-5">
+              <span class="material-icons text-[14px]" :class="tailoringStep === 2 ? 'animate-spin text-tertiary' : (tailoringStep > 2 ? 'text-success' : '')">{{ loaderStepIcon(2) }}</span>
             </span>
             <span>Analyzing Resume Experience & Keywords...</span>
           </div>
-          <div class="sub-step" :class="loaderStepClass(3)">
-            <span class="sub-bullet">
-              <span class="material-icons" style="font-size: 14px;">{{ loaderStepIcon(3) }}</span>
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 3 ? 'text-primary font-medium' : (tailoringStep > 3 ? 'text-success' : '')">
+            <span class="flex items-center justify-center w-5 h-5">
+              <span class="material-icons text-[14px]" :class="tailoringStep === 3 ? 'animate-spin text-tertiary' : (tailoringStep > 3 ? 'text-success' : '')">{{ loaderStepIcon(3) }}</span>
             </span>
             <span>Generating fact-faithful optimized Markdown...</span>
           </div>
-          <div class="sub-step" :class="loaderStepClass(4)">
-            <span class="sub-bullet">
-              <span class="material-icons" style="font-size: 14px;">{{ loaderStepIcon(4) }}</span>
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 4 ? 'text-primary font-medium' : (tailoringStep > 4 ? 'text-success' : '')">
+            <span class="flex items-center justify-center w-5 h-5">
+              <span class="material-icons text-[14px]" :class="tailoringStep === 4 ? 'animate-spin text-tertiary' : (tailoringStep > 4 ? 'text-success' : '')">{{ loaderStepIcon(4) }}</span>
             </span>
             <span>Finalizing ATS compliance checks...</span>
           </div>
@@ -39,75 +39,75 @@
     </div>
 
     <!-- Active Step Workspace -->
-    <div v-else class="step-layout fade-in">
+    <div v-else class="flex flex-col gap-6 fade-in">
       <div class="step-instruction">
-        <h2>
-          <span class="material-icons mr-8 text-stone align-bottom">work_outline</span>
+        <h2 class="text-[1.5rem] font-light text-primary">
+          <span class="material-icons mr-2 text-secondary align-bottom">work_outline</span>
           Target Job specifications
         </h2>
-        <p class="instruction-desc">Provide details of the position you are targeting. Paste the job description copied from LinkedIn or Indeed.</p>
+        <p class="text-[0.88rem] text-secondary mt-1">Provide details of the position you are targeting. Paste the job description copied from LinkedIn or Indeed.</p>
       </div>
 
-      <div class="split-workspace-columns">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[68vh]">
         <!-- Job Details and Focus -->
-        <div class="workspace-pane glass-panel pad-24">
-          <h3 class="panel-inner-title">Job Information</h3>
+        <div class="flex flex-col h-full overflow-hidden p-6 lg:p-8 bg-surface border border-secondary/25 rounded-lg">
+          <h3 class="text-[0.72rem] font-medium uppercase tracking-[0.24em] mb-5 text-secondary border-b border-secondary/25 pb-2">Job Information</h3>
           
-          <div class="form-double-row">
-            <div class="form-group flex-1">
-              <label class="form-label">Target Job Title <span class="required-mark">*</span></label>
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 mb-8">
+              <label class="block font-sans text-[0.72rem] font-normal uppercase tracking-[0.24em] mb-2 text-secondary">Target Job Title <span class="text-danger ml-0.5 font-bold">*</span></label>
               <input 
                 v-model="form.jobTitle" 
                 type="text" 
-                class="form-input" 
-                :class="{ 'validation-error': showValidationError && !form.jobTitle.trim() }"
+                class="w-full bg-surface border text-primary font-sans text-[0.98rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60" 
+                :class="showValidationError && !form.jobTitle.trim() ? 'border-danger bg-danger/5' : 'border-secondary/25'"
                 placeholder="e.g. Lead Frontend Architect"
               />
             </div>
-            <div class="form-group flex-1 ml-16">
-              <label class="form-label">Target Company <span class="required-mark">*</span></label>
+            <div class="flex-1 mb-8">
+              <label class="block font-sans text-[0.72rem] font-normal uppercase tracking-[0.24em] mb-2 text-secondary">Target Company <span class="text-danger ml-0.5 font-bold">*</span></label>
               <input 
                 v-model="form.company" 
                 type="text" 
-                class="form-input" 
-                :class="{ 'validation-error': showValidationError && !form.company.trim() }"
+                class="w-full bg-surface border text-primary font-sans text-[0.98rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60" 
+                :class="showValidationError && !form.company.trim() ? 'border-danger bg-danger/5' : 'border-secondary/25'"
                 placeholder="e.g. Google"
               />
             </div>
           </div>
 
-          <div class="form-group mb-0">
-            <label class="form-label">AI Tuning Guidelines (Optional)</label>
+          <div class="mb-0">
+            <label class="block font-sans text-[0.72rem] font-normal uppercase tracking-[0.24em] mb-2 text-secondary">AI Tuning Guidelines (Optional)</label>
             <textarea 
               v-model="form.customDirectives" 
-              class="form-input form-textarea directive-textarea"
+              class="w-full bg-surface border border-secondary/25 text-primary font-sans text-[0.88rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60 min-h-[140px]"
               placeholder="Examples: 'Emphasize my cloud engineering achievements', 'Rewrite in an executive tone', or 'Highlight React Native metrics.'"
             ></textarea>
           </div>
         </div>
 
         <!-- Job Description Specifications -->
-        <div class="workspace-pane glass-panel">
-          <div class="pane-action-header">
-            <span class="editor-lbl">LinkedIn Job Description Specifications <span class="required-mark">*</span></span>
+        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+          <div class="py-3 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+            <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">LinkedIn Job Description Specifications <span class="text-danger ml-0.5 font-bold">*</span></span>
           </div>
           <textarea 
             v-model="form.jobDescription" 
-            class="workspace-editor-textarea flex-editor"
-            :class="{ 'validation-error': showValidationError && !form.jobDescription.trim() }"
+            class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.9rem] p-5 leading-relaxed resize-none outline-none min-h-[240px] lg:min-h-full"
+            :class="showValidationError && !form.jobDescription.trim() ? 'border border-danger bg-danger/5' : ''"
             placeholder="Paste the full job description text from LinkedIn here..."
           ></textarea>
         </div>
       </div>
 
-      <div class="step-navigation-footer">
+      <div class="flex justify-between items-center mt-2.5 border-t border-secondary/25 pt-8">
         <BaseButton @click="navigateBack" variant="secondary" size="lg" class="flex-btn">
           <span class="material-icons">arrow_back</span>
           Back to CV
         </BaseButton>
         <!-- This is the single interactive highlight CTA of this screen -->
         <BaseButton @click="handleTailorClick" variant="primary" size="lg" class="flex-btn" :loading="isTailoring">
-          <span class="material-icons mr-6">auto_awesome</span>
+          <span class="material-icons mr-1">auto_awesome</span>
           Initiate AI Tailoring
         </BaseButton>
       </div>
@@ -116,6 +116,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 definePageMeta({
@@ -153,13 +154,6 @@ function handleTailorClick() {
 
 function navigateBack() {
   router.push('/resume');
-}
-
-// Stepper Progress Indicators
-function loaderStepClass(step) {
-  if (tailoringStep.value === step) return 'active';
-  if (tailoringStep.value > step) return 'completed';
-  return 'pending';
 }
 
 function loaderStepIcon(step) {
@@ -231,255 +225,3 @@ async function triggerTailor() {
 }
 </script>
 
-<style scoped>
-.step-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.step-instruction h2 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-}
-
-.title-icon {
-  font-size: 1.7rem;
-  color: var(--colors-secondary);
-}
-
-.instruction-desc {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  margin-top: 4px;
-}
-
-.split-workspace-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  height: 68vh;
-}
-
-.workspace-pane {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  padding: 0 !important;
-}
-
-.pad-24 {
-  padding: var(--spacing-lg) !important;
-}
-
-.panel-inner-title {
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  margin-bottom: 20px;
-  color: var(--colors-secondary);
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 8px;
-}
-
-.pane-action-header {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border-light);
-  background-color: var(--colors-surface);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.editor-lbl {
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-}
-
-.workspace-editor-textarea {
-  width: 100%;
-  flex: 1;
-  background-color: transparent;
-  border: none;
-  color: var(--colors-primary);
-  font-family: monospace;
-  font-size: 0.9rem;
-  padding: 20px;
-  line-height: 1.6;
-  resize: none;
-  outline: none;
-}
-
-.flex-editor {
-  min-height: 100%;
-}
-
-.form-double-row {
-  display: flex;
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.ml-16 {
-  margin-left: 16px;
-}
-
-.directive-textarea {
-  min-height: 140px;
-  font-size: 0.88rem;
-}
-
-.step-navigation-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  border-top: 1px solid var(--border-light);
-  padding-top: var(--spacing-lg);
-}
-
-.flex-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Stepper Loader State */
-.stepper-loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  min-height: 480px;
-  background-color: var(--colors-surface);
-}
-
-.loader-ring-wrapper {
-  max-width: 480px;
-  width: 100%;
-  text-align: center;
-}
-
-.loader-ring {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.loader-spin-icon {
-  font-size: 2.2rem;
-  color: var(--colors-tertiary);
-  animation: spin 1.2s linear infinite;
-}
-
-.loader-ring-wrapper h3 {
-  font-size: 1.4rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-  letter-spacing: 0.02em;
-  margin-bottom: 6px;
-}
-
-.loader-subtitle {
-  font-size: 0.85rem;
-  color: var(--colors-secondary);
-  margin-bottom: 32px;
-}
-
-.loader-sub-steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  text-align: left;
-  max-width: 320px;
-  margin: 0 auto;
-  padding: var(--spacing-md);
-  background-color: var(--colors-neutral);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-}
-
-.sub-step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.82rem;
-  color: var(--colors-secondary);
-  transition: all var(--transition-normal);
-}
-
-.sub-bullet {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-}
-
-.sub-step.active {
-  color: var(--colors-primary);
-  font-weight: 500;
-}
-
-.sub-step.active .sub-bullet .material-icons {
-  color: var(--colors-tertiary);
-  animation: spin 2.5s linear infinite;
-}
-
-.sub-step.completed {
-  color: var(--success);
-}
-
-.sub-step.completed .sub-bullet .material-icons {
-  color: var(--success);
-}
-
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-@media (max-width: 900px) {
-  .split-workspace-columns {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  
-  .workspace-editor-textarea {
-    min-height: 240px;
-    height: auto;
-  }
-  
-  .form-double-row {
-    flex-direction: column;
-  }
-  
-  .ml-16 {
-    margin-left: 0;
-    margin-top: 16px;
-  }
-}
-
-.required-mark {
-  color: var(--danger);
-  margin-left: 2px;
-  font-weight: bold;
-}
-
-.validation-error {
-  border: 1px solid var(--danger) !important;
-  background-color: rgba(150, 75, 67, 0.03) !important;
-}
-</style>

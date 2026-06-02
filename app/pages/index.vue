@@ -1,5 +1,5 @@
 <template>
-  <div class="marketing-page dot-matrix-bg fade-in">
+  <div class="flex flex-col bg-neutral w-full dot-matrix-bg fade-in">
     <!-- SVG Noise filter for film grain realism -->
     <svg style="display: none;">
       <filter id="noiseFilter">
@@ -10,36 +10,28 @@
     <div class="noise-overlay"></div>
 
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="py-20 lg:py-24 px-0 bg-neutral relative overflow-hidden hero-section-grid">
       <!-- Premium Ambient Glimmer behind copy -->
-      <div class="left-ambient-glow"></div>
+      <div class="absolute w-[450px] h-[450px] -left-[12%] top-0 rounded-full bg-[radial-gradient(circle,rgba(140,132,122,0.12)_0%,rgba(234,230,220,0)_75%)] blur-[45px] pointer-events-none z-0"></div>
 
-      <div class="hero-grid">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-[1200px] mx-auto px-8 relative z-10">
         <!-- Left Column: Copy & Actions -->
-        <div class="hero-content-left">
-          <!-- Real-Time Activity Trust Badge -->
-          <div class="system-activity-badge">
-            <span class="activity-pulse-dot"></span>
-            <span class="activity-label">Active adaptations today: <strong>1,492</strong></span>
-          </div>
-
-          <div class="hero-pill">
-            <span class="pill-dot"></span>
-            <span class="pill-text">INTRODUCING VELLUM AI V1.0</span>
+        <div class="text-center lg:text-left flex flex-col items-center lg:items-start self-center w-full">
+          <div class="inline-flex items-center gap-2 border border-primary/18 py-1.5 px-3 rounded-full mb-4">
+            <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+            <span class="font-sans text-[0.62rem] font-semibold tracking-[0.16em] uppercase text-primary">INTRODUCING VELLUM AI V1.0</span>
           </div>
           
-          <h1 class="display-title display-title-futuristic">
-            <span class="reveal-line rl-1">Refine your</span>
-            <span class="reveal-line rl-2">professional</span>
-            <span class="reveal-line rl-3"><span class="accent-serif">narrative.</span></span>
+          <h1 class="font-serif text-[2.5rem] lg:text-[4rem] font-bold tracking-tight leading-[1.1] text-primary mb-4 opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.15s]">
+            Refine your professional <span class="font-serif italic font-normal">narrative.</span>
           </h1>
           
-          <p class="hero-subtitle subtitle-fade-up">
+          <p class="text-[1.02rem] leading-relaxed text-secondary mb-6 font-light text-center lg:text-left opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.35s]">
             An executive-grade CV adaptation engine designed for modern developers and architects. 
             Extract required keywords, align credentials with LinkedIn requisitions in real-time, and pass ATS checkpoints—with zero data fabrication.
           </p>
           
-          <div class="hero-actions actions-fade-up">
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.5s]">
             <BaseButton to="/resume" variant="primary" size="lg" liquid class="flex-btn">
               ENTER WORKSPACE &rarr;
             </BaseButton>
@@ -50,76 +42,76 @@
         </div>
         
         <!-- Right Column: Interactive Parallax 3D Mockup -->
-        <div class="hero-graphic-right">
+        <div class="flex justify-center lg:justify-end items-center w-full relative self-center">
           <ResumePipelineAnim :pipelineState="pipelineState" :atsScore="atsScore" />
         </div>
       </div>
     </section>
 
     <!-- Seamless Infinite Logo Marquee Section -->
-    <section class="ats-marquee-section no-print">
-      <div class="section-container">
-        <div class="marquee-label">TRUSTED COMPATIBILITY WITH 10+ CORPORATE ATS PARSING ENGINES</div>
-        <div class="marquee-viewport">
-          <div class="marquee-track">
+    <section class="w-full py-8 bg-surface border-t border-b border-secondary/25 overflow-hidden text-center no-print">
+      <div class="max-w-[1200px] mx-auto px-8">
+        <div class="font-sans text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-secondary mb-6">TRUSTED COMPATIBILITY WITH 10+ CORPORATE ATS PARSING ENGINES</div>
+        <div class="relative w-full overflow-hidden flex items-center py-2 after:content-[''] after:absolute after:top-0 after:right-0 after:w-[15%] after:h-full after:bg-[linear-gradient(to_left,var(--color-surface),transparent)] after:z-10 before:content-[''] before:absolute before:top-0 before:left-0 before:w-[15%] before:h-full before:bg-[linear-gradient(to_right,var(--color-surface),transparent)] before:z-10">
+          <div class="flex gap-10 w-max animate-marquee-scroll">
             <!-- First set -->
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-workday">cloud_queue</span>
-              <span class="logo-text">Workday</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-workday">cloud_queue</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Workday</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-greenhouse">park</span>
-              <span class="logo-text">Greenhouse</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-success">park</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Greenhouse</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-lever">tune</span>
-              <span class="logo-text">Lever</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-primary">tune</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Lever</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-taleo">blur_on</span>
-              <span class="logo-text">Oracle Taleo</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#E84D2A]">blur_on</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Oracle Taleo</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-icims">filter_tilt_shift</span>
-              <span class="logo-text">iCIMS</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#007BB6]">filter_tilt_shift</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">iCIMS</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-bamboohr">spa</span>
-              <span class="logo-text">BambooHR</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#84BD00]">spa</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">BambooHR</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-smartrecruiters">auto_awesome_mosaic</span>
-              <span class="logo-text">SmartRecruiters</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#00A651]">auto_awesome_mosaic</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">SmartRecruiters</span>
             </div>
             
             <!-- Second duplicated set for seamless looping -->
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-workday">cloud_queue</span>
-              <span class="logo-text">Workday</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-workday">cloud_queue</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Workday</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-greenhouse">park</span>
-              <span class="logo-text">Greenhouse</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-success">park</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Greenhouse</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-lever">tune</span>
-              <span class="logo-text">Lever</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-primary">tune</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Lever</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-taleo">blur_on</span>
-              <span class="logo-text">Oracle Taleo</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#E84D2A]">blur_on</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">Oracle Taleo</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-icims">filter_tilt_shift</span>
-              <span class="logo-text">iCIMS</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#007BB6]">filter_tilt_shift</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">iCIMS</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-bamboohr">spa</span>
-              <span class="logo-text">BambooHR</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#84BD00]">spa</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">BambooHR</span>
             </div>
-            <div class="marquee-logo-card">
-              <span class="material-icons logo-icon text-smartrecruiters">auto_awesome_mosaic</span>
-              <span class="logo-text">SmartRecruiters</span>
+            <div class="flex items-center gap-2.5 bg-neutral border border-secondary/25 rounded-sm py-2 px-5 hover:border-primary hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap">
+              <span class="material-icons text-[16px]! text-[#00A651]">auto_awesome_mosaic</span>
+              <span class="font-sans text-[0.75rem] font-semibold tracking-[0.08em] text-primary uppercase whitespace-nowrap">SmartRecruiters</span>
             </div>
           </div>
         </div>
@@ -127,95 +119,95 @@
     </section>
 
     <!-- Metrics Stats Section -->
-    <section class="metrics-section">
-      <div class="section-container">
-        <div class="metrics-grid">
-          <div class="metric-card glass-panel premium-card-3d scroll-reveal">
-            <span class="metric-num extrude-child">99.4%</span>
-            <span class="metric-label extrude-child">ATS Parse Success</span>
-            <p class="metric-desc">Perfect compatibility with standard parsing engines (Workday, Greenhouse, Taleo).</p>
+    <section class="py-10 lg:py-20">
+      <div class="max-w-[1200px] mx-auto px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-8 bg-surface border border-secondary/25 rounded-lg scroll-reveal premium-card-3d">
+            <span class="font-sans text-[3rem] font-light text-primary block mb-1 extrude-child metric-num">99.4%</span>
+            <span class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-secondary block mb-3 extrude-child">ATS Parse Success</span>
+            <p class="text-[0.85rem] text-secondary leading-relaxed">Perfect compatibility with standard parsing engines (Workday, Greenhouse, Taleo).</p>
           </div>
-          <div class="metric-card glass-panel premium-card-3d scroll-reveal reveal-delay-1">
-            <span class="metric-num extrude-child">2.4x</span>
-            <span class="metric-label extrude-child">More Interview Invites</span>
-            <p class="metric-desc">Rephrased competencies immediately signal your relevance to hiring managers.</p>
+          <div class="text-center p-8 bg-surface border border-secondary/25 rounded-lg scroll-reveal premium-card-3d reveal-delay-1">
+            <span class="font-sans text-[3rem] font-light text-primary block mb-1 extrude-child metric-num">2.4x</span>
+            <span class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-secondary block mb-3 extrude-child">More Interview Invites</span>
+            <p class="text-[0.85rem] text-secondary leading-relaxed">Rephrased competencies immediately signal your relevance to hiring managers.</p>
           </div>
-          <div class="metric-card glass-panel premium-card-3d scroll-reveal reveal-delay-2">
-            <span class="metric-num extrude-child">0%</span>
-            <span class="metric-label extrude-child">Fabricated Data</span>
-            <p class="metric-desc">A strict fact-faithful translation policy. We optimize representation, never invent history.</p>
+          <div class="text-center p-8 bg-surface border border-secondary/25 rounded-lg scroll-reveal premium-card-3d reveal-delay-2">
+            <span class="font-sans text-[3rem] font-light text-primary block mb-1 extrude-child metric-num">0%</span>
+            <span class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-secondary block mb-3 extrude-child">Fabricated Data</span>
+            <p class="text-[0.85rem] text-secondary leading-relaxed">A strict fact-faithful translation policy. We optimize representation, never invent history.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="features-section">
-      <div class="section-container">
-        <div class="section-header scroll-reveal">
-          <span class="section-tag">Capabilities</span>
-          <h2 class="section-title">Architected for clarity. Built for conversion.</h2>
-          <p class="section-desc">Traditional resume builders generate bloated templates. We focus on semantic optimization and high-fidelity output.</p>
+    <section id="features" class="py-20 bg-surface border-t border-b border-secondary/25">
+      <div class="max-w-[1200px] mx-auto px-8">
+        <div class="text-center max-w-[680px] mx-auto mb-16 scroll-reveal">
+          <span class="font-sans text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-secondary block mb-3">Capabilities</span>
+          <h2 class="text-[2.2rem] font-light text-primary mb-4">Architected for clarity. Built for conversion.</h2>
+          <p class="text-[0.95rem] text-secondary leading-relaxed">Traditional resume builders generate bloated templates. We focus on semantic optimization and high-fidelity output.</p>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-card glass-panel premium-card-3d scroll-reveal">
-            <div class="feature-icon-wrapper extrude-child">
-              <span class="material-icons feature-icon">auto_awesome</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 bg-neutral border border-secondary/25 rounded-lg scroll-reveal premium-card-3d">
+            <div class="w-11 h-11 rounded border border-secondary bg-surface flex items-center justify-center mb-6 transition-transform duration-500 extrude-child feature-icon-wrapper">
+              <span class="material-icons text-tertiary text-[20px] transition-transform duration-300 feature-icon">auto_awesome</span>
             </div>
-            <h4 class="extrude-child">Fact-Faithful Translation</h4>
-            <p>Our custom-tuned Gemini prompts rewrite accomplishments to match job qualifications without fabricating skills, education, or companies.</p>
+            <h4 class="text-[1.15rem] font-normal mb-3 text-primary extrude-child">Fact-Faithful Translation</h4>
+            <p class="text-[0.88rem] text-secondary leading-relaxed">Our custom-tuned Gemini prompts rewrite accomplishments to match job qualifications without fabricating skills, education, or companies.</p>
           </div>
 
-          <div class="feature-card glass-panel premium-card-3d scroll-reveal reveal-delay-1">
-            <div class="feature-icon-wrapper extrude-child">
-              <span class="material-icons feature-icon">analytics</span>
+          <div class="p-8 bg-neutral border border-secondary/25 rounded-lg scroll-reveal premium-card-3d reveal-delay-1">
+            <div class="w-11 h-11 rounded border border-secondary bg-surface flex items-center justify-center mb-6 transition-transform duration-500 extrude-child feature-icon-wrapper">
+              <span class="material-icons text-tertiary text-[20px] transition-transform duration-300 feature-icon">analytics</span>
             </div>
-            <h4 class="extrude-child">Real-time ATS Keyword Mapping</h4>
-            <p>Paste any LinkedIn or Indeed job description. The AI parses required skills, matching and highlighting your existing expertise dynamically.</p>
+            <h4 class="text-[1.15rem] font-normal mb-3 text-primary extrude-child">Real-time ATS Keyword Mapping</h4>
+            <p class="text-[0.88rem] text-secondary leading-relaxed">Paste any LinkedIn or Indeed job description. The AI parses required skills, matching and highlighting your existing expertise dynamically.</p>
           </div>
 
-          <div class="feature-card glass-panel premium-card-3d scroll-reveal reveal-delay-2">
-            <div class="feature-icon-wrapper extrude-child">
-              <span class="material-icons feature-icon">tune</span>
+          <div class="p-8 bg-neutral border border-secondary/25 rounded-lg scroll-reveal premium-card-3d reveal-delay-2">
+            <div class="w-11 h-11 rounded border border-secondary bg-surface flex items-center justify-center mb-6 transition-transform duration-500 extrude-child feature-icon-wrapper">
+              <span class="material-icons text-tertiary text-[20px] transition-transform duration-300 feature-icon">tune</span>
             </div>
-            <h4 class="extrude-child">Interactive Custom Directives</h4>
-            <p>Fine-tune the output tone to your exact standard. Request an "Executive Tone," double down on "Cloud Metrics," or restrict length easily.</p>
+            <h4 class="text-[1.15rem] font-normal mb-3 text-primary extrude-child">Interactive Custom Directives</h4>
+            <p class="text-[0.88rem] text-secondary leading-relaxed">Fine-tune the output tone to your exact standard. Request an "Executive Tone," double down on "Cloud Metrics," or restrict length easily.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- How It Works Section -->
-    <section id="workflow" class="workflow-section">
-      <div class="section-container">
-        <div class="section-header scroll-reveal">
-          <span class="section-tag">System Architecture</span>
-          <h2 class="section-title">Three steps to your next interview.</h2>
+    <section id="workflow" class="py-24">
+      <div class="max-w-[1200px] mx-auto px-8">
+        <div class="text-center max-w-[680px] mx-auto mb-16 scroll-reveal">
+          <span class="font-sans text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-secondary block mb-3">System Architecture</span>
+          <h2 class="text-[2.2rem] font-light text-primary mb-4">Three steps to your next interview.</h2>
         </div>
 
-        <div class="workflow-timeline">
-          <div class="workflow-step scroll-reveal">
-            <div class="step-num-badge">01</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          <div class="flex flex-col gap-4 relative group scroll-reveal workflow-step">
+            <div class="w-11 h-11 rounded-full border border-primary flex items-center justify-center font-sans text-[0.85rem] font-medium text-primary bg-surface transition-all duration-300 step-num-badge">01</div>
             <div class="step-content">
-              <h5>Define Your Master Narrative</h5>
-              <p>Input your baseline career history, education, and technologies into our markdown editor. This acts as your secure master database.</p>
+              <h5 class="text-[1.05rem] font-medium mb-2 text-primary">Define Your Master Narrative</h5>
+              <p class="text-[0.88rem] text-secondary leading-relaxed">Input your baseline career history, education, and technologies into our markdown editor. This acts as your secure master database.</p>
             </div>
           </div>
 
-          <div class="workflow-step scroll-reveal reveal-delay-1">
-            <div class="step-num-badge">02</div>
+          <div class="flex flex-col gap-4 relative group scroll-reveal reveal-delay-1 workflow-step">
+            <div class="w-11 h-11 rounded-full border border-primary flex items-center justify-center font-sans text-[0.85rem] font-medium text-primary bg-surface transition-all duration-300 step-num-badge">02</div>
             <div class="step-content">
-              <h5>Sync Target Job Requisition</h5>
-              <p>Paste the text specifications of the job you want. The AI instantly extracts the target skills, requirements, and keywords.</p>
+              <h5 class="text-[1.05rem] font-medium mb-2 text-primary">Sync Target Job Requisition</h5>
+              <p class="text-[0.88rem] text-secondary leading-relaxed">Paste the text specifications of the job you want. The AI instantly extracts the target skills, requirements, and keywords.</p>
             </div>
           </div>
 
-          <div class="workflow-step scroll-reveal reveal-delay-2">
-            <div class="step-num-badge">03</div>
+          <div class="flex flex-col gap-4 relative group scroll-reveal reveal-delay-2 workflow-step">
+            <div class="w-11 h-11 rounded-full border border-primary flex items-center justify-center font-sans text-[0.85rem] font-medium text-primary bg-surface transition-all duration-300 step-num-badge">03</div>
             <div class="step-content">
-              <h5>Refine & Print in Matte Studio</h5>
-              <p>Compare the side-by-side original and tailored resume, review the integrated keyword scorecard, and export a clean PDF instantly.</p>
+              <h5 class="text-[1.05rem] font-medium mb-2 text-primary">Refine & Print in Matte Studio</h5>
+              <p class="text-[0.88rem] text-secondary leading-relaxed">Compare the side-by-side original and tailored resume, review the integrated keyword scorecard, and export a clean PDF instantly.</p>
             </div>
           </div>
         </div>
@@ -223,104 +215,111 @@
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="pricing-section">
-      <div class="section-container">
-        <div class="section-header scroll-reveal">
-          <span class="section-tag">Investment</span>
-          <h2 class="section-title">Transparent pricing for serious builders.</h2>
+    <section id="pricing" class="py-24 lg:py-36 bg-surface border-t border-secondary/25">
+      <div class="max-w-[1200px] mx-auto px-8">
+        <div class="text-center max-w-[680px] mx-auto mb-16 scroll-reveal">
+          <span class="font-sans text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-secondary block mb-3">Investment</span>
+          <h2 class="text-[2.2rem] font-light text-primary mb-4">Transparent pricing for serious builders.</h2>
         </div>
 
-        <div class="pricing-grid">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           <!-- Free Plan -->
-          <div class="pricing-card glass-panel premium-card-3d scroll-reveal">
-            <div class="pricing-header extrude-child">
-              <span class="plan-name">Core Baseline</span>
-              <span class="plan-price">$0</span>
-              <span class="plan-desc">For developers preparing their initial outline.</span>
+          <div class="p-10 bg-neutral border border-secondary/25 rounded-lg flex flex-col justify-between relative scroll-reveal premium-card-3d">
+            <div>
+              <div class="border-b border-secondary/25 pb-6 mb-6 text-center extrude-child">
+                <span class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-secondary block mb-3">Core Baseline</span>
+                <span class="font-sans text-[3.2rem] font-light leading-none text-primary block mb-3">$0</span>
+                <span class="text-[0.82rem] text-secondary leading-relaxed">For developers preparing their initial outline.</span>
+              </div>
+              <ul class="list-none flex flex-col gap-3 mb-8">
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  1 Master Resume Profile
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  Manual Markdown Editor
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  Live Side-by-Side Preview
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  Standard PDF Export
+                </li>
+              </ul>
             </div>
-            <ul class="plan-features">
-              <li>
-                <span class="material-icons">check</span>
-                1 Master Resume Profile
-              </li>
-              <li>
-                <span class="material-icons">check</span>
-                Manual Markdown Editor
-              </li>
-              <li>
-                <span class="material-icons">check</span>
-                Live Side-by-Side Preview
-              </li>
-              <li>
-                <span class="material-icons">check</span>
-                Standard PDF Export
-              </li>
-            </ul>
-            <BaseButton to="/resume" variant="secondary" liquid class="w-100 mt-24">
+            <BaseButton to="/resume" variant="secondary" liquid class="w-full mt-6">
               Get Started
             </BaseButton>
           </div>
 
-          <div class="pricing-card glass-panel popular-card premium-card-3d scroll-reveal reveal-delay-1">
-            <div class="pricing-badge">Recommended</div>
-            <div class="pricing-header extrude-child">
-              <span class="plan-name">Matte Studio Pro</span>
-              <span class="plan-price">$9<span class="price-cycle">/mo</span></span>
-              <span class="plan-desc">For active job seekers targeting multiple roles.</span>
+          <!-- Pro Plan -->
+          <div class="p-10 bg-surface border border-primary rounded-lg flex flex-col justify-between relative scroll-reveal reveal-delay-1 premium-card-3d popular-card">
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 translate-z-[1px] bg-primary text-on-primary font-sans text-[0.62rem] font-semibold uppercase tracking-[0.2em] py-1 px-3 rounded-full transition-transform duration-500 z-10 pricing-badge">Recommended</div>
+            <div>
+              <div class="border-b border-secondary/25 pb-6 mb-6 text-center extrude-child">
+                <span class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-secondary block mb-3">Matte Studio Pro</span>
+                <span class="font-sans text-[3.2rem] font-light leading-none text-primary block mb-3">$9<span class="text-[1rem] text-secondary font-normal">/mo</span></span>
+                <span class="text-[0.82rem] text-secondary leading-relaxed">For active job seekers targeting multiple roles.</span>
+              </div>
+              <ul class="list-none flex flex-col gap-3 mb-8">
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-tertiary text-[16px]">check</span>
+                  <strong>Unlimited</strong> Master Profiles
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-tertiary text-[16px]">check</span>
+                  <strong>Gemini AI</strong> Rephrasing Engine
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-tertiary text-[16px]">check</span>
+                  ATS Keyword Integration Scorecard
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-tertiary text-[16px]">check</span>
+                  Custom Tuning Guidelines & Directives
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-tertiary text-[16px]">check</span>
+                  Priority Adaptation Log History
+                </li>
+              </ul>
             </div>
-            <ul class="plan-features">
-              <li>
-                <span class="material-icons text-tertiary">check</span>
-                <strong>Unlimited</strong> Master Profiles
-              </li>
-              <li>
-                <span class="material-icons text-tertiary">check</span>
-                <strong>Gemini AI</strong> Rephrasing Engine
-              </li>
-              <li>
-                <span class="material-icons text-tertiary">check</span>
-                ATS Keyword Integration Scorecard
-              </li>
-              <li>
-                <span class="material-icons text-tertiary">check</span>
-                Custom Tuning Guidelines & Directives
-              </li>
-              <li>
-                <span class="material-icons text-tertiary">check</span>
-                Priority Adaptation Log History
-              </li>
-            </ul>
-            <BaseButton to="/resume" variant="primary" liquid class="w-100 mt-24">
+            <BaseButton to="/resume" variant="primary" liquid class="w-full mt-6">
               Unlock Studio Pro
             </BaseButton>
           </div>
 
           <!-- Enterprise Plan -->
-          <div class="pricing-card glass-panel premium-card-3d scroll-reveal reveal-delay-2">
-            <div class="pricing-header extrude-child">
-              <span class="plan-name">Corporate</span>
-              <span class="plan-price">Custom</span>
-              <span class="plan-desc">For recruitment teams and career agencies.</span>
+          <div class="p-10 bg-neutral border border-secondary/25 rounded-lg flex flex-col justify-between relative scroll-reveal reveal-delay-2 premium-card-3d">
+            <div>
+              <div class="border-b border-secondary/25 pb-6 mb-6 text-center extrude-child">
+                <span class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-secondary block mb-3">Corporate</span>
+                <span class="font-sans text-[3.2rem] font-light leading-none text-primary block mb-3">Custom</span>
+                <span class="text-[0.82rem] text-secondary leading-relaxed">For recruitment teams and career agencies.</span>
+              </div>
+              <ul class="list-none flex flex-col gap-3 mb-8">
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  API Integrations
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  Batch Candidate Tailoring
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  Custom Brand Templates
+                </li>
+                <li class="text-[0.88rem] text-primary flex items-center gap-2">
+                  <span class="material-icons text-[16px] text-secondary">check</span>
+                  Dedicated Support
+                </li>
+              </ul>
             </div>
-            <ul class="plan-features">
-              <li>
-                <span class="material-icons">check</span>
-                API Integrations
-              </li>
-              <li>
-                <span class="material-icons">check</span>
-                Batch Candidate Tailoring
-              </li>
-              <li>
-                <span class="material-icons">check</span>
-                Custom Brand Templates
-              </li>
-              <li>
-                <span class="material-icons">check</span>
-                Dedicated Support
-              </li>
-            </ul>
-            <BaseButton to="mailto:support@cvtailorai.com" variant="secondary" liquid class="w-100 mt-24">
+            <BaseButton to="mailto:support@cvtailorai.com" variant="secondary" liquid class="w-full mt-6">
               Contact Sales
             </BaseButton>
           </div>
@@ -331,7 +330,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 definePageMeta({
   layout: 'default'
@@ -419,548 +418,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.marketing-page {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--colors-neutral);
-  width: 100%;
-}
-
-.section-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-}
-
-/* Hero Styles */
-.hero-section {
-  padding: 80px 0 40px;
-  background-color: var(--colors-neutral);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-size: 30px 30px;
-  background-image: 
-    linear-gradient(to right, rgba(27, 25, 23, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(27, 25, 23, 0.03) 1px, transparent 1px);
-  mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 95%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 95%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: var(--spacing-lg);
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-}
-
-.hero-content-left {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: transparent;
-  border: 1px solid rgba(27, 25, 23, 0.18);
-  padding: 5px 12px;
-  border-radius: 100px;
-  margin-bottom: 24px;
-}
-
-.pill-dot {
-  width: 5px;
-  height: 5px;
-  background-color: var(--colors-primary);
-  border-radius: 50%;
-}
-
-.pill-text {
-  font-family: var(--font-family);
-  font-size: 0.62rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--colors-primary);
-}
-
-.left-ambient-glow {
-  position: absolute;
-  width: 450px;
-  height: 450px;
-  left: -12%;
-  top: 0%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(140, 132, 122, 0.12) 0%, rgba(234, 230, 220, 0) 75%);
-  filter: blur(45px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.floating-ai-tag {
-  position: absolute;
-  z-index: 5;
-  pointer-events: none;
-  animation: magnetic-drift 6s infinite ease-in-out alternate;
-}
-
-.floating-ai-tag span {
-  font-family: var(--font-family);
-  font-size: 0.55rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 4px 10px;
-  border-radius: 100px;
-  background-color: transparent;
-  border: 1px solid rgba(27, 25, 23, 0.12);
-  color: var(--colors-primary);
-}
-
-.ft-left-1 { top: -2%; left: 42%; animation-duration: 7s; }
-.ft-left-2 { top: 68%; left: -8%; animation-duration: 8s; animation-delay: -2.2s; }
-
-@keyframes magnetic-drift {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(8px, -10px); }
-  100% { transform: translate(-6px, 4px); }
-}
-
-.display-title-futuristic {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 4.8rem !important;
-  font-weight: 700;
-  letter-spacing: -0.015em !important;
-  line-height: 1.05 !important;
-  color: var(--colors-primary);
-  margin-bottom: 24px;
-  position: relative;
-  z-index: 2;
-}
-
-.reveal-line {
-  display: block;
-  opacity: 0;
-  transform: translateY(28px);
-  animation: reveal-up-anim 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-
-.rl-1 { animation-delay: 0.15s; }
-.rl-2 { animation-delay: 0.3s; }
-.rl-3 { animation-delay: 0.45s; }
-
-@keyframes reveal-up-anim {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.hero-subtitle {
-  font-size: 1.02rem;
-  line-height: 1.7;
-  color: var(--colors-secondary);
-  margin-bottom: var(--spacing-lg);
-  font-weight: 300;
-  text-align: left;
-}
-
-.subtitle-fade-up {
-  opacity: 0;
-  transform: translateY(18px);
-  animation: reveal-up-anim 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-  animation-delay: 0.65s;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 16px;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.actions-fade-up {
-  opacity: 0;
-  transform: translateY(18px);
-  animation: reveal-up-anim 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-  animation-delay: 0.8s;
-}
-
-.hero-graphic-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  position: relative;
-}
-
-/* Metrics Section */
-.metrics-section {
-  padding: 40px 0 80px;
-}
-
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-}
-
-.metric-card {
-  text-align: center;
-  padding: var(--spacing-lg) !important;
-}
-
-.metric-num {
-  font-family: var(--font-family);
-  font-size: 3rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.metric-label {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-  display: block;
-  margin-bottom: 12px;
-}
-
-.metric-desc {
-  font-size: 0.85rem;
-  color: var(--colors-secondary);
-  line-height: 1.6;
-}
-
-/* Section Header styling */
-.section-header {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 60px;
-}
-
-.section-tag {
-  font-family: var(--font-family);
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--colors-secondary);
-  display: block;
-  margin-bottom: 12px;
-}
-
-.section-title {
-  font-size: 2.2rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-  margin-bottom: 16px;
-}
-
-.section-desc {
-  font-size: 0.95rem;
-  color: var(--colors-secondary);
-  line-height: 1.6;
-}
-
-/* Features Section */
-.features-section {
-  padding: 80px 0;
-  background-color: var(--colors-surface);
-  border-top: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-}
-
-.feature-card {
-  padding: var(--spacing-lg) !important;
-  background-color: var(--colors-neutral) !important;
-  border-color: var(--border-light) !important;
-}
-
-.feature-icon-wrapper {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background-color: var(--colors-surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.feature-icon {
-  color: var(--colors-tertiary);
-  font-size: 20px;
-}
-
-.feature-card h4 {
-  font-size: 1.15rem;
-  font-weight: 400;
-  margin-bottom: 12px;
-  color: var(--colors-primary);
-}
-
-.feature-card p {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  line-height: 1.6;
-}
-
-/* Workflow Section */
-.workflow-section {
-  padding: 100px 0;
-}
-
-.workflow-timeline {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-  position: relative;
-}
-
-.workflow-step {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  position: relative;
-}
-
-.workflow-step:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  top: 22px;
-  right: -16px;
-  width: 32px;
-  height: 1px;
-  background-color: var(--colors-secondary);
-  opacity: 0.3;
-}
-
-.step-num-badge {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--colors-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-family);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--colors-primary);
-  background-color: var(--colors-surface);
-}
-
-.step-content h5 {
-  font-size: 1.05rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: var(--colors-primary);
-}
-
-.step-content p {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  line-height: 1.6;
-}
-
-/* Pricing Section */
-.pricing-section {
-  padding: 100px 0 140px;
-  background-color: var(--colors-surface);
-  border-top: 1px solid var(--border-light);
-}
-
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-  align-items: stretch;
-}
-
-.pricing-card {
-  padding: 40px var(--spacing-lg) !important;
-  background-color: var(--colors-neutral) !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-color: var(--border-light) !important;
-  position: relative;
-}
-
-.popular-card {
-  border: 1px solid var(--colors-primary) !important;
-  background-color: var(--colors-surface) !important;
-}
-
-.pricing-badge {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%) translateZ(1px);
-  background-color: var(--colors-primary);
-  color: var(--colors-on-primary);
-  font-family: var(--font-family);
-  font-size: 0.62rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  padding: 4px 12px;
-  border-radius: 100px;
-  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.3s ease;
-  z-index: 10;
-}
-
-.premium-card-3d:hover .pricing-badge {
-  transform: translateX(-50%) translateZ(25px);
-}
-
-.pricing-header {
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 24px;
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.plan-name {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-  display: block;
-  margin-bottom: 12px;
-}
-
-.plan-price {
-  font-family: var(--font-family);
-  font-size: 3.2rem;
-  font-weight: 300;
-  line-height: 1;
-  color: var(--colors-primary);
-  display: block;
-  margin-bottom: 12px;
-}
-
-.price-cycle {
-  font-size: 1rem;
-  color: var(--colors-secondary);
-  font-weight: 400;
-}
-
-.plan-desc {
-  font-size: 0.82rem;
-  color: var(--colors-secondary);
-  line-height: 1.5;
-}
-
-.plan-features {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.plan-features li {
-  font-size: 0.88rem;
-  color: var(--colors-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.plan-features li .material-icons {
-  font-size: 16px;
-  color: var(--colors-secondary);
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.mt-24 {
-  margin-top: 24px;
-}
-
-/* Mobile Responsive */
-@media (max-width: 900px) {
-  .display-title {
-    font-size: 2.5rem;
-  }
-  
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-    text-align: center;
-  }
-
-  .hero-content-left {
-    text-align: center;
-    align-items: center;
-  }
-
-  .hero-subtitle {
-    text-align: center;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
-  }
-
-
-
-  .metrics-grid, 
-  .features-grid, 
-  .workflow-timeline, 
-  .pricing-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  
-  .workflow-step:not(:last-child)::after {
-    display: none;
-  }
-}
-
-/* ==========================================
-   SCROLL REVEAL & MICRO-ANIMATION SYSTEMS
-   ========================================== */
-
 /* Universal Scroll Reveal properties - Awwwards Inset Mask Wipe */
 .scroll-reveal {
   opacity: 0;
@@ -998,7 +455,6 @@ onUnmounted(() => {
 /* ==========================================
    3D LAYERED CARD EXTRUSION SYSTEM
    ========================================== */
-
 .premium-card-3d {
   transform-style: preserve-3d;
   transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0);
@@ -1010,7 +466,7 @@ onUnmounted(() => {
 
 .premium-card-3d:hover {
   transform: perspective(800px) rotateX(5deg) rotateY(-5deg) translateY(-8px);
-  border-color: var(--colors-primary) !important;
+  border-color: var(--color-primary) !important;
   background-color: #FFFFFF !important;
   box-shadow: 0 16px 40px rgba(27, 25, 23, 0.05) !important;
 }
@@ -1025,23 +481,14 @@ onUnmounted(() => {
   transform: translateZ(20px);
 }
 
-/* Specific extrusions details */
-.feature-icon-wrapper {
-  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
-}
-
 .premium-card-3d:hover .feature-icon-wrapper {
   transform: translateZ(25px) scale(1.05);
   box-shadow: 0 6px 16px rgba(27, 25, 23, 0.04);
 }
 
-.feature-icon {
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
-}
-
 .feature-card:hover .feature-icon {
   transform: scale(1.18) rotate(6deg);
-  color: var(--colors-primary);
+  color: var(--color-primary);
 }
 
 .popular-card {
@@ -1053,19 +500,15 @@ onUnmounted(() => {
 }
 
 /* Dynamic workflow timeline indicators pulse */
-.step-num-badge {
-  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
 .workflow-step:hover .step-num-badge {
-  border-color: var(--success);
-  background-color: var(--colors-neutral);
+  border-color: var(--color-success);
+  background-color: var(--color-neutral);
   transform: scale(1.08);
 }
 
 /* Moving dotted connector lines representing AI flow */
 .workflow-step:not(:last-child)::after {
-  background: linear-gradient(90deg, var(--colors-secondary) 60%, transparent 40%) !important;
+  background: linear-gradient(90deg, var(--color-secondary) 60%, transparent 40%) !important;
   background-size: 8px 1px !important;
   animation: flow-line-dots 0.8s linear infinite !important;
 }
@@ -1075,31 +518,9 @@ onUnmounted(() => {
   100% { background-position: -8px 0px; }
 }
 
-/* Hero section luxury refinements */
-.system-activity-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: rgba(95, 107, 86, 0.08);
-  border: 1px solid rgba(95, 107, 86, 0.2);
-  padding: 5px 12px;
-  border-radius: 100px;
-  margin-bottom: 18px;
-  animation: fade-in-scale 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-
 @keyframes fade-in-scale {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
-}
-
-.activity-pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--success);
-  box-shadow: 0 0 6px 1.5px var(--success);
-  animation: pulse-dot-ping 2s infinite ease-in-out;
 }
 
 @keyframes pulse-dot-ping {
@@ -1107,122 +528,37 @@ onUnmounted(() => {
   50% { transform: scale(1.6); opacity: 1; }
 }
 
-.activity-label {
-  font-family: var(--font-family);
-  font-size: 0.65rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--colors-primary);
-}
-
-.accent-serif {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-}
-
 /* Seamless Marquee Styles */
-.ats-marquee-section {
-  width: 100%;
-  padding: 32px 0 24px;
-  background-color: var(--colors-surface);
-  border-top: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
-  overflow: hidden;
-  text-align: center;
-}
-
-.marquee-label {
-  font-family: var(--font-family);
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--colors-secondary);
-  margin-bottom: 24px;
-}
-
-.marquee-viewport {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
-}
-
-/* Faded mask overlays starting and ending */
-.marquee-viewport::before,
-.marquee-viewport::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 15%;
-  height: 100%;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.marquee-viewport::before {
-  left: 0;
-  background: linear-gradient(to right, var(--colors-surface), transparent);
-}
-
-.marquee-viewport::after {
-  right: 0;
-  background: linear-gradient(to left, var(--colors-surface), transparent);
-}
-
-.marquee-track {
-  display: flex;
-  gap: 40px;
-  width: max-content;
-  animation: marquee-scroll 24s linear infinite;
-}
-
-@keyframes marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.marquee-logo-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--colors-neutral);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  padding: 8px 20px;
-  box-shadow: 0 4px 12px rgba(27, 25, 23, 0.01);
-  transition: all var(--transition-fast);
-}
-
 .marquee-logo-card:hover {
-  border-color: var(--colors-primary);
+  border-color: var(--color-primary);
   transform: translateY(-1px);
 }
 
-.logo-icon {
-  font-size: 16px;
-  vertical-align: middle;
-}
-
-.logo-text {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--colors-primary);
-  text-transform: uppercase;
-}
-
-/* Minimal specific icon color shifts */
 .text-workday { color: #005CB9; }
-.text-greenhouse { color: var(--success); }
-.text-lever { color: var(--colors-primary); }
+.text-greenhouse { color: var(--color-success); }
+.text-lever { color: var(--color-primary); }
 .text-taleo { color: #E84D2A; }
 .text-icims { color: #007BB6; }
 .text-bamboohr { color: #84BD00; }
 .text-smartrecruiters { color: #00A651; }
+
+.price-cycle {
+  font-size: 1rem;
+  color: var(--color-secondary);
+  font-weight: 400;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+  .hero-section-grid > div {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .workflow-step:not(:last-child)::after {
+    display: none;
+  }
+}
 </style>

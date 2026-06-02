@@ -1,22 +1,22 @@
 <template>
-  <div class="step-layout fade-in">
-    <div class="step-instruction flex-header-row">
+  <div class="flex flex-col gap-6 fade-in">
+    <div class="flex justify-between items-center">
       <div>
-        <h2>
-          <span class="material-icons mr-8 text-stone align-bottom">history</span>
+        <h2 class="text-[1.5rem] font-light text-primary">
+          <span class="material-icons mr-2 text-secondary align-bottom">history</span>
           Adaptation Logs
         </h2>
-        <p class="instruction-desc">Browse through all the previous job descriptions you have tailored your resume for.</p>
+        <p class="text-[0.88rem] text-secondary mt-1">Browse through all the previous job descriptions you have tailored your resume for.</p>
       </div>
     </div>
 
     <!-- Empty State if no history logs exist yet -->
-    <div v-if="history.length === 0" class="empty-history-container">
-      <div class="empty-history-card glass-panel text-center">
-        <span class="material-icons empty-icon">receipt_long</span>
-        <h3>No Logs Found</h3>
-        <p>You haven't tailored your resume for any positions yet. Run your first adaptation in "Tailor a Job" to start building your log history.</p>
-        <BaseButton @click="routeToTailor" variant="primary" class="mt-16 flex-btn mx-auto">
+    <div v-if="history.length === 0" class="flex items-center justify-center min-h-[50vh]">
+      <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-secondary/25 rounded-lg">
+        <span class="material-icons text-[3.5rem] text-secondary mb-5">receipt_long</span>
+        <h3 class="text-[1.5rem] font-light mb-3">No Logs Found</h3>
+        <p class="text-[0.88rem] text-secondary leading-relaxed">You haven't tailored your resume for any positions yet. Run your first adaptation in "Tailor a Job" to start building your log history.</p>
+        <BaseButton @click="routeToTailor" variant="primary" class="mt-4 flex-btn mx-auto">
           <span class="material-icons">auto_awesome</span>
           Start Tailoring
         </BaseButton>
@@ -24,23 +24,23 @@
     </div>
 
     <!-- Logs grid -->
-    <div v-else class="drawer-body-grid-full">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       <div 
         v-for="item in history" 
         :key="item.id" 
-        class="history-log-card-full" 
+        class="p-4 md:py-4 md:px-6 bg-surface border border-secondary/25 rounded-lg cursor-pointer transition-all duration-250 flex flex-col justify-between hover:border-primary" 
         @click="loadHistoryLog(item)"
       >
-        <div class="history-log-header">
-          <span class="log-company">{{ item.company }}</span>
-          <span class="log-match-score">
-            <span class="material-icons mr-4" style="font-size: 13px;">check_circle</span>
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.12em] text-primary">{{ item.company }}</span>
+          <span class="text-[0.68rem] text-success font-medium tracking-[0.08em] inline-flex items-center">
+            <span class="material-icons mr-1" style="font-size: 13px;">check_circle</span>
             95% ATS MATCH
           </span>
         </div>
-        <h5 class="log-title">{{ item.jobTitle }}</h5>
-        <div class="log-desc-snippet">{{ getSnippet(item.jobDescription) }}</div>
-        <span class="log-date">Optimized {{ formatDate(item.createdAt) }}</span>
+        <h5 class="text-[0.98rem] font-normal mb-2 whitespace-nowrap overflow-hidden text-ellipsis text-primary">{{ item.jobTitle }}</h5>
+        <div class="text-[0.82rem] text-secondary leading-normal mb-3 flex-1">{{ getSnippet(item.jobDescription) }}</div>
+        <span class="text-[0.72rem] text-secondary">Optimized {{ formatDate(item.createdAt) }}</span>
       </div>
     </div>
   </div>
@@ -116,151 +116,3 @@ function loadHistoryLog(item) {
 }
 </script>
 
-<style scoped>
-.step-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.step-instruction h2 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--colors-primary);
-}
-
-.instruction-desc {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  margin-top: 4px;
-}
-
-.flex-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Empty State */
-.empty-history-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-}
-
-.empty-history-card {
-  max-width: 520px;
-  width: 100%;
-  text-align: center;
-  padding: 40px !important;
-}
-
-.empty-icon {
-  font-size: 3.5rem;
-  color: var(--colors-secondary);
-  margin-bottom: 20px;
-}
-
-.empty-history-card h3 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  margin-bottom: 12px;
-}
-
-.empty-history-card p {
-  font-size: 0.88rem;
-  color: var(--colors-secondary);
-  line-height: 1.6;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.mt-16 {
-  margin-top: 16px;
-}
-
-/* Grid layout */
-.drawer-body-grid-full {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.history-log-card-full {
-  padding: var(--spacing-md) var(--spacing-lg);
-  background-color: var(--colors-surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.history-log-card-full:hover {
-  border-color: var(--colors-primary);
-}
-
-.history-log-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.log-company {
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--colors-primary);
-}
-
-.log-match-score {
-  font-size: 0.68rem;
-  color: var(--success);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  display: inline-flex;
-  align-items: center;
-}
-
-.log-title {
-  font-size: 0.98rem;
-  font-weight: 400;
-  margin-bottom: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--colors-primary);
-}
-
-.log-desc-snippet {
-  font-size: 0.82rem;
-  color: var(--colors-secondary);
-  line-height: 1.5;
-  margin-bottom: 12px;
-  flex: 1;
-}
-
-.log-date {
-  font-size: 0.72rem;
-  color: var(--colors-secondary);
-}
-
-.mr-4 {
-  margin-right: 4px;
-}
-
-.flex-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-</style>

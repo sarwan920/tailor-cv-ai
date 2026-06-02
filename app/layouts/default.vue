@@ -1,25 +1,27 @@
 <template>
-  <div class="marketing-layout">
+  <div class="min-h-screen flex flex-col bg-neutral text-primary w-full">
     <!-- Clean, Sleek Top Header Navigation -->
-    <header class="marketing-header no-print">
-      <div class="header-container">
-        <NuxtLink to="/" class="branding-logo">
-          <span class="logo-icon material-icons">grain</span>
-          <span class="logo-text">Vellum <span class="accent-text">AI</span></span>
+    <header class="h-20 border-b border-secondary/25 bg-surface sticky top-0 z-50 flex items-center no-print">
+      <div class="w-full max-w-[1200px] mx-auto px-8 flex justify-between items-center">
+        <NuxtLink to="/" class="flex items-center gap-2">
+          <span class="text-[1.8rem] text-tertiary material-icons">grain</span>
+          <span class="font-sans font-medium text-[1.15rem] tracking-[0.08em] uppercase text-primary">
+            Vellum <span class="text-tertiary font-bold">AI</span>
+          </span>
         </NuxtLink>
 
         <!-- Public Nav Links -->
-        <nav class="marketing-nav">
-          <a href="#features" class="nav-link">Features</a>
-          <a href="#workflow" class="nav-link">How It Works</a>
-          <a href="#pricing" class="nav-link">Pricing</a>
+        <nav class="hidden md:flex gap-8">
+          <a href="#features" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.18em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all after:duration-150 hover:after:w-full">Features</a>
+          <a href="#workflow" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.18em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all after:duration-150 hover:after:w-full">How It Works</a>
+          <a href="#pricing" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.18em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all after:duration-150 hover:after:w-full">Pricing</a>
         </nav>
 
         <!-- Primary CTA: Single Load-Bearing Tertiary Accent Button -->
         <div class="header-cta">
           <template v-if="auth.user.value">
-            <div class="user-nav-group">
-              <span class="user-email no-mobile">{{ auth.user.value.email }}</span>
+            <div class="flex items-center gap-3">
+              <span class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.08em] text-secondary hidden md:inline">{{ auth.user.value.email }}</span>
               <BaseButton to="/resume" variant="primary" size="sm" class="flex-btn">
                 Workspace
                 <span class="material-icons" style="font-size: 14px;">arrow_forward</span>
@@ -40,20 +42,20 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="marketing-body">
+    <main class="flex-1 w-full">
       <slot />
     </main>
 
     <!-- Sleek Minimal Footer -->
-    <footer class="marketing-footer no-print">
-      <div class="footer-container">
-        <div class="footer-brand">
-          <span class="material-icons text-stone mr-4">grain</span>
-          <span class="footer-brand-text">Vellum AI &copy; 2026</span>
+    <footer class="bg-surface border-t border-secondary/25 py-8 no-print">
+      <div class="max-w-[1200px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center font-sans text-[0.72rem] text-secondary tracking-[0.08em] uppercase gap-4">
+        <div class="flex items-center">
+          <span class="material-icons text-secondary mr-2">grain</span>
+          <span>Vellum AI &copy; 2026</span>
         </div>
-        <div class="footer-status">
-          <span class="status-indicator"></span>
-          <span class="status-text">All AI Systems Operational</span>
+        <div class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 bg-success rounded-full inline-block shadow-[0_0_8px_var(--color-success)]"></span>
+          <span>All AI Systems Operational</span>
         </div>
       </div>
     </footer>
@@ -65,175 +67,3 @@ import { useAuth } from '@/composables/useAuth';
 const auth = useAuth();
 </script>
 
-<style scoped>
-.marketing-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--colors-neutral);
-  color: var(--colors-primary);
-  width: 100%;
-}
-
-.marketing-header {
-  height: 80px;
-  border-bottom: 1px solid var(--border-light);
-  background-color: var(--colors-surface);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-}
-
-.header-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.branding-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.logo-icon {
-  font-size: 1.8rem;
-  color: var(--colors-tertiary);
-}
-
-.logo-text {
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 1.15rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--colors-primary);
-}
-
-.logo-text .accent-text {
-  color: var(--colors-tertiary);
-  font-weight: 700;
-}
-
-.marketing-nav {
-  display: flex;
-  gap: var(--spacing-lg);
-}
-
-.nav-link {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--colors-secondary);
-  position: relative;
-  padding: 4px 0;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: var(--colors-primary);
-  transition: width var(--transition-fast);
-}
-
-.nav-link:hover {
-  color: var(--colors-primary);
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.marketing-body {
-  flex: 1;
-  width: 100%;
-}
-
-.marketing-footer {
-  background-color: var(--colors-surface);
-  border-top: 1px solid var(--border-light);
-  padding: var(--spacing-lg) 0;
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  color: var(--colors-secondary);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-}
-
-.footer-brand {
-  display: flex;
-  align-items: center;
-}
-
-.footer-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.status-indicator {
-  width: 6px;
-  height: 6px;
-  background-color: var(--success);
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 8px var(--success);
-}
-
-.text-stone { color: var(--colors-secondary); }
-.mr-4 { margin-right: 4px; }
-
-@media (max-width: 768px) {
-  .marketing-nav {
-    display: none; /* Hide standard links on mobile to keep layout clean */
-  }
-  .footer-container {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-.user-nav-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.user-email {
-  font-family: var(--font-family);
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--colors-secondary);
-}
-
-@media (max-width: 768px) {
-  .no-mobile {
-    display: none !important;
-  }
-}
-</style>
