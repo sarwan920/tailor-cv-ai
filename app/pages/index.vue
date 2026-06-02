@@ -25,7 +25,7 @@
 
           <div class="hero-pill">
             <span class="pill-dot"></span>
-            <span class="pill-text">INTRODUCING CV TAILOR AI V1.0</span>
+            <span class="pill-text">INTRODUCING VELLUM AI V1.0</span>
           </div>
           
           <h1 class="display-title display-title-futuristic">

@@ -6,7 +6,7 @@
         <!-- Back link to Landing Page -->
         <NuxtLink to="/" class="sidebar-branding">
           <span class="sidebar-logo-icon material-icons">grain</span>
-          <span class="sidebar-logo-text">CV Tailor <span class="accent-text">AI</span></span>
+          <span class="sidebar-logo-text">Vellum <span class="accent-text">AI</span></span>
         </NuxtLink>
         
         <nav class="sidebar-menu">

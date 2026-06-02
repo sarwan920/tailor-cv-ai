@@ -5,7 +5,7 @@
       <div class="header-container">
         <NuxtLink to="/" class="branding-logo">
           <span class="logo-icon material-icons">grain</span>
-          <span class="logo-text">CV Tailor <span class="accent-text">AI</span></span>
+          <span class="logo-text">Vellum <span class="accent-text">AI</span></span>
         </NuxtLink>
 
         <!-- Public Nav Links -->
@@ -49,14 +49,11 @@
       <div class="footer-container">
         <div class="footer-brand">
           <span class="material-icons text-stone mr-4">grain</span>
-          <span class="footer-brand-text">CV Tailor AI &copy; 2026</span>
+          <span class="footer-brand-text">Vellum AI &copy; 2026</span>
         </div>
         <div class="footer-status">
           <span class="status-indicator"></span>
           <span class="status-text">All AI Systems Operational</span>
-        </div>
-        <div class="footer-design-tag">
-          Design: Skincare Matte minimal v1.0
         </div>
       </div>
     </footer>
