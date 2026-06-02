@@ -75,7 +75,7 @@
       <!-- Comparative Panes -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[52vh] mt-3">
         <!-- Left: Original Referencing -->
-        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+        <div class="flex flex-col h-[380px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
           <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
             <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Original Master CV</span>
             <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
@@ -86,7 +86,7 @@
         </div>
 
         <!-- Right: Editable Tailored Output -->
-        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+        <div class="flex flex-col h-[480px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
           <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
             <div class="flex bg-primary/5 p-0.5 rounded-md border border-secondary/25 items-center">
               <button 

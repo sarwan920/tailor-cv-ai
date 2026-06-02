@@ -467,7 +467,7 @@ onUnmounted(() => {
 .premium-card-3d:hover {
   transform: perspective(800px) rotateX(5deg) rotateY(-5deg) translateY(-8px);
   border-color: var(--color-primary) !important;
-  background-color: #FFFFFF !important;
+  background-color: var(--color-card-hover) !important;
   box-shadow: 0 16px 40px rgba(27, 25, 23, 0.05) !important;
 }
 

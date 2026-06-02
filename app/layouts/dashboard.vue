@@ -1,10 +1,59 @@
 <template>
   <div class="flex min-h-screen w-screen overflow-x-hidden flex-col lg:flex-row bg-neutral">
-    <!-- Fixed Left Sidebar Navigation (Hidden during print) -->
-    <aside class="w-full lg:w-[280px] bg-surface border-b lg:border-b-0 lg:border-r border-secondary/25 flex flex-col lg:h-screen lg:fixed left-0 top-0 z-50 p-4 lg:py-8 lg:px-4 justify-between no-print">
+    <!-- Mobile Sticky Header -->
+    <header class="h-16 sticky top-0 bg-surface border-b border-secondary/25 flex items-center justify-between px-4 z-40 lg:hidden no-print">
+      <NuxtLink to="/" class="flex items-center gap-2">
+        <span class="text-[1.5rem] text-tertiary material-icons">grain</span>
+        <span class="font-sans font-medium text-[0.98rem] tracking-[0.08em] uppercase text-primary">
+          Vellum <span class="text-tertiary font-bold">AI</span>
+        </span>
+      </NuxtLink>
+
+      <div class="flex items-center gap-3">
+        <!-- Theme Toggle -->
+        <button 
+          @click="toggleTheme" 
+          class="w-8 h-8 flex items-center justify-center rounded-full border border-secondary/25 hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0"
+          aria-label="Toggle theme"
+        >
+          <span class="material-icons text-[15px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+        </button>
+
+        <!-- Hamburger Menu Button -->
+        <button 
+          @click="menuOpen = !menuOpen" 
+          class="w-8 h-8 flex items-center justify-center rounded border border-secondary/25 hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0"
+          aria-label="Toggle menu"
+        >
+          <span class="material-icons text-[18px]">{{ menuOpen ? 'close' : 'menu' }}</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer Backdrop Overlay -->
+    <transition
+      enter-active-class="transition-opacity duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div 
+        v-if="menuOpen" 
+        class="fixed inset-0 z-[100] bg-primary/40 backdrop-blur-sm lg:hidden"
+        @click="menuOpen = false"
+      ></div>
+    </transition>
+
+    <!-- Fixed Left Sidebar Navigation (Hidden during print, Drawer on Mobile) -->
+    <aside 
+      class="fixed inset-y-0 left-0 z-[101] w-[280px] max-w-[85vw] bg-surface border-r border-secondary/25 flex flex-col h-screen p-4 lg:py-8 lg:px-4 justify-between no-print transition-transform duration-300 ease-in-out lg:translate-x-0 lg:z-50 lg:w-[280px] lg:border-r"
+      :class="menuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+    >
       <div class="flex flex-col flex-1">
         <!-- Back link to Landing Page -->
-        <NuxtLink to="/" class="flex items-center gap-2 mb-6 lg:mb-8 px-2">
+        <NuxtLink to="/" @click="menuOpen = false" class="flex items-center gap-2 mb-6 lg:mb-8 px-2">
           <span class="text-[1.8rem] text-tertiary material-icons">grain</span>
           <span class="font-sans font-medium text-[1.15rem] tracking-[0.08em] uppercase text-primary">
             Vellum <span class="text-tertiary font-bold">AI</span>
@@ -13,19 +62,19 @@
         
         <nav class="flex flex-col gap-1.5 flex-1">
           <!-- exact prop makes sure active class only matches exactly for "/resume" -->
-          <NuxtLink to="/resume" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active" exact-active-class="active">
+          <NuxtLink to="/resume" @click="menuOpen = false" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active" exact-active-class="active">
             <span class="material-icons text-[18px] text-secondary transition-colors duration-150">folder_open</span>
             Master Resume
           </NuxtLink>
-          <NuxtLink to="/tailor" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active">
+          <NuxtLink to="/tailor" @click="menuOpen = false" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active">
             <span class="material-icons text-[18px] text-secondary transition-colors duration-150">auto_awesome</span>
             Tailor a Job
           </NuxtLink>
-          <NuxtLink to="/studio" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active">
+          <NuxtLink to="/studio" @click="menuOpen = false" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active">
             <span class="material-icons text-[18px] text-secondary transition-colors duration-150">analytics</span>
             Tailoring Studio
           </NuxtLink>
-          <NuxtLink to="/history" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active">
+          <NuxtLink to="/history" @click="menuOpen = false" class="flex items-center gap-3 py-2.5 px-3 lg:py-3 lg:px-4 font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary rounded border border-transparent transition-all duration-150 cursor-pointer hover:text-primary hover:bg-primary/5 [&.active]:text-primary [&.active]:bg-neutral [&.active]:border-secondary [&.active_span]:text-tertiary" active-class="active">
             <span class="material-icons text-[18px] text-secondary transition-colors duration-150">history</span>
             Adaptation Logs
           </NuxtLink>
@@ -33,16 +82,25 @@
       </div>
 
       <div class="border-t border-secondary/25 pt-4 mt-4">
-        <div v-if="auth.user.value" class="flex items-center gap-2 mb-4 px-2">
-          <span class="material-icons text-[20px] text-secondary">account_circle</span>
-          <span class="font-sans text-[0.68rem] text-secondary font-medium uppercase tracking-[0.08em] whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px]">{{ auth.user.value.email }}</span>
+        <div class="flex items-center justify-between mb-4 px-2 gap-2">
+          <div v-if="auth.user.value" class="flex items-center gap-2 overflow-hidden">
+            <span class="material-icons text-[20px] text-secondary">account_circle</span>
+            <span class="font-sans text-[0.68rem] text-secondary font-medium uppercase tracking-[0.08em] whitespace-nowrap overflow-hidden text-ellipsis max-w-[140px]">{{ auth.user.value.email }}</span>
+          </div>
+          <button 
+            @click="toggleTheme" 
+            class="w-7 h-7 flex items-center justify-center rounded-full border border-secondary/25 hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0 ml-auto"
+            aria-label="Toggle theme"
+          >
+            <span class="material-icons text-[15px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+          </button>
         </div>
         <div class="flex flex-col gap-2">
-          <BaseButton @click="showApiSettings = true" variant="secondary" class="w-full flex-btn">
+          <BaseButton @click="() => { showApiSettings = true; menuOpen = false; }" variant="secondary" class="w-full flex-btn">
             <span class="material-icons">vpn_key</span>
             {{ hasApiKey ? 'Key Set' : 'Configure Key' }}
           </BaseButton>
-          <BaseButton @click="auth.logout" variant="danger" class="w-full flex-btn">
+          <BaseButton @click="() => { auth.logout(); menuOpen = false; }" variant="danger" class="w-full flex-btn">
             <span class="material-icons">logout</span>
             Sign Out
           </BaseButton>
@@ -99,8 +157,11 @@
 import '@/assets/css/main.css';
 import { ref, onMounted } from 'vue';
 import { useAuth } from '@/composables/useAuth';
+import { useTheme } from '@/composables/useTheme';
 
 const auth = useAuth();
+const { isDark, toggleTheme } = useTheme();
+const menuOpen = ref(false);
 const showApiSettings = ref(false);
 const apiKeyInput = ref('');
 const hasApiKey = ref(false);

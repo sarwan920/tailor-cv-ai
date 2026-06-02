@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
     });
 
     const prompt = `
-You are an expert executive resume writer and career coach. Your task is to tailor a job applicant's base CV to align perfectly with a target job description while maintaining complete factual honesty.
+You are an expert executive resume writer. Your task is to tailor a job applicant's base CV to align with a target job description while maintaining complete factual honesty and writing in a natural, authentic, human-like voice.
 
 Target Job Information:
 - Job Title: ${jobTitle}
@@ -69,13 +69,19 @@ Target Job Description:
 ${jobDescription}
 \`\`\`
 
+Style Guidelines (CRITICAL for a natural, non-AI feel):
+1. **Avoid AI Buzzwords & Cliches**: Do NOT use overused AI vocabulary. Strictly ban words like: "spearhead", "leverage", "utilize", "orchestrate", "harness", "synergize", "delve", "testament", "tapestry", "seamless", "robust", "transformative", "innovative", "passionate-driven", "result-oriented".
+2. **Use Simple, Direct Verbs**: Write in a plain, confident tone. Use strong, direct action verbs instead of flowery jargon. For example, use "built", "designed", "created", "led", "managed", "rewrote", "optimized", "reduced", "scaled".
+3. **Natural Professional Tone**: The tone must sound like a seasoned industry professional writing for their peers. Avoid marketing fluff, clinical summaries, or over-the-top enthusiasm (e.g., do not use adjectives like "highly successful", "groundbreaking", or "unprecedented"). Let the technical details and metrics speak for themselves.
+4. **Vary Sentence Structure**: Avoid repetitive bullet structures (e.g., starting every bullet with a verb followed by a formulaic "resulting in X%..."). Keep bullet points punchy, direct, and varied.
+5. **Brief, Grounded Summary**: The summary at the top should be brief and honest (2-3 sentences max). Describe the candidate's core expertise, background, and focus areas without generic buzzwords.
+
 Instructions for Tailoring:
 1. **Fact Fidelity**: DO NOT invent any new jobs, degrees, certifications, skills, or achievements that are not explicitly stated or implied by the original CV. Keep all dates, company names, and credentials exactly as they are in the original.
-2. **Keyword Optimization**: Identify critical skills, technologies, and action verbs from the Job Description and seamlessly integrate them into the CV (especially in the summary and experience bullet points) where the applicant's existing experience supports it.
-3. **Professional Summary**: Rewrite the professional summary at the top to highlight the specific experience and passion that directly matches the target job.
-4. **Experience Bullets**: Rephrase, reorder, or emphasize the achievements in the applicant's experience to showcase impact relative to the job requirements. Use the CAR (Context, Action, Result) or STAR method. Focus on quantifiable metrics where possible.
-5. **Formatting**: Output the tailored CV using clean, professional Markdown. Use standard headings (e.g. # Summary, # Experience, # Skills, # Education).
-6. **Custom Directives**: ${options?.customDirectives || 'None specified.'}
+2. **Keyword Optimization**: Identify critical skills and technologies from the Job Description and integrate them naturally into the CV (especially in the summary and experience bullet points) where the applicant's existing experience supports it.
+3. **Experience Bullets**: Rephrase, reorder, or emphasize the achievements in the applicant's experience to highlight impact relative to the job requirements, focusing on quantifiable metrics where possible.
+4. **Formatting**: Output the tailored CV using clean, professional Markdown. Use standard headings (e.g. # Summary, # Experience, # Skills, # Education).
+5. **Custom Directives**: ${options?.customDirectives || 'None specified.'}
 
 You must return your response in the following JSON format:
 {

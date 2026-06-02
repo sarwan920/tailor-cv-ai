@@ -1,7 +1,7 @@
 <template>
   <div 
     ref="viewport"
-    class="w-full h-[420px] relative flex justify-center items-center overflow-visible bg-transparent cursor-default py-2 lg:py-0"
+    class="w-full h-[880px] lg:h-[420px] relative flex justify-center items-center overflow-visible bg-transparent cursor-default py-2 lg:py-0"
     @mousemove="handleMouseMove"
     @mouseleave="handleMouseLeave"
   >
@@ -25,7 +25,7 @@
     >
       
       <!-- LEFT CARD: MASTER BASELINE PROFILE -->
-      <div class="w-full lg:w-[48%] h-[420px] bg-[#F8F5EE] border border-primary/8 rounded-lg shadow-[0_10px_30px_rgba(27,25,23,0.03)] relative flex flex-col p-5 lg:py-6 lg:px-5 box-border transition-all duration-500 transform-style-3d">
+      <div class="w-full lg:w-[48%] h-[420px] bg-card-left border border-card-border rounded-lg shadow-[0_10px_30px_rgba(27,25,23,0.03)] relative flex flex-col p-5 lg:py-6 lg:px-5 box-border transition-all duration-500 transform-style-3d">
         <div class="absolute -top-2.5 left-5 font-sans text-[0.52rem] font-bold uppercase tracking-[0.15em] bg-primary text-surface py-0.5 px-2 rounded-sm shadow-[0_2px_6px_rgba(27,25,23,0.08)]">MASTER BASELINE</div>
         
         <!-- Synced vertical laser scan sweep line for left card ONLY -->
@@ -62,7 +62,7 @@
 
       <!-- RIGHT CARD: OPTIMIZED TAILORED PROFILE -->
       <div 
-        class="w-full lg:w-[48%] h-[420px] bg-white border border-secondary rounded-lg shadow-[0_10px_30px_rgba(27,25,23,0.03)] relative flex flex-col p-5 lg:py-6 lg:px-5 box-border transition-all duration-500 transform-style-3d"
+        class="w-full lg:w-[48%] h-[420px] bg-card-right border border-secondary rounded-lg shadow-[0_10px_30px_rgba(27,25,23,0.03)] relative flex flex-col p-5 lg:py-6 lg:px-5 box-border transition-all duration-500 transform-style-3d"
         :class="[
           pipelineState, 
           pipelineState === 'success' ? 'border-success! shadow-[0_12px_35px_rgba(95,107,86,0.08)]!' : ''
@@ -142,9 +142,9 @@
               <span class="loading-pill"></span>
             </div>
             <div class="flex flex-wrap gap-1.5 animate-[fade-in-up_0.5s_ease_forwards]" v-else>
-              <span class="font-sans text-[0.55rem] font-semibold text-[#2F382A] bg-success/8 border border-success/30 py-0.5 px-1.5 rounded-sm">AWS ECS</span>
-              <span class="font-sans text-[0.55rem] font-semibold text-[#2F382A] bg-success/8 border border-success/30 py-0.5 px-1.5 rounded-sm">Terraform</span>
-              <span class="font-sans text-[0.55rem] font-semibold text-[#2F382A] bg-success/8 border border-success/30 py-0.5 px-1.5 rounded-sm">Kubernetes</span>
+              <span class="font-sans text-[0.55rem] font-semibold text-success bg-success/8 border border-success/30 py-0.5 px-1.5 rounded-sm">AWS ECS</span>
+              <span class="font-sans text-[0.55rem] font-semibold text-success bg-success/8 border border-success/30 py-0.5 px-1.5 rounded-sm">Terraform</span>
+              <span class="font-sans text-[0.55rem] font-semibold text-success bg-success/8 border border-success/30 py-0.5 px-1.5 rounded-sm">Kubernetes</span>
             </div>
           </div>
         </div>

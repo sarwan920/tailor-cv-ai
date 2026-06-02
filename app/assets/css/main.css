@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-primary: #1B1917;
   --color-secondary: #8C847A;
   --color-tertiary: #3E3832;
@@ -11,6 +11,90 @@
   --color-success: #5F6B56;
   --color-warning: #B38F4D;
   --color-danger: #964B43;
+
+  --color-card-left: #F8F5EE;
+  --color-card-right: #FFFFFF;
+  --color-card-border: rgba(27, 25, 23, 0.08);
+  --color-card-hover: #FFFFFF;
+  
+  --color-glass-bg: rgba(246, 241, 228, 0.8);
+  --color-glass-border: rgba(140, 132, 122, 0.15);
+
+  /* Legacy variables compatibility */
+  --colors-primary: #1B1917;
+  --colors-secondary: #8C847A;
+  --colors-tertiary: #3E3832;
+  --colors-neutral: #EAE6DC;
+  --colors-surface: #F6F1E4;
+  --colors-on-primary: #F6F1E4;
+
+  --border-color: #8C847A;
+  --border-light: rgba(140, 132, 122, 0.25);
+  
+  --success: #5F6B56;
+  --warning: #B38F4D;
+  --danger: #964B43;
+
+  --font-family: 'Jost', sans-serif;
+  
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+.dark {
+  --color-primary: #ECE8DF;      /* Off-white text */
+  --color-secondary: #A39B92;    /* Muted warm grey */
+  --color-tertiary: #D4CBB9;     /* Light gold accent */
+  --color-neutral: #171615;      /* Deep matte charcoal bg */
+  --color-surface: #22201F;      /* Matte card surface */
+  --color-on-primary: #171615;   /* Accent text contrast */
+
+  --color-success: #75826A;
+  --color-warning: #CBB07E;
+  --color-danger: #B8766F;
+
+  --color-card-left: #1C1B1A;
+  --color-card-right: #262423;
+  --color-card-border: rgba(236, 232, 223, 0.08);
+  --color-card-hover: #2C2927;
+
+  --color-glass-bg: rgba(34, 32, 31, 0.8);
+  --color-glass-border: rgba(163, 155, 146, 0.15);
+
+  /* Legacy variables for dark mode compatibility */
+  --colors-primary: #ECE8DF;
+  --colors-secondary: #A39B92;
+  --colors-tertiary: #D4CBB9;
+  --colors-neutral: #171615;
+  --colors-surface: #22201F;
+  --colors-on-primary: #171615;
+  --border-color: #A39B92;
+  --border-light: rgba(236, 232, 223, 0.15);
+
+  --success: #75826A;
+  --warning: #CBB07E;
+  --danger: #B8766F;
+}
+
+@theme {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-tertiary: var(--color-tertiary);
+  --color-neutral: var(--color-neutral);
+  --color-surface: var(--color-surface);
+  --color-on-primary: var(--color-on-primary);
+  
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
+  --color-card-left: var(--color-card-left);
+  --color-card-right: var(--color-card-right);
+  --color-card-border: var(--color-card-border);
 
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Jost', sans-serif;
@@ -42,32 +126,6 @@
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
   }
-}
-
-:root {
-  /* Keep support for legacy CSS variables in standard components */
-  --colors-primary: #1B1917;
-  --colors-secondary: #8C847A;
-  --colors-tertiary: #3E3832;
-  --colors-neutral: #EAE6DC;
-  --colors-surface: #F6F1E4;
-  --colors-on-primary: #F6F1E4;
-
-  --border-color: #8C847A;
-  --border-light: rgba(140, 132, 122, 0.25);
-  
-  --success: #5F6B56;
-  --warning: #B38F4D;
-  --danger: #964B43;
-
-  --font-family: 'Jost', sans-serif;
-  
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
-
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
 }
 
 /* Document Reset & Base Customizations */
@@ -186,16 +244,16 @@ body {
 
 /* Glassmorphism subtle utilities */
 .glass-matte {
-  background-color: rgba(246, 241, 228, 0.8) !important;
+  background-color: var(--color-glass-bg, rgba(246, 241, 228, 0.8)) !important;
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(140, 132, 122, 0.15) !important;
+  border: 1px solid var(--color-glass-border, rgba(140, 132, 122, 0.15)) !important;
 }
 
 /* Markdown Rendering Layout Styles (CV Preview) */
 .markdown-preview {
   font-family: var(--font-family);
   color: var(--colors-primary);
-  background-color: #FFFFFF;
+  background-color: var(--colors-surface);
   padding: 40px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-light);
