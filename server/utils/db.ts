@@ -2,7 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
 import { createClient } from '@libsql/client';
 
-const dbUrl = process.env.DATABASE_URL || 'file:./prisma/dev.db';
+const rawUrl = process.env.DATABASE_URL;
+const dbUrl = (rawUrl && rawUrl !== 'undefined') ? rawUrl : 'file:./prisma/dev.db';
+
+console.log(`[Database Init] Connecting to database URL: ${dbUrl}`);
 
 const config = {
   url: dbUrl,
