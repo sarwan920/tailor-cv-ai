@@ -53,8 +53,9 @@ export default defineEventHandler(async (event) => {
       createdAt: user.createdAt
     };
   } catch (error: any) {
+    console.error("Login Endpoint Error Details:", error);
     throw createError({
-      statusCode: error.statusCode || 500,
+      statusCode: 400,
       statusMessage: error.message || 'Internal server error during login',
     });
   }

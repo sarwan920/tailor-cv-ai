@@ -78,8 +78,9 @@ export default defineEventHandler(async (event) => {
 
     return user;
   } catch (error: any) {
+    console.error("Signup Endpoint Error Details:", error);
     throw createError({
-      statusCode: error.statusCode || 500,
+      statusCode: 400,
       statusMessage: error.message || 'Internal server error during registration',
     });
   }
