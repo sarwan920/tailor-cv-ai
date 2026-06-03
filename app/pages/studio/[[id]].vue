@@ -1089,14 +1089,14 @@ function generateDirectPDF() {
   color: #111111 !important;
   box-sizing: border-box !important;
   margin: 0 !important;
-  padding: 0.4in 0.5in !important; /* Margins inside printable canvas */
+  padding: 0.3in 0.45in !important; /* Tighter margins to maximize vertical space */
   display: block !important;
 }
 
 .print-mode-layout-only .markdown-preview {
   font-family: 'Inter', sans-serif !important;
-  font-size: 8.2pt !important;
-  line-height: 1.25 !important;
+  font-size: 9pt !important;
+  line-height: 1.22 !important;
   padding: 0 !important;
   margin: 0 !important;
   border: none !important;
@@ -1115,7 +1115,7 @@ function generateDirectPDF() {
 }
 
 .print-mode-layout-only .resume-name-custom {
-  font-size: 15pt !important;
+  font-size: 16pt !important;
   font-weight: 700 !important;
   color: #000000 !important;
   line-height: 1.1 !important;
@@ -1124,7 +1124,7 @@ function generateDirectPDF() {
 }
 
 .print-mode-layout-only .resume-title-custom {
-  font-size: 9.0pt !important; /* Slightly smaller than before to match design */
+  font-size: 10pt !important;
   font-weight: 600 !important;
   color: #444444 !important;
   text-transform: uppercase !important;
@@ -1133,14 +1133,14 @@ function generateDirectPDF() {
 }
 
 .print-mode-layout-only .resume-contacts-custom {
-  font-size: 8.0pt !important;
+  font-size: 8.5pt !important;
   color: #555555 !important;
   line-height: 1.3 !important;
 }
 
 /* Section Headings */
 .print-mode-layout-only .markdown-preview h1 {
-  font-size: 10.5pt !important;
+  font-size: 11pt !important;
   font-weight: 700 !important;
   margin-top: 10pt !important;
   margin-bottom: 4pt !important;
@@ -1152,7 +1152,7 @@ function generateDirectPDF() {
 }
 
 .print-mode-layout-only .markdown-preview h2 {
-  font-size: 9.5pt !important;
+  font-size: 10.2pt !important;
   font-weight: 700 !important;
   margin-top: 8pt !important;
   margin-bottom: 3pt !important;
@@ -1164,16 +1164,16 @@ function generateDirectPDF() {
 }
 
 .print-mode-layout-only .markdown-preview p {
-  font-size: 8.2pt !important;
+  font-size: 9pt !important;
   margin-top: 0 !important;
   margin-bottom: 3pt !important;
   color: #222222 !important;
-  line-height: 1.25 !important;
+  line-height: 1.22 !important;
 }
 
 /* Job entry styling helper: paragraph containing bold metadata */
 .print-mode-layout-only .markdown-preview p > strong:first-child {
-  font-size: 8.5pt !important;
+  font-size: 9.2pt !important;
   color: #000000 !important;
 }
 
@@ -1182,21 +1182,21 @@ function generateDirectPDF() {
   list-style-type: disc !important;
   margin-top: 0 !important;
   margin-bottom: 4pt !important;
-  padding-left: 12pt !important;
+  padding-left: 13pt !important;
 }
 
 .print-mode-layout-only .markdown-preview ol {
   list-style-type: decimal !important;
   margin-top: 0 !important;
   margin-bottom: 4pt !important;
-  padding-left: 12pt !important;
+  padding-left: 13pt !important;
 }
 
 .print-mode-layout-only .markdown-preview li {
-  font-size: 8.2pt !important;
+  font-size: 9pt !important;
   margin-bottom: 1.5pt !important;
   color: #222222 !important;
-  line-height: 1.25 !important;
+  line-height: 1.22 !important;
 }
 
 .print-mode-layout-only .markdown-preview strong {

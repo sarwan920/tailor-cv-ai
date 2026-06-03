@@ -65,7 +65,7 @@ Instructions for Tailoring:
 1. **Fact Fidelity**: DO NOT invent any new jobs, degrees, certifications, skills, or achievements that are not explicitly stated or implied by the original CV. Keep all dates, company names, and credentials exactly as they are in the original.
 2. **Keyword Optimization**: Identify critical skills and technologies from the Job Description and integrate them naturally into the CV (especially in the summary and experience bullet points) where the applicant's existing experience supports it.
 3. **Experience Bullets**: Rephrase, reorder, or emphasize the achievements in the applicant's experience to highlight impact relative to the job requirements, focusing on quantifiable metrics where possible.
-4. **Formatting**: Output the tailored CV using clean, professional Markdown. Use standard headings (e.g. # Summary, # Experience, # Skills, # Education).
+4. **Formatting & Structure**: Output the tailored CV using clean, professional Markdown with standard headings in the exact following section order: # Summary, # Experience, # Education, and # Skills (with # Skills strictly placed as the final section of the resume).
 5. **Custom Directives**: ${options?.customDirectives || 'None specified.'}
 
 You must return your response in the following JSON format:
