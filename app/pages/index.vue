@@ -1,32 +1,23 @@
 <template>
-  <div class="flex flex-col bg-neutral w-full dot-matrix-bg fade-in">
-    <!-- SVG Noise filter for film grain realism -->
-    <svg style="display: none;">
-      <filter id="noiseFilter">
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.035 0" />
-      </filter>
-    </svg>
-    <div class="noise-overlay"></div>
-
+  <div class="flex flex-col bg-neutral w-full fade-in">
     <!-- Hero Section -->
-    <section class="py-20 lg:py-24 px-0 bg-neutral relative overflow-hidden hero-section-grid">
+    <section class="py-20 lg:py-24 px-0 bg-[linear-gradient(180deg,var(--color-brand-green-soft)_0%,var(--color-neutral)_100%)] dark:bg-[linear-gradient(135deg,var(--color-canvas-dark)_0%,var(--color-brand-green-soft)_100%)] relative overflow-hidden hero-section-grid">
       <!-- Premium Ambient Glimmer behind copy -->
-      <div class="absolute w-[450px] h-[450px] -left-[12%] top-0 rounded-full bg-[radial-gradient(circle,rgba(140,132,122,0.12)_0%,rgba(234,230,220,0)_75%)] blur-[45px] pointer-events-none z-0"></div>
+      <div class="absolute w-[450px] h-[450px] -left-[12%] top-0 rounded-full bg-[radial-gradient(circle,rgba(0,212,164,0.08)_0%,rgba(255,255,255,0)_75%)] blur-[45px] pointer-events-none z-0"></div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-[1200px] mx-auto px-8 relative z-10">
         <!-- Left Column: Copy & Actions -->
         <div class="text-center lg:text-left flex flex-col items-center lg:items-start self-center w-full">
-          <div class="inline-flex items-center gap-2 border border-primary/18 py-1.5 px-3 rounded-full mb-4">
-            <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+          <div class="inline-flex items-center gap-2 border border-brand-green/30 bg-brand-green/10 py-1.5 px-3 rounded-full mb-4">
+            <span class="w-1.5 h-1.5 bg-brand-green rounded-full"></span>
             <span class="font-sans text-[0.62rem] font-semibold tracking-[0.16em] uppercase text-primary">INTRODUCING VELLUM AI V1.0</span>
           </div>
           
-          <h1 class="font-serif text-[2.5rem] lg:text-[4rem] font-bold tracking-tight leading-[1.1] text-primary mb-4 opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.15s]">
-            Refine your professional <span class="font-serif italic font-normal">narrative.</span>
+          <h1 class="font-sans text-[2.5rem] lg:text-[3.8rem] font-bold tracking-tight leading-[1.05] text-primary mb-4 opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.15s]">
+            Refine your professional <span class="text-brand-green font-extrabold">narrative.</span>
           </h1>
           
-          <p class="text-[1.02rem] leading-relaxed text-secondary mb-6 font-light text-center lg:text-left opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.35s]">
+          <p class="text-[0.98rem] leading-relaxed text-secondary mb-6 font-normal text-center lg:text-left opacity-0 translate-y-4 animate-reveal-up [animation-delay:0.35s]">
             An executive-grade CV adaptation engine designed for modern developers and architects. 
             Extract required keywords, align credentials with LinkedIn requisitions in real-time, and pass ATS checkpoints—with zero data fabrication.
           </p>
@@ -41,8 +32,8 @@
           </div>
         </div>
         
-        <!-- Right Column: Interactive Parallax 3D Mockup -->
-        <div class="flex justify-center lg:justify-end items-center w-full relative self-center">
+        <!-- Right Column: Interactive Product Mockup style container -->
+        <div class="flex justify-center lg:justify-end items-center w-full relative self-center border border-hairline/40 rounded-lg p-2 bg-neutral/80 shadow-[rgba(0,0,0,0.12)_0px_24px_48px_-8px]">
           <ResumePipelineAnim :pipelineState="pipelineState" :atsScore="atsScore" />
         </div>
       </div>

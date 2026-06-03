@@ -12,7 +12,7 @@
 
     <!-- Empty State if no history logs exist yet -->
     <div v-if="history.length === 0" class="flex items-center justify-center min-h-[50vh]">
-      <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-secondary/25 rounded-lg">
+      <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-hairline rounded-lg shadow-none">
         <span class="material-icons text-[3.5rem] text-secondary mb-5">receipt_long</span>
         <h3 class="text-[1.5rem] font-light mb-3">No Logs Found</h3>
         <p class="text-[0.88rem] text-secondary leading-relaxed">You haven't tailored your resume for any positions yet. Run your first adaptation in "Tailor a Job" to start building your log history.</p>
@@ -28,7 +28,7 @@
       <div 
         v-for="item in history" 
         :key="item.id" 
-        class="p-4 md:py-4 md:px-6 bg-surface border border-secondary/25 rounded-lg cursor-pointer transition-all duration-250 flex flex-col justify-between hover:border-primary" 
+        class="p-4 md:py-4 md:px-6 bg-surface/50 border border-hairline rounded-lg cursor-pointer transition-all duration-250 flex flex-col justify-between hover:border-brand-green shadow-none" 
         @click="loadHistoryLog(item)"
       >
         <div class="flex justify-between items-center mb-2">

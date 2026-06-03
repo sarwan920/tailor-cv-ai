@@ -1,36 +1,36 @@
 <template>
   <div>
     <!-- Loading Animation (Runs inside the container when AI is tailoring) -->
-    <div v-if="isTailoring" class="flex justify-center items-center p-10 md:p-5 min-h-[480px] bg-surface border border-secondary/25 rounded-lg no-print">
+    <div v-if="isTailoring" class="flex justify-center items-center p-10 md:p-5 min-h-[480px] bg-surface border border-hairline rounded-lg no-print">
       <div class="max-w-[480px] w-full text-center">
         <div class="relative w-12 h-12 mx-auto mb-6 flex items-center justify-center">
-          <span class="material-icons text-[2.2rem] text-tertiary animate-spin">sync</span>
+          <span class="material-icons text-[2.2rem] text-brand-green animate-spin">sync</span>
         </div>
         <h3 class="text-[1.4rem] font-light text-primary tracking-wide mb-1.5">AI Tailoring Engine Active</h3>
         <p class="text-[0.85rem] text-secondary mb-8">Rephrasing accomplishments and mapping keywords...</p>
         
-        <div class="flex flex-col gap-4 text-left max-w-[320px] mx-auto p-4 bg-neutral border border-secondary/25 rounded-md">
-          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 1 ? 'text-primary font-medium' : (tailoringStep > 1 ? 'text-success' : '')">
+        <div class="flex flex-col gap-4 text-left max-w-[320px] mx-auto p-4 bg-neutral border border-hairline rounded-md">
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 1 ? 'text-primary font-medium' : (tailoringStep > 1 ? 'text-brand-green' : '')">
             <span class="flex items-center justify-center w-5 h-5">
-              <span class="material-icons text-[14px]" :class="tailoringStep === 1 ? 'animate-spin text-tertiary' : (tailoringStep > 1 ? 'text-success' : '')">{{ loaderStepIcon(1) }}</span>
+              <span class="material-icons text-[14px]" :class="tailoringStep === 1 ? 'animate-spin text-brand-green' : (tailoringStep > 1 ? 'text-brand-green' : '')">{{ loaderStepIcon(1) }}</span>
             </span>
             <span>Parsing LinkedIn Job Description...</span>
           </div>
-          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 2 ? 'text-primary font-medium' : (tailoringStep > 2 ? 'text-success' : '')">
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 2 ? 'text-primary font-medium' : (tailoringStep > 2 ? 'text-brand-green' : '')">
             <span class="flex items-center justify-center w-5 h-5">
-              <span class="material-icons text-[14px]" :class="tailoringStep === 2 ? 'animate-spin text-tertiary' : (tailoringStep > 2 ? 'text-success' : '')">{{ loaderStepIcon(2) }}</span>
+              <span class="material-icons text-[14px]" :class="tailoringStep === 2 ? 'animate-spin text-brand-green' : (tailoringStep > 2 ? 'text-brand-green' : '')">{{ loaderStepIcon(2) }}</span>
             </span>
             <span>Analyzing Resume Experience & Keywords...</span>
           </div>
-          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 3 ? 'text-primary font-medium' : (tailoringStep > 3 ? 'text-success' : '')">
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 3 ? 'text-primary font-medium' : (tailoringStep > 3 ? 'text-brand-green' : '')">
             <span class="flex items-center justify-center w-5 h-5">
-              <span class="material-icons text-[14px]" :class="tailoringStep === 3 ? 'animate-spin text-tertiary' : (tailoringStep > 3 ? 'text-success' : '')">{{ loaderStepIcon(3) }}</span>
+              <span class="material-icons text-[14px]" :class="tailoringStep === 3 ? 'animate-spin text-brand-green' : (tailoringStep > 3 ? 'text-brand-green' : '')">{{ loaderStepIcon(3) }}</span>
             </span>
             <span>Generating fact-faithful optimized Markdown...</span>
           </div>
-          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 4 ? 'text-primary font-medium' : (tailoringStep > 4 ? 'text-success' : '')">
+          <div class="flex items-center gap-3 text-[0.82rem] text-secondary transition-all duration-250" :class="tailoringStep === 4 ? 'text-primary font-medium' : (tailoringStep > 4 ? 'text-brand-green' : '')">
             <span class="flex items-center justify-center w-5 h-5">
-              <span class="material-icons text-[14px]" :class="tailoringStep === 4 ? 'animate-spin text-tertiary' : (tailoringStep > 4 ? 'text-success' : '')">{{ loaderStepIcon(4) }}</span>
+              <span class="material-icons text-[14px]" :class="tailoringStep === 4 ? 'animate-spin text-brand-green' : (tailoringStep > 4 ? 'text-brand-green' : '')">{{ loaderStepIcon(4) }}</span>
             </span>
             <span>Finalizing ATS compliance checks...</span>
           </div>

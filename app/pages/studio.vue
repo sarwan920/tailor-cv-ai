@@ -30,41 +30,41 @@
         </BaseButton>
       </div>
 
-      <!-- ATS Scorecard Dashboard Widget -->
-      <section class="p-4 md:py-4 md:px-8 bg-surface border border-secondary/25 rounded-lg">
-        <div class="flex justify-between items-center border-b border-secondary/25 pb-3 mb-4">
+      <!-- ATS Scorecard Dashboard Widget (Mintlify Featured Card style) -->
+      <section class="p-4 md:py-4 md:px-8 bg-surface border-2 border-brand-green rounded-lg shadow-[rgba(0,212,164,0.08)_0px_8px_24px]">
+        <div class="flex justify-between items-center border-b border-hairline pb-3 mb-4">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-success"></span>
+            <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
             <h4 class="text-[0.72rem] font-medium uppercase tracking-[0.24em] text-secondary">ATS Compatibility Report</h4>
           </div>
-          <span class="bg-transparent border border-success text-success font-sans font-medium text-[0.68rem] tracking-[0.18em] py-1 px-2.5 rounded-sm">96% ATS MATCH RATING</span>
+          <span class="bg-brand-green text-primary font-sans font-bold text-[0.68rem] tracking-[0.18em] py-1 px-2.5 rounded-full">96% ATS MATCH RATING</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="border-r-0 md:border-r border-secondary/25 pr-0 md:pr-6">
-            <h5 class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Matched Competencies</h5>
+          <div class="border-r-0 md:border-r border-hairline pr-0 md:pr-6">
+            <h5 class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Matched Competencies</h5>
             <div class="flex flex-wrap gap-1.5">
-              <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="bg-neutral border border-secondary/25 text-primary text-[0.72rem] font-normal py-1 px-2 rounded-sm inline-flex items-center">
-                <span class="material-icons mr-1" style="font-size: 13px;">check_circle</span>
+              <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="bg-neutral border border-hairline text-primary text-[0.72rem] font-medium py-1 px-2 rounded-md inline-flex items-center">
+                <span class="material-icons mr-1 text-brand-green" style="font-size: 13px;">check_circle</span>
                 {{ skill }}
               </span>
             </div>
           </div>
 
-          <div class="border-r-0 md:border-r border-secondary/25 pr-0 md:pr-6">
-            <h5 class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Integrated Keywords</h5>
+          <div class="border-r-0 md:border-r border-hairline pr-0 md:pr-6">
+            <h5 class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Integrated Keywords</h5>
             <div class="flex flex-wrap gap-1.5">
-              <span v-for="kw in tailoredAnalysis.keywordsHighlighted" :key="kw" class="bg-neutral border border-secondary/25 text-primary font-mono text-[0.7rem] py-0.5 px-1.5 rounded-sm">
+              <span v-for="kw in tailoredAnalysis.keywordsHighlighted" :key="kw" class="bg-brand-tag/10 border border-brand-tag/20 text-brand-tag font-mono text-[0.7rem] py-0.5 px-1.5 rounded-sm">
                 {{ kw }}
               </span>
             </div>
           </div>
 
           <div>
-            <h5 class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Revisions Summary</h5>
+            <h5 class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Revisions Summary</h5>
             <ul class="pl-0 list-none flex flex-col gap-1.5">
               <li v-for="adj in tailoredAnalysis.adjustmentsMade" :key="adj" class="text-[0.78rem] text-primary leading-normal flex items-start">
-                <span class="material-icons mr-1.5 text-secondary" style="font-size: 11px; margin-top: 3px;">arrow_right</span>
+                <span class="material-icons mr-1.5 text-brand-green" style="font-size: 11px; margin-top: 3px;">arrow_right</span>
                 {{ adj }}
               </li>
             </ul>
@@ -862,7 +862,7 @@ function triggerPrint() {
   }
 
   .markdown-preview {
-    font-family: 'Jost', sans-serif !important;
+    font-family: 'Inter', sans-serif !important;
     font-size: 8.2pt !important;
     line-height: 1.15 !important;
     padding: 0 !important;

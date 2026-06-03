@@ -10,8 +10,8 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[68vh]">
       <!-- Write CV -->
-      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-        <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-hairline rounded-lg">
+        <div class="py-3.5 px-5 border-b border-hairline bg-surface flex items-center justify-between">
           <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Markdown / Plain Text</span>
           <div class="flex items-center">
             <BaseButton @click="triggerFileInput" variant="secondary" size="xs" class="flex-btn mr-1.5">
@@ -34,15 +34,15 @@
         <textarea 
           v-model="masterCv.content" 
           @input="onContentChange"
-          class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.9rem] p-5 leading-relaxed resize-none outline-none min-h-[240px] lg:min-h-full"
+          class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.88rem] p-5 leading-relaxed resize-none outline-none min-h-[240px] lg:min-h-full"
           :class="showValidationError && !masterCv.content.trim() ? 'border border-danger bg-danger/5' : ''"
           placeholder="Paste or write your master CV here..."
         ></textarea>
       </div>
 
       <!-- Preview CV -->
-      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-        <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-hairline rounded-lg">
+        <div class="py-3.5 px-5 border-b border-hairline bg-surface flex items-center justify-between">
           <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Live CV Preview</span>
           <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
         </div>
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="flex justify-between items-center mt-2.5 border-t border-secondary/25 pt-8">
+    <div class="flex justify-between items-center mt-2.5 border-t border-hairline pt-8">
       <div></div> <!-- Spacer -->
       <!-- Highlight Interactive CTA -->
       <BaseButton @click="handleNextClick" variant="primary" size="lg" class="flex-btn">

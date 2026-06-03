@@ -1,27 +1,27 @@
 <template>
   <div class="min-h-screen flex flex-col bg-neutral text-primary w-full">
     <!-- Clean, Sleek Top Header Navigation -->
-    <header class="h-20 border-b border-secondary/25 bg-surface sticky top-0 z-50 flex items-center no-print">
+    <header class="h-16 border-b border-hairline bg-neutral sticky top-0 z-50 flex items-center no-print">
       <div class="w-full max-w-[1200px] mx-auto px-8 flex justify-between items-center">
-        <NuxtLink to="/" class="flex items-center gap-2">
-          <span class="text-[1.8rem] text-tertiary material-icons">grain</span>
-          <span class="font-sans font-medium text-[1.15rem] tracking-[0.08em] uppercase text-primary">
-            Vellum <span class="text-tertiary font-bold">AI</span>
+        <NuxtLink to="/" class="flex items-center gap-1.5 select-none">
+          <span class="text-[1.3rem] text-brand-green material-icons">grain</span>
+          <span class="font-sans font-bold text-[1.05rem] tracking-tight uppercase text-primary flex items-center">
+            Vellum<span class="text-brand-green font-extrabold ml-0.5">.</span>
           </span>
         </NuxtLink>
 
         <!-- Public Nav Links -->
         <nav class="hidden md:flex gap-8">
-          <a href="#features" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.18em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all after:duration-150 hover:after:w-full">Features</a>
-          <a href="#workflow" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.18em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all after:duration-150 hover:after:w-full">How It Works</a>
-          <a href="#pricing" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.18em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all after:duration-150 hover:after:w-full">Pricing</a>
+          <a href="#features" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.14em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green after:transition-all after:duration-150 hover:after:w-full">Features</a>
+          <a href="#workflow" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.14em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green after:transition-all after:duration-150 hover:after:w-full">How It Works</a>
+          <a href="#pricing" class="font-sans text-[0.72rem] font-medium uppercase tracking-[0.14em] text-secondary relative py-1 hover:text-primary transition-colors duration-150 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green after:transition-all after:duration-150 hover:after:w-full">Pricing</a>
         </nav>
 
         <!-- Primary CTA & Theme Toggle -->
         <div class="flex items-center gap-4">
           <button 
             @click="toggleTheme" 
-            class="w-9 h-9 flex items-center justify-center rounded-full border border-secondary/25 hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0"
+            class="w-9 h-9 flex items-center justify-center rounded-full border border-hairline hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0"
             aria-label="Toggle theme"
           >
             <span class="material-icons text-[18px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
@@ -51,7 +51,7 @@
           <!-- Hamburger Button (Mobile Only) -->
           <button 
             @click="menuOpen = !menuOpen" 
-            class="w-9 h-9 flex md:hidden items-center justify-center rounded border border-secondary/25 hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0"
+            class="w-9 h-9 flex md:hidden items-center justify-center rounded-full border border-hairline hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer shrink-0"
             aria-label="Toggle menu"
           >
             <span class="material-icons text-[20px]">{{ menuOpen ? 'close' : 'menu' }}</span>
@@ -92,7 +92,7 @@
     >
       <div 
         v-if="menuOpen" 
-        class="fixed top-0 right-0 bottom-0 z-[101] w-[280px] max-w-[85vw] bg-surface border-l border-secondary/25 p-6 flex flex-col justify-between shadow-lg md:hidden"
+        class="fixed top-0 right-0 bottom-0 z-[101] w-[280px] max-w-[85vw] bg-surface border-l border-hairline p-6 flex flex-col justify-between shadow-lg md:hidden"
       >
         <div class="flex flex-col gap-8">
           <!-- Drawer Header -->
@@ -100,7 +100,7 @@
             <span class="font-sans font-medium text-[0.9rem] tracking-[0.12em] uppercase text-secondary">Navigation</span>
             <button 
               @click="menuOpen = false" 
-              class="w-8 h-8 flex items-center justify-center rounded-full border border-secondary/25 hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer"
+              class="w-8 h-8 flex items-center justify-center rounded-full border border-hairline hover:border-primary text-secondary hover:text-primary transition-all duration-150 cursor-pointer"
             >
               <span class="material-icons text-[18px]">close</span>
             </button>
@@ -133,7 +133,7 @@
         </div>
 
         <!-- Drawer CTA Section (Bottom) -->
-        <div class="border-t border-secondary/25 pt-6 flex flex-col gap-4">
+        <div class="border-t border-hairline pt-6 flex flex-col gap-4">
           <template v-if="auth.user.value">
             <div class="flex flex-col gap-3">
               <span class="font-sans text-[0.68rem] text-secondary font-medium uppercase tracking-[0.08em] break-all">{{ auth.user.value.email }}</span>
@@ -155,14 +155,14 @@
     </transition>
 
     <!-- Sleek Minimal Footer -->
-    <footer class="bg-surface border-t border-secondary/25 py-8 no-print">
+    <footer class="bg-surface border-t border-hairline py-8 no-print">
       <div class="max-w-[1200px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center font-sans text-[0.72rem] text-secondary tracking-[0.08em] uppercase gap-4">
-        <div class="flex items-center">
-          <span class="material-icons text-secondary mr-2">grain</span>
-          <span>Vellum AI &copy; 2026</span>
+        <div class="flex items-center gap-1">
+          <span class="text-brand-green material-icons">grain</span>
+          <span class="font-bold text-primary tracking-tight">Vellum<span class="text-brand-green">.</span></span>
         </div>
         <div class="flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 bg-success rounded-full inline-block shadow-[0_0_8px_var(--color-success)]"></span>
+          <span class="w-1.5 h-1.5 bg-brand-green rounded-full inline-block"></span>
           <span>All AI Systems Operational</span>
         </div>
       </div>
