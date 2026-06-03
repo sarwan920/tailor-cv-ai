@@ -324,3 +324,25 @@ body {
 .dark-preview strong {
   color: var(--colors-primary) !important;
 }
+
+@media print {
+  .no-print, header, aside, footer {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  html, body, #__nuxt, #__layout, main {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important;
+  }
+}

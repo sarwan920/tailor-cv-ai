@@ -825,14 +825,20 @@ function triggerPrint() {
 
 /* One-Page Direct Printing Styles */
 @media print {
-  /* Absolute isolation: Hide everything except the print-only container */
-  body * {
-    visibility: hidden !important;
+  /* Hide all interactive, dashboard, sidebar, and layout elements */
+  header, aside, footer, .no-print {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
   }
 
+  /* Force print wrapper to display and position at top left */
   .print-mode-layout-only,
   .print-mode-layout-only * {
     visibility: visible !important;
+    display: block !important;
   }
 
   .print-mode-layout-only {
@@ -842,7 +848,6 @@ function triggerPrint() {
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-    display: block !important;
     background: #FFFFFF !important;
     color: #000000 !important;
   }
@@ -850,41 +855,44 @@ function triggerPrint() {
   body, html {
     background: #FFFFFF !important;
     color: #000000 !important;
-    font-size: 8.5pt !important;
-    line-height: 1.25 !important;
+    font-size: 8.2pt !important;
+    line-height: 1.15 !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
   .markdown-preview {
     font-family: 'Jost', sans-serif !important;
-    font-size: 8.5pt !important;
-    line-height: 1.25 !important;
+    font-size: 8.2pt !important;
+    line-height: 1.15 !important;
     padding: 0 !important;
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
     background: #FFFFFF !important;
     color: #000000 !important;
+    page-break-inside: avoid !important;
   }
 
   .markdown-preview h1 {
-    font-size: 14pt !important;
+    font-size: 13pt !important;
     font-weight: 600 !important;
     margin-top: 0 !important;
-    margin-bottom: 4pt !important;
-    padding-bottom: 2pt !important;
+    margin-bottom: 3pt !important;
+    padding-bottom: 1.5pt !important;
     border-bottom: 1.5px solid #000000 !important;
     color: #000000 !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
 
   .markdown-preview h2 {
-    font-size: 10.5pt !important;
+    font-size: 10pt !important;
     font-weight: 600 !important;
-    margin-top: 6pt !important;
-    margin-bottom: 3pt !important;
+    margin-top: 5pt !important;
+    margin-bottom: 2pt !important;
     border-bottom: 1px solid #8C847A !important;
-    padding-bottom: 1pt !important;
+    padding-bottom: 0.5pt !important;
     color: #000000 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.08em !important;
@@ -893,19 +901,19 @@ function triggerPrint() {
   }
 
   .markdown-preview p {
-    font-size: 8.5pt !important;
-    margin-bottom: 3pt !important;
+    font-size: 8.2pt !important;
+    margin-bottom: 2pt !important;
     color: #000000 !important;
   }
 
   .markdown-preview ul, .markdown-preview ol {
-    margin-bottom: 3pt !important;
+    margin-bottom: 2pt !important;
     padding-left: 10pt !important;
   }
 
   .markdown-preview li {
-    font-size: 8.5pt !important;
-    margin-bottom: 1pt !important;
+    font-size: 8.2pt !important;
+    margin-bottom: 0.5pt !important;
     color: #000000 !important;
   }
 
@@ -915,14 +923,14 @@ function triggerPrint() {
   }
 
   .markdown-preview hr {
-    margin: 4pt 0 !important;
+    margin: 3pt 0 !important;
     border: none !important;
     border-top: 1px solid #8C847A !important;
   }
 
   @page {
     size: portrait;
-    margin: 0.4in 0.5in 0.4in 0.5in !important;
+    margin: 0.3in 0.4in 0.3in 0.4in !important;
   }
 }
 </style>
