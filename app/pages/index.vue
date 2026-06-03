@@ -1,9 +1,13 @@
 <template>
   <div class="flex flex-col bg-neutral w-full fade-in">
     <!-- Hero Section -->
-    <section class="py-20 lg:py-24 px-0 bg-[linear-gradient(180deg,var(--color-brand-green-soft)_0%,var(--color-neutral)_100%)] dark:bg-[linear-gradient(135deg,var(--color-canvas-dark)_0%,var(--color-brand-green-soft)_100%)] relative overflow-hidden hero-section-grid">
-      <!-- Premium Ambient Glimmer behind copy -->
-      <div class="absolute w-[450px] h-[450px] -left-[12%] top-0 rounded-full bg-[radial-gradient(circle,rgba(0,212,164,0.08)_0%,rgba(255,255,255,0)_75%)] blur-[45px] pointer-events-none z-0"></div>
+    <section class="py-20 lg:py-24 px-0 bg-neutral border-b border-hairline relative overflow-hidden hero-section-grid">
+      <!-- Subtle Grid Pattern -->
+      <div class="absolute inset-0 bg-grid-pattern opacity-80 dark:opacity-40 pointer-events-none z-0"></div>
+
+      <!-- Modern Ambient Glimmer/Glows -->
+      <div class="absolute w-[600px] h-[600px] -left-[10%] -top-[20%] rounded-full bg-[radial-gradient(circle,rgba(0,212,164,0.12)_0%,rgba(0,212,164,0)_70%)] blur-[80px] pointer-events-none z-0"></div>
+      <div class="absolute w-[500px] h-[500px] -right-[5%] bottom-0 rounded-full bg-[radial-gradient(circle,rgba(55,114,207,0.08)_0%,rgba(55,114,207,0)_70%)] blur-[80px] pointer-events-none z-0"></div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-[1200px] mx-auto px-8 relative z-10">
         <!-- Left Column: Copy & Actions -->
@@ -409,6 +413,15 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-hairline) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%);
+}
+
 /* Universal Scroll Reveal properties - Awwwards Inset Mask Wipe */
 .scroll-reveal {
   opacity: 0;
