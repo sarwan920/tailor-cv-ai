@@ -289,11 +289,49 @@ async function navigateNext() {
   router.push('/tailor');
 }
 
+function convertRawToMarkdown(text) {
+  if (!text) return '';
+  let lines = text.split('\n');
+  const sections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications', 'adaptation logs'];
+  
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    let trimmed = line.trim();
+    
+    // Convert plain sections to markdown headers
+    const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
+    if (sections.includes(normalized)) {
+      const leadingSpaces = line.match(/^\s*/)[0];
+      lines[i] = leadingSpaces + '# ' + trimmed.replace(/^#+\s*/, '');
+      continue;
+    }
+    
+    // Convert Unicode bullets • to markdown lists *
+    if (trimmed.startsWith('•') || trimmed.startsWith('·')) {
+      const leadingSpaces = line.match(/^\s*/)[0];
+      lines[i] = leadingSpaces + '* ' + trimmed.substring(1).trim();
+      continue;
+    }
+    
+    // Convert lines with company name/title and date to markdown subheading ##
+    if (
+      (trimmed.includes(' – ') || trimmed.includes(' - ') || trimmed.includes(' | ')) && 
+      (trimmed.toLowerCase().includes('remote') || trimmed.toLowerCase().includes('developer') || trimmed.toLowerCase().includes('engineer') || trimmed.toLowerCase().includes('manager') || trimmed.toLowerCase().includes('specialist') || /\b(19|20)\d{2}\b/.test(trimmed))
+    ) {
+      if (!trimmed.startsWith('#') && !trimmed.startsWith('*') && !trimmed.startsWith('-') && !trimmed.startsWith('1.') && !trimmed.startsWith('**')) {
+        const leadingSpaces = line.match(/^\s*/)[0];
+        lines[i] = leadingSpaces + '## ' + trimmed;
+      }
+    }
+  }
+  return lines.join('\n');
+}
+
 const renderedMaster = computed(() => {
   if (!masterCv.value.content) {
     return '<p style="color: var(--colors-secondary); font-style: italic;">A clean styled preview of your resume will be displayed here in real-time as you write...</p>';
   }
-  return marked.parse(masterCv.value.content);
+  return marked.parse(convertRawToMarkdown(masterCv.value.content));
 });
 
 function getWordCount(text) {

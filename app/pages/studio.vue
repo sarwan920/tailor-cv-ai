@@ -126,8 +126,9 @@
                 <span class="material-icons" style="font-size: 16px;">content_paste_go</span>
               </BaseButton>
 
-              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md!" title="PDF/Print">
-                <span class="material-icons" style="font-size: 16px;">print</span>
+              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="px-3! h-7! inline-flex! items-center! gap-1.5! rounded-md!" title="Download PDF / Print">
+                <span class="material-icons" style="font-size: 16px;">picture_as_pdf</span>
+                <span class="font-sans text-[0.68rem] uppercase tracking-wider font-semibold">Download PDF</span>
               </BaseButton>
             </div>
           </div>
@@ -717,17 +718,55 @@ function getWordCount(text) {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
+function convertRawToMarkdown(text) {
+  if (!text) return '';
+  let lines = text.split('\n');
+  const sections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications', 'adaptation logs'];
+  
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    let trimmed = line.trim();
+    
+    // Convert plain sections to markdown headers
+    const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
+    if (sections.includes(normalized)) {
+      const leadingSpaces = line.match(/^\s*/)[0];
+      lines[i] = leadingSpaces + '# ' + trimmed.replace(/^#+\s*/, '');
+      continue;
+    }
+    
+    // Convert Unicode bullets • to markdown lists *
+    if (trimmed.startsWith('•') || trimmed.startsWith('·')) {
+      const leadingSpaces = line.match(/^\s*/)[0];
+      lines[i] = leadingSpaces + '* ' + trimmed.substring(1).trim();
+      continue;
+    }
+    
+    // Convert lines with company name/title and date to markdown subheading ##
+    if (
+      (trimmed.includes(' – ') || trimmed.includes(' - ') || trimmed.includes(' | ')) && 
+      (trimmed.toLowerCase().includes('remote') || trimmed.toLowerCase().includes('developer') || trimmed.toLowerCase().includes('engineer') || trimmed.toLowerCase().includes('manager') || trimmed.toLowerCase().includes('specialist') || /\b(19|20)\d{2}\b/.test(trimmed))
+    ) {
+      if (!trimmed.startsWith('#') && !trimmed.startsWith('*') && !trimmed.startsWith('-') && !trimmed.startsWith('1.') && !trimmed.startsWith('**')) {
+        const leadingSpaces = line.match(/^\s*/)[0];
+        lines[i] = leadingSpaces + '## ' + trimmed;
+      }
+    }
+  }
+  return lines.join('\n');
+}
+
 const renderedMaster = computed(() => {
   if (!masterCv.value.content) return '<p style="color: var(--colors-secondary); font-style: italic;">No master resume loaded...</p>';
-  return marked.parse(masterCv.value.content);
+  return marked.parse(convertRawToMarkdown(masterCv.value.content));
 });
 
 const renderedTailored = computed(() => {
-  return marked.parse(tailoredContent.value || '');
+  return marked.parse(convertRawToMarkdown(tailoredContent.value || ''));
 });
 
 const renderedPrintContent = computed(() => {
-  return marked.parse(printContent.value || '');
+  return marked.parse(convertRawToMarkdown(printContent.value || ''));
 });
 
 function downloadMarkdown() {
@@ -753,7 +792,7 @@ async function copyMarkdown() {
 
 async function copyRichText() {
   try {
-    const htmlContent = marked.parse(tailoredContent.value || '');
+    const htmlContent = marked.parse(convertRawToMarkdown(tailoredContent.value || ''));
     const wrappedHtml = `
       <!DOCTYPE html>
       <html>
