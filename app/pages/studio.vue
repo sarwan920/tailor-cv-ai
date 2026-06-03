@@ -853,10 +853,60 @@ function triggerPrint() {
 
   printContent.value = content;
   isPrintLayoutActive.value = true;
-  setTimeout(() => {
+
+  // Dynamically load html2pdf.js if not already loaded
+  if (typeof html2pdf === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.onload = () => {
+      // Short delay to ensure vue updates printContent in DOM
+      setTimeout(() => {
+        generateDirectPDF();
+      }, 250);
+    };
+    script.onerror = () => {
+      console.error('Failed to load html2pdf.js, falling back to window.print()');
+      window.print();
+      isPrintLayoutActive.value = false;
+    };
+    document.head.appendChild(script);
+  } else {
+    setTimeout(() => {
+      generateDirectPDF();
+    }, 200);
+  }
+}
+
+function generateDirectPDF() {
+  const element = document.querySelector('.print-mode-layout-only');
+  if (!element) {
+    isPrintLayoutActive.value = false;
+    return;
+  }
+  
+  const companyName = (useJobForm().value.company || 'Tailored').replace(/[^a-zA-Z0-9]/g, '_');
+  const jobTitle = (useJobForm().value.jobTitle || 'Resume').replace(/[^a-zA-Z0-9]/g, '_');
+  
+  const opt = {
+    margin:       [8, 12, 8, 12], // top, left, bottom, right margins in mm
+    filename:     `CV_${companyName}_${jobTitle}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { 
+      scale: 2.2, // High resolution density
+      useCORS: true, 
+      letterRendering: true,
+      logging: false 
+    },
+    jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
+  };
+  
+  html2pdf().set(opt).from(element).save().then(() => {
+    isPrintLayoutActive.value = false;
+  }).catch((err) => {
+    console.error('html2pdf generation failed, falling back to print:', err);
     window.print();
     isPrintLayoutActive.value = false;
-  }, 500);
+  });
 }
 </script>
 
@@ -880,6 +930,147 @@ function triggerPrint() {
 }
 
 /* One-Page Direct Printing Styles */
+.print-mode-layout-only {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 8.0in !important;
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  box-sizing: border-box !important;
+}
+
+.print-mode-layout-only .markdown-preview {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 8.2pt !important;
+  line-height: 1.25 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: #FFFFFF !important;
+  color: #111111 !important;
+}
+
+/* Resume Header Sizing & Alignment */
+.print-mode-layout-only .markdown-preview > p:nth-child(1) {
+  font-size: 15pt !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  margin-top: 0 !important;
+  margin-bottom: 2pt !important;
+  color: #000000 !important;
+  line-height: 1.1 !important;
+}
+
+.print-mode-layout-only .markdown-preview > h1:first-child {
+  font-size: 15pt !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  margin-top: 0 !important;
+  margin-bottom: 2pt !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  color: #000000 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  line-height: 1.1 !important;
+}
+
+.print-mode-layout-only .markdown-preview > p:nth-child(2) {
+  font-size: 9.5pt !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  margin-top: 0 !important;
+  margin-bottom: 3pt !important;
+  color: #444444 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.print-mode-layout-only .markdown-preview > p:nth-child(3) {
+  font-size: 8.0pt !important;
+  text-align: center !important;
+  margin-top: 0 !important;
+  margin-bottom: 8pt !important;
+  color: #555555 !important;
+  line-height: 1.3 !important;
+  border-bottom: 0.5pt solid #dddddd !important;
+  padding-bottom: 6pt !important;
+}
+
+/* Section Headings */
+.print-mode-layout-only .markdown-preview h1 {
+  font-size: 10.5pt !important;
+  font-weight: 700 !important;
+  margin-top: 10pt !important;
+  margin-bottom: 4pt !important;
+  padding-bottom: 2pt !important;
+  border-bottom: 0.75pt solid #111111 !important;
+  color: #000000 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+.print-mode-layout-only .markdown-preview h2 {
+  font-size: 9.5pt !important;
+  font-weight: 700 !important;
+  margin-top: 8pt !important;
+  margin-bottom: 3pt !important;
+  border-bottom: 0.5pt solid #888888 !important;
+  padding-bottom: 1.5pt !important;
+  color: #000000 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+.print-mode-layout-only .markdown-preview p {
+  font-size: 8.2pt !important;
+  margin-top: 0 !important;
+  margin-bottom: 3pt !important;
+  color: #222222 !important;
+  line-height: 1.25 !important;
+}
+
+/* Job entry styling helper: paragraph containing bold metadata */
+.print-mode-layout-only .markdown-preview p > strong:first-child {
+  font-size: 8.5pt !important;
+  color: #000000 !important;
+}
+
+/* Lists and Bullet Points styling (resets Tailwind reset) */
+.print-mode-layout-only .markdown-preview ul {
+  list-style-type: disc !important;
+  margin-top: 0 !important;
+  margin-bottom: 4pt !important;
+  padding-left: 12pt !important;
+}
+
+.print-mode-layout-only .markdown-preview ol {
+  list-style-type: decimal !important;
+  margin-top: 0 !important;
+  margin-bottom: 4pt !important;
+  padding-left: 12pt !important;
+}
+
+.print-mode-layout-only .markdown-preview li {
+  font-size: 8.2pt !important;
+  margin-bottom: 1.5pt !important;
+  color: #222222 !important;
+  line-height: 1.25 !important;
+}
+
+.print-mode-layout-only .markdown-preview strong {
+  font-weight: 600 !important;
+  color: #111111 !important;
+}
+
+.print-mode-layout-only .markdown-preview hr {
+  margin: 6pt 0 !important;
+  border: none !important;
+  border-top: 0.5pt solid #dddddd !important;
+}
+
 @media print {
   /* Hide all interactive, dashboard, sidebar, and layout elements */
   header, aside, footer, .no-print {
@@ -911,145 +1102,6 @@ function triggerPrint() {
   body, html {
     background: #FFFFFF !important;
     color: #000000 !important;
-    font-size: 8.2pt !important;
-    line-height: 1.15 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .markdown-preview {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 8.2pt !important;
-    line-height: 1.25 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    background: #FFFFFF !important;
-    color: #111111 !important;
-  }
-
-  /* Resume Header Sizing & Alignment */
-  .markdown-preview > p:nth-child(1) {
-    font-size: 15pt !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    margin-top: 0 !important;
-    margin-bottom: 2pt !important;
-    color: #000000 !important;
-    line-height: 1.1 !important;
-  }
-
-  .markdown-preview > h1:first-child {
-    font-size: 15pt !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    margin-top: 0 !important;
-    margin-bottom: 2pt !important;
-    border-bottom: none !important;
-    padding-bottom: 0 !important;
-    color: #000000 !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-    line-height: 1.1 !important;
-  }
-
-  .markdown-preview > p:nth-child(2) {
-    font-size: 9.5pt !important;
-    font-weight: 600 !important;
-    text-align: center !important;
-    margin-top: 0 !important;
-    margin-bottom: 3pt !important;
-    color: #444444 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-  }
-
-  .markdown-preview > p:nth-child(3) {
-    font-size: 8.0pt !important;
-    text-align: center !important;
-    margin-top: 0 !important;
-    margin-bottom: 8pt !important;
-    color: #555555 !important;
-    line-height: 1.3 !important;
-    border-bottom: 0.5pt solid #dddddd !important;
-    padding-bottom: 6pt !important;
-  }
-
-  /* Section Headings */
-  .markdown-preview h1 {
-    font-size: 10.5pt !important;
-    font-weight: 700 !important;
-    margin-top: 10pt !important;
-    margin-bottom: 4pt !important;
-    padding-bottom: 2pt !important;
-    border-bottom: 0.75pt solid #111111 !important;
-    color: #000000 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-
-  .markdown-preview h2 {
-    font-size: 9.5pt !important;
-    font-weight: 700 !important;
-    margin-top: 8pt !important;
-    margin-bottom: 3pt !important;
-    border-bottom: 0.5pt solid #888888 !important;
-    padding-bottom: 1.5pt !important;
-    color: #000000 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-
-  .markdown-preview p {
-    font-size: 8.2pt !important;
-    margin-top: 0 !important;
-    margin-bottom: 3pt !important;
-    color: #222222 !important;
-    line-height: 1.25 !important;
-  }
-
-  /* Job entry styling helper: paragraph containing bold metadata */
-  .markdown-preview p > strong:first-child {
-    font-size: 8.5pt !important;
-    color: #000000 !important;
-  }
-
-  /* Lists and Bullet Points styling (resets Tailwind reset) */
-  .markdown-preview ul {
-    list-style-type: disc !important;
-    margin-top: 0 !important;
-    margin-bottom: 4pt !important;
-    padding-left: 12pt !important;
-  }
-
-  .markdown-preview ol {
-    list-style-type: decimal !important;
-    margin-top: 0 !important;
-    margin-bottom: 4pt !important;
-    padding-left: 12pt !important;
-  }
-
-  .markdown-preview li {
-    font-size: 8.2pt !important;
-    margin-bottom: 1.5pt !important;
-    color: #222222 !important;
-    line-height: 1.25 !important;
-  }
-
-  .markdown-preview strong {
-    font-weight: 600 !important;
-    color: #111111 !important;
-  }
-
-  .markdown-preview hr {
-    margin: 6pt 0 !important;
-    border: none !important;
-    border-top: 0.5pt solid #dddddd !important;
   }
 
   @page {
