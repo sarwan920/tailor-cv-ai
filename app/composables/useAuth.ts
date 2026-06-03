@@ -1,4 +1,4 @@
-import { useState, computed } from '#imports';
+import { useState, computed, useRequestHeaders } from '#imports';
 
 export interface User {
   id: string;
@@ -13,7 +13,8 @@ export const useAuth = () => {
   const fetchUser = async () => {
     try {
       loading.value = true;
-      const data = await $fetch<User | null>('/api/auth/me');
+      const headers = useRequestHeaders(['cookie']);
+      const data = await $fetch<User | null>('/api/auth/me', { headers });
       user.value = data;
     } catch (e) {
       user.value = null;

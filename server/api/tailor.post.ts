@@ -1,6 +1,6 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '../utils/db';
 import { requireSessionUser } from '../utils/auth';
+import { getModelForRequest } from '../utils/gemini';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -34,23 +34,8 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Resolve API key: either provided in request, or in environment variables
-    const apiKey = geminiApiKey || process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Gemini API Key is missing. Please provide it in settings or your .env file.',
-      });
-    }
-
-    // Initialize Gemini API
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      generationConfig: {
-        responseMimeType: 'application/json',
-      },
-    });
+    // Resolve API key and initialize Gemini API model
+    const model = getModelForRequest(geminiApiKey);
 
     const prompt = `
 You are an expert executive resume writer. Your task is to tailor a job applicant's base CV to align with a target job description while maintaining complete factual honesty and writing in a natural, authentic, human-like voice.

@@ -87,8 +87,8 @@
 
         <!-- Right: Editable Tailored Output -->
         <div class="flex flex-col h-[480px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-          <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
-            <div class="flex bg-primary/5 p-0.5 rounded-md border border-secondary/25 items-center overflow-x-auto max-w-[calc(100vw-220px)] sm:max-w-none">
+          <div class="py-2.5 px-4 border-b border-hairline bg-surface flex flex-wrap items-center justify-between gap-3">
+            <div class="flex bg-primary/5 p-0.5 rounded-md border border-hairline items-center overflow-x-auto max-w-full sm:max-w-[365px] no-scrollbar shrink-0">
               <button 
                 @click="setTab('preview')" 
                 class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
@@ -111,24 +111,24 @@
               >Edit Markdown</button>
             </div>
 
-            <div class="flex items-center gap-1.5">
-              <span class="font-sans text-[0.72rem] text-secondary mr-2 hidden sm:inline">{{ getWordCount(tailoredContent) }} words</span>
+            <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+              <span class="font-sans text-[0.72rem] text-secondary mr-2 hidden sm:inline shrink-0">{{ getWordCount(tailoredContent) }} words</span>
               
-              <BaseButton @click="downloadMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md!" title="Download Markdown (.md)">
+              <BaseButton @click="downloadMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Download Markdown (.md)">
                 <span class="material-icons" style="font-size: 16px;">download</span>
               </BaseButton>
 
-              <BaseButton @click="copyMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md!" title="Copy Raw Markdown">
+              <BaseButton @click="copyMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Raw Markdown">
                 <span class="material-icons" style="font-size: 16px;">code</span>
               </BaseButton>
 
-              <BaseButton @click="copyRichText" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md!" title="Copy Formatted Rich Text (for Google Docs/Word)">
+              <BaseButton @click="copyRichText" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Formatted Rich Text (for Google Docs/Word)">
                 <span class="material-icons" style="font-size: 16px;">content_paste_go</span>
               </BaseButton>
 
-              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="px-3! h-7! inline-flex! items-center! gap-1.5! rounded-md!" title="Download PDF / Print">
+              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="px-3! h-7! inline-flex! items-center! gap-1.5! rounded-md! whitespace-nowrap! shrink-0!" title="Download PDF / Print">
                 <span class="material-icons" style="font-size: 16px;">picture_as_pdf</span>
-                <span class="font-sans text-[0.68rem] uppercase tracking-wider font-semibold">Download PDF</span>
+                <span class="font-sans text-[0.68rem] uppercase tracking-wider font-semibold whitespace-nowrap">Download PDF</span>
               </BaseButton>
             </div>
           </div>
@@ -396,8 +396,8 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, nextTick, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 definePageMeta({
   layout: 'dashboard'
@@ -412,11 +412,57 @@ import {
 } from '~/composables/useCvState';
 
 const router = useRouter();
+const route = useRoute();
 
 const masterCv = useMasterCv();
 const tailoredResult = useTailoredResult();
 const tailoredContent = useTailoredContent();
 const tailoredAnalysis = useTailoredAnalysis();
+
+onMounted(() => {
+  if (route.params.id) {
+    loadTailoredCvFromId(route.params.id);
+  }
+});
+
+async function loadTailoredCvFromId(cvId) {
+  try {
+    const data = await $fetch(`/api/history/${cvId}`);
+    if (data) {
+      tailoredResult.value = data;
+      tailoredContent.value = data.tailoredContent;
+      const form = useJobForm();
+      form.value.jobTitle = data.jobTitle;
+      form.value.company = data.company;
+      form.value.jobDescription = data.jobDescription;
+      
+      try {
+        tailoredAnalysis.value = JSON.parse(data.aiAnalysis || '{}');
+      } catch {
+        tailoredAnalysis.value = { matchedSkills: [], keywordsHighlighted: [], adjustmentsMade: [] };
+      }
+      
+      // Load master CV if empty to render comparison panel
+      if (!masterCv.value.content) {
+        fetchMasterCv();
+      }
+    }
+  } catch (err) {
+    console.error('Error fetching tailored CV:', err);
+    alert('Failed to load tailored CV from ID.');
+  }
+}
+
+async function fetchMasterCv() {
+  try {
+    const data = await $fetch('/api/cv');
+    if (data && data.length > 0) {
+      masterCv.value = data[0];
+    }
+  } catch (err) {
+    console.error('Error fetching master CV:', err);
+  }
+}
 
 const rightTab = ref('preview');
 const diffHtml = ref('');
@@ -722,18 +768,106 @@ function getWordCount(text) {
 
 function convertRawToMarkdown(text) {
   if (!text) return '';
-  let lines = text.split('\n');
+  
+  // Clean up carriage returns
+  text = text.replace(/\r\n/g, '\n');
+  
+  let rawLines = text.split('\n');
   const sections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications', 'adaptation logs'];
   
+  // Find first few non-empty lines before any section headers
+  let nonBriefLines = [];
+  let headerIndexes = [];
+  
+  for (let i = 0; i < rawLines.length; i++) {
+    const trimmed = rawLines[i].trim();
+    if (trimmed) {
+      const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
+      if (sections.includes(normalized)) {
+        break;
+      }
+      if (nonBriefLines.length < 3) {
+        nonBriefLines.push(trimmed);
+        headerIndexes.push(i);
+      }
+    }
+  }
+  
+  let headerHtml = '';
+  if (nonBriefLines.length >= 1) {
+    let name = nonBriefLines[0].replace(/^#+\s*/, '').trim();
+    let title = '';
+    let contacts = '';
+    
+    // Check if the first line itself contains a separator (e.g. Name | Title)
+    const separators = [' | ', ' - ', ' – '];
+    let separatorUsed = separators.find(sep => name.includes(sep));
+    if (separatorUsed) {
+      let parts = name.split(separatorUsed);
+      name = parts[0].trim();
+      title = parts.slice(1).join(separatorUsed).trim();
+      contacts = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+      
+      // Clear the original header lines in rawLines so they aren't parsed
+      rawLines[headerIndexes[0]] = '';
+      if (headerIndexes[1] !== undefined) {
+        rawLines[headerIndexes[1]] = '';
+      }
+    } else {
+      // Standard structure: Line 0 is Name
+      title = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+      
+      // Check if second line is actually contacts instead of a job title
+      const isContacts = /@|\+?\d[\d\s-]{6,}|\b(?:gmail|linkedin|github|netlify|portfolio)\b/i.test(title);
+      if (isContacts) {
+        contacts = title;
+        title = '';
+      } else {
+        contacts = nonBriefLines[2] ? nonBriefLines[2].replace(/^#+\s*/, '').trim() : '';
+      }
+      
+      // Clear the original header lines in rawLines so they aren't parsed
+      rawLines[headerIndexes[0]] = '';
+      if (headerIndexes[1] !== undefined) {
+        rawLines[headerIndexes[1]] = '';
+      }
+      if (headerIndexes[2] !== undefined && !isContacts) {
+        rawLines[headerIndexes[2]] = '';
+      }
+    }
+    
+    // Build clean HTML header block
+    name = name.replace(/[\*_]/g, '').trim();
+    title = title.replace(/[\*_]/g, '').trim();
+    contacts = contacts.replace(/\*/g, '').trim();
+
+    headerHtml = `<div class="resume-header-custom">` +
+      `<div class="resume-name-custom">${name}</div>` +
+      (title ? `<div class="resume-title-custom">${title}</div>` : '') +
+      (contacts ? `<div class="resume-contacts-custom">${contacts}</div>` : '') +
+      `</div>\n\n`;
+  }
+  
+  // Process the rest of the lines normally
+  let lines = rawLines;
+  let foundFirstSection = false;
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
     let trimmed = line.trim();
+    if (!trimmed) continue;
     
     // Convert plain sections to markdown headers
     const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
     if (sections.includes(normalized)) {
+      foundFirstSection = true;
       const leadingSpaces = line.match(/^\s*/)[0];
       lines[i] = leadingSpaces + '# ' + trimmed.replace(/^#+\s*/, '');
+      continue;
+    }
+
+    // Clear horizontal rules occurring before the first section
+    if (!foundFirstSection && /^[-*_]{3,}$/.test(trimmed)) {
+      lines[i] = '';
       continue;
     }
     
@@ -755,7 +889,7 @@ function convertRawToMarkdown(text) {
       }
     }
   }
-  return lines.join('\n');
+  return headerHtml + lines.join('\n');
 }
 
 const renderedMaster = computed(() => {
@@ -889,16 +1023,18 @@ function generateDirectPDF() {
   const jobTitle = (useJobForm().value.jobTitle || 'Resume').replace(/[^a-zA-Z0-9]/g, '_');
   
   const opt = {
-    margin:       [6.35, 8.89, 6.35, 8.89], // Match 0.25in vertical and 0.35in horizontal margins exactly
+    margin:       0, // Zero margin so CSS padding dictates margins perfectly without doubling
     filename:     `CV_${companyName}_${jobTitle}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
     html2canvas:  { 
       scale: 2.2, // High resolution density
       useCORS: true, 
       letterRendering: true,
-      logging: false 
+      logging: false,
+      scrollY: 0, // Reset scroll offsets to fix pushed-down content bugs
+      scrollX: 0
     },
-    jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
   };
   
   html2pdf().set(opt).from(element).save().then(() => {
@@ -935,23 +1071,25 @@ function generateDirectPDF() {
 <style>
 /* One-Page Direct Printing Styles - Scoped to .print-mode-layout-only */
 .print-wrapper-offscreen {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 8.5in !important;
   height: 0 !important;
-  overflow: hidden !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
+  overflow: visible !important;
+  z-index: -9999 !important;
   pointer-events: none !important;
   display: block !important;
 }
 
 .print-mode-layout-only {
   position: relative !important; /* Standard layout flow for perfect html2canvas capture */
-  width: 7.5in !important; /* standard width */
+  width: 8.5in !important; /* Full Letter page width */
   background: #FFFFFF !important;
   color: #111111 !important;
   box-sizing: border-box !important;
   margin: 0 !important;
-  padding: 0.35in 0.45in !important; /* Margins inside printable canvas */
+  padding: 0.4in 0.5in !important; /* Margins inside printable canvas */
   display: block !important;
 }
 
@@ -967,51 +1105,37 @@ function generateDirectPDF() {
   color: #111111 !important;
 }
 
-/* Resume Header Sizing & Alignment */
-.print-mode-layout-only .markdown-preview > p:nth-child(1) {
-  font-size: 15pt !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  margin-top: 0 !important;
-  margin-bottom: 2pt !important;
-  color: #000000 !important;
-  line-height: 1.1 !important;
-}
-
-.print-mode-layout-only .markdown-preview > h1:first-child {
-  font-size: 15pt !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  margin-top: 0 !important;
-  margin-bottom: 2pt !important;
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
-  color: #000000 !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  line-height: 1.1 !important;
-}
-
-.print-mode-layout-only .markdown-preview > p:nth-child(2) {
-  font-size: 9.5pt !important;
-  font-weight: 600 !important;
-  text-align: center !important;
-  margin-top: 0 !important;
-  margin-bottom: 3pt !important;
-  color: #444444 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-}
-
-.print-mode-layout-only .markdown-preview > p:nth-child(3) {
-  font-size: 8.0pt !important;
+/* Custom Resume Header Sizing & Alignment */
+.print-mode-layout-only .resume-header-custom {
   text-align: center !important;
   margin-top: 0 !important;
   margin-bottom: 8pt !important;
-  color: #555555 !important;
-  line-height: 1.3 !important;
   border-bottom: 0.5pt solid #dddddd !important;
   padding-bottom: 6pt !important;
+}
+
+.print-mode-layout-only .resume-name-custom {
+  font-size: 15pt !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+  line-height: 1.1 !important;
+  margin-bottom: 2pt !important;
+  text-transform: none !important;
+}
+
+.print-mode-layout-only .resume-title-custom {
+  font-size: 9.0pt !important; /* Slightly smaller than before to match design */
+  font-weight: 600 !important;
+  color: #444444 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-bottom: 3pt !important;
+}
+
+.print-mode-layout-only .resume-contacts-custom {
+  font-size: 8.0pt !important;
+  color: #555555 !important;
+  line-height: 1.3 !important;
 }
 
 /* Section Headings */

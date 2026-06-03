@@ -291,18 +291,106 @@ async function navigateNext() {
 
 function convertRawToMarkdown(text) {
   if (!text) return '';
-  let lines = text.split('\n');
+  
+  // Clean up carriage returns
+  text = text.replace(/\r\n/g, '\n');
+  
+  let rawLines = text.split('\n');
   const sections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications', 'adaptation logs'];
   
+  // Find first few non-empty lines before any section headers
+  let nonBriefLines = [];
+  let headerIndexes = [];
+  
+  for (let i = 0; i < rawLines.length; i++) {
+    const trimmed = rawLines[i].trim();
+    if (trimmed) {
+      const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
+      if (sections.includes(normalized)) {
+        break;
+      }
+      if (nonBriefLines.length < 3) {
+        nonBriefLines.push(trimmed);
+        headerIndexes.push(i);
+      }
+    }
+  }
+  
+  let headerHtml = '';
+  if (nonBriefLines.length >= 1) {
+    let name = nonBriefLines[0].replace(/^#+\s*/, '').trim();
+    let title = '';
+    let contacts = '';
+    
+    // Check if the first line itself contains a separator (e.g. Name | Title)
+    const separators = [' | ', ' - ', ' – '];
+    let separatorUsed = separators.find(sep => name.includes(sep));
+    if (separatorUsed) {
+      let parts = name.split(separatorUsed);
+      name = parts[0].trim();
+      title = parts.slice(1).join(separatorUsed).trim();
+      contacts = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+      
+      // Clear the original header lines in rawLines so they aren't parsed
+      rawLines[headerIndexes[0]] = '';
+      if (headerIndexes[1] !== undefined) {
+        rawLines[headerIndexes[1]] = '';
+      }
+    } else {
+      // Standard structure: Line 0 is Name
+      title = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+      
+      // Check if second line is actually contacts instead of a job title
+      const isContacts = /@|\+?\d[\d\s-]{6,}|\b(?:gmail|linkedin|github|netlify|portfolio)\b/i.test(title);
+      if (isContacts) {
+        contacts = title;
+        title = '';
+      } else {
+        contacts = nonBriefLines[2] ? nonBriefLines[2].replace(/^#+\s*/, '').trim() : '';
+      }
+      
+      // Clear the original header lines in rawLines so they aren't parsed
+      rawLines[headerIndexes[0]] = '';
+      if (headerIndexes[1] !== undefined) {
+        rawLines[headerIndexes[1]] = '';
+      }
+      if (headerIndexes[2] !== undefined && !isContacts) {
+        rawLines[headerIndexes[2]] = '';
+      }
+    }
+    
+    // Build clean HTML header block
+    name = name.replace(/[\*_]/g, '').trim();
+    title = title.replace(/[\*_]/g, '').trim();
+    contacts = contacts.replace(/\*/g, '').trim();
+
+    headerHtml = `<div class="resume-header-custom">` +
+      `<div class="resume-name-custom">${name}</div>` +
+      (title ? `<div class="resume-title-custom">${title}</div>` : '') +
+      (contacts ? `<div class="resume-contacts-custom">${contacts}</div>` : '') +
+      `</div>\n\n`;
+  }
+  
+  // Process the rest of the lines normally
+  let lines = rawLines;
+  let foundFirstSection = false;
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
     let trimmed = line.trim();
+    if (!trimmed) continue;
     
     // Convert plain sections to markdown headers
     const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
     if (sections.includes(normalized)) {
+      foundFirstSection = true;
       const leadingSpaces = line.match(/^\s*/)[0];
       lines[i] = leadingSpaces + '# ' + trimmed.replace(/^#+\s*/, '');
+      continue;
+    }
+
+    // Clear horizontal rules occurring before the first section
+    if (!foundFirstSection && /^[-*_]{3,}$/.test(trimmed)) {
+      lines[i] = '';
       continue;
     }
     
@@ -324,7 +412,7 @@ function convertRawToMarkdown(text) {
       }
     }
   }
-  return lines.join('\n');
+  return headerHtml + lines.join('\n');
 }
 
 const renderedMaster = computed(() => {

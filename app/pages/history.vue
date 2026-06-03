@@ -132,7 +132,7 @@ function loadHistoryLog(item) {
     tailoredAnalysis.value = { matchedSkills: [], keywordsHighlighted: [], adjustmentsMade: [] };
   }
   
-  router.push('/studio');
+  router.push(`/studio/${item.id}`);
 }
 </script>
 

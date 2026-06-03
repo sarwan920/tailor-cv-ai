@@ -283,7 +283,6 @@ body {
   border: 1px solid var(--color-glass-border, rgba(140, 132, 122, 0.15)) !important;
 }
 
-/* Markdown Rendering Layout Styles (CV Preview) */
 .markdown-preview {
   font-family: var(--font-family);
   color: var(--colors-primary);
@@ -292,6 +291,37 @@ body {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-light);
   line-height: 1.65;
+}
+
+/* Custom CV Header styling */
+.resume-header-custom {
+  text-align: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-hairline, var(--border-light));
+  padding-bottom: 16px;
+}
+
+.resume-name-custom {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary, var(--colors-primary));
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.resume-title-custom {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-brand-green, #00d4a4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.resume-contacts-custom {
+  font-size: 0.85rem;
+  color: var(--color-secondary, var(--colors-secondary));
+  line-height: 1.4;
 }
 
 .dark-preview {
@@ -394,6 +424,15 @@ body {
   padding: 0 !important;
   border-radius: 0 !important;
   font-size: inherit !important;
+}
+
+/* Utility to hide scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
 }
 
 @media print {

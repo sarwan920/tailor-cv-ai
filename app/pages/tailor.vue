@@ -214,7 +214,7 @@ async function triggerTailor() {
         tailoredAnalysis.value = { matchedSkills: [], keywordsHighlighted: [], adjustmentsMade: [] };
       }
       isTailoring.value = false;
-      router.push('/studio');
+      router.push(`/studio/${response.id}`);
     }, 1000);
 
   } catch (err) {

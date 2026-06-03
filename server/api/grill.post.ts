@@ -1,5 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { requireSessionUser } from '../utils/auth';
+import { getModelForRequest } from '../utils/gemini';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -16,22 +16,8 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // 2. Resolve Gemini API key
-    const apiKey = geminiApiKey || process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Gemini API Key is missing. Please configure it in Settings or your .env file.',
-      });
-    }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      generationConfig: {
-        responseMimeType: 'application/json',
-      },
-    });
+    // 2. Resolve Gemini API key and initialize model
+    const model = getModelForRequest(geminiApiKey);
 
     // 3. Check if we need to generate a question, or evaluate a response
     if (!userResponse) {
