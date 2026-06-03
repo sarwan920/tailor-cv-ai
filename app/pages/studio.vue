@@ -795,7 +795,24 @@ async function copyRichText() {
 }
 
 function triggerPrint() {
-  printContent.value = tailoredContent.value;
+  let content = tailoredContent.value || '';
+  
+  // Clean up contact details: find lines with bullet points and normalize them
+  // E.g., replace multiple bullets or bullets with missing spaces
+  content = content.replace(/•+/g, ' • ');
+  content = content.replace(/\s*•\s*/g, '  •  ');
+  
+  // Trim the first few lines to ensure headers align correctly
+  const lines = content.split('\n');
+  for (let i = 0; i < Math.min(lines.length, 10); i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('*') && !trimmed.startsWith('-') && !trimmed.startsWith('1.')) {
+      lines[i] = trimmed;
+    }
+  }
+  content = lines.join('\n');
+
+  printContent.value = content;
   isPrintLayoutActive.value = true;
   setTimeout(() => {
     window.print();
@@ -864,73 +881,141 @@ function triggerPrint() {
   .markdown-preview {
     font-family: 'Inter', sans-serif !important;
     font-size: 8.2pt !important;
-    line-height: 1.15 !important;
+    line-height: 1.25 !important;
     padding: 0 !important;
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
     background: #FFFFFF !important;
-    color: #000000 !important;
-    page-break-inside: avoid !important;
+    color: #111111 !important;
   }
 
-  .markdown-preview h1 {
-    font-size: 13pt !important;
+  /* Resume Header Sizing & Alignment */
+  .markdown-preview > p:nth-child(1) {
+    font-size: 15pt !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 2pt !important;
+    color: #000000 !important;
+    line-height: 1.1 !important;
+  }
+
+  .markdown-preview > h1:first-child {
+    font-size: 15pt !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 2pt !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    color: #000000 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    line-height: 1.1 !important;
+  }
+
+  .markdown-preview > p:nth-child(2) {
+    font-size: 9.5pt !important;
     font-weight: 600 !important;
+    text-align: center !important;
     margin-top: 0 !important;
     margin-bottom: 3pt !important;
-    padding-bottom: 1.5pt !important;
-    border-bottom: 1.5px solid #000000 !important;
+    color: #444444 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .markdown-preview > p:nth-child(3) {
+    font-size: 8.0pt !important;
+    text-align: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 8pt !important;
+    color: #555555 !important;
+    line-height: 1.3 !important;
+    border-bottom: 0.5pt solid #dddddd !important;
+    padding-bottom: 6pt !important;
+  }
+
+  /* Section Headings */
+  .markdown-preview h1 {
+    font-size: 10.5pt !important;
+    font-weight: 700 !important;
+    margin-top: 10pt !important;
+    margin-bottom: 4pt !important;
+    padding-bottom: 2pt !important;
+    border-bottom: 0.75pt solid #111111 !important;
     color: #000000 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
     page-break-after: avoid !important;
     break-after: avoid !important;
   }
 
   .markdown-preview h2 {
-    font-size: 10pt !important;
-    font-weight: 600 !important;
-    margin-top: 5pt !important;
-    margin-bottom: 2pt !important;
-    border-bottom: 1px solid #8C847A !important;
-    padding-bottom: 0.5pt !important;
+    font-size: 9.5pt !important;
+    font-weight: 700 !important;
+    margin-top: 8pt !important;
+    margin-bottom: 3pt !important;
+    border-bottom: 0.5pt solid #888888 !important;
+    padding-bottom: 1.5pt !important;
     color: #000000 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.04em !important;
     page-break-after: avoid !important;
     break-after: avoid !important;
   }
 
   .markdown-preview p {
     font-size: 8.2pt !important;
-    margin-bottom: 2pt !important;
+    margin-top: 0 !important;
+    margin-bottom: 3pt !important;
+    color: #222222 !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Job entry styling helper: paragraph containing bold metadata */
+  .markdown-preview p > strong:first-child {
+    font-size: 8.5pt !important;
     color: #000000 !important;
   }
 
-  .markdown-preview ul, .markdown-preview ol {
-    margin-bottom: 2pt !important;
-    padding-left: 10pt !important;
+  /* Lists and Bullet Points styling (resets Tailwind reset) */
+  .markdown-preview ul {
+    list-style-type: disc !important;
+    margin-top: 0 !important;
+    margin-bottom: 4pt !important;
+    padding-left: 12pt !important;
+  }
+
+  .markdown-preview ol {
+    list-style-type: decimal !important;
+    margin-top: 0 !important;
+    margin-bottom: 4pt !important;
+    padding-left: 12pt !important;
   }
 
   .markdown-preview li {
     font-size: 8.2pt !important;
-    margin-bottom: 0.5pt !important;
-    color: #000000 !important;
+    margin-bottom: 1.5pt !important;
+    color: #222222 !important;
+    line-height: 1.25 !important;
   }
 
   .markdown-preview strong {
     font-weight: 600 !important;
-    color: #000000 !important;
+    color: #111111 !important;
   }
 
   .markdown-preview hr {
-    margin: 3pt 0 !important;
+    margin: 6pt 0 !important;
     border: none !important;
-    border-top: 1px solid #8C847A !important;
+    border-top: 0.5pt solid #dddddd !important;
   }
 
   @page {
     size: portrait;
-    margin: 0.3in 0.4in 0.3in 0.4in !important;
+    margin: 0.25in 0.35in 0.25in 0.35in !important;
   }
 }
 </style>

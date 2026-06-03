@@ -340,7 +340,14 @@ body {
   font-size: 0.95rem;
 }
 
-.markdown-preview ul, .markdown-preview ol {
+.markdown-preview ul {
+  list-style-type: disc !important;
+  margin-bottom: 16px;
+  padding-left: 20px;
+}
+
+.markdown-preview ol {
+  list-style-type: decimal !important;
   margin-bottom: 16px;
   padding-left: 20px;
 }
