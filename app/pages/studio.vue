@@ -929,15 +929,21 @@ function generateDirectPDF() {
   display: inline;
 }
 
-/* One-Page Direct Printing Styles */
+</style>
+
+<style>
+/* One-Page Direct Printing Styles - Scoped to .print-mode-layout-only */
 .print-mode-layout-only {
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 8.0in !important;
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 7.8in !important; /* Fixed Letter width to capture correctly */
   background: #FFFFFF !important;
   color: #111111 !important;
   box-sizing: border-box !important;
+  z-index: -9999 !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
 }
 
 .print-mode-layout-only .markdown-preview {
