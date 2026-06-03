@@ -387,14 +387,16 @@
     </div>
 
     <!-- Invisible Direct Print Layout painted only during printing -->
-    <div v-if="isPrintLayoutActive" class="print-mode-layout-only">
-      <div class="markdown-preview" v-html="renderedPrintContent"></div>
+    <div class="print-wrapper-offscreen">
+      <div v-if="isPrintLayoutActive" class="print-mode-layout-only">
+        <div class="markdown-preview" v-html="renderedPrintContent"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
 definePageMeta({
@@ -859,10 +861,9 @@ function triggerPrint() {
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
     script.onload = () => {
-      // Short delay to ensure vue updates printContent in DOM
-      setTimeout(() => {
+      nextTick(() => {
         generateDirectPDF();
-      }, 250);
+      });
     };
     script.onerror = () => {
       console.error('Failed to load html2pdf.js, falling back to window.print()');
@@ -871,9 +872,9 @@ function triggerPrint() {
     };
     document.head.appendChild(script);
   } else {
-    setTimeout(() => {
+    nextTick(() => {
       generateDirectPDF();
-    }, 200);
+    });
   }
 }
 
@@ -888,7 +889,7 @@ function generateDirectPDF() {
   const jobTitle = (useJobForm().value.jobTitle || 'Resume').replace(/[^a-zA-Z0-9]/g, '_');
   
   const opt = {
-    margin:       [8, 12, 8, 12], // top, left, bottom, right margins in mm
+    margin:       [6.35, 8.89, 6.35, 8.89], // Match 0.25in vertical and 0.35in horizontal margins exactly
     filename:     `CV_${companyName}_${jobTitle}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
     html2canvas:  { 
