@@ -33,10 +33,19 @@
       >
         <div class="flex justify-between items-center mb-2">
           <span class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.12em] text-primary">{{ item.company }}</span>
-          <span class="text-[0.68rem] text-success font-medium tracking-[0.08em] inline-flex items-center">
-            <span class="material-icons mr-1" style="font-size: 13px;">check_circle</span>
-            95% ATS MATCH
-          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-[0.68rem] text-success font-medium tracking-[0.08em] inline-flex items-center">
+              <span class="material-icons mr-1" style="font-size: 13px;">check_circle</span>
+              95% ATS MATCH
+            </span>
+            <button 
+              @click.stop="confirmDelete(item)" 
+              class="text-secondary hover:text-danger p-0.5 rounded transition-colors duration-150 cursor-pointer flex items-center justify-center bg-transparent border-none"
+              title="Delete Adaptation Log"
+            >
+              <span class="material-icons text-[16px]">delete</span>
+            </button>
+          </div>
         </div>
         <h5 class="text-[0.98rem] font-normal mb-2 whitespace-nowrap overflow-hidden text-ellipsis text-primary">{{ item.jobTitle }}</h5>
         <div class="text-[0.82rem] text-secondary leading-normal mb-3 flex-1">{{ getSnippet(item.jobDescription) }}</div>
@@ -83,6 +92,17 @@ async function fetchHistory() {
 
 function routeToTailor() {
   router.push('/tailor');
+}
+
+async function confirmDelete(item) {
+  if (confirm(`Are you sure you want to delete the tailored CV for "${item.jobTitle}" at "${item.company}"?`)) {
+    try {
+      await $fetch(`/api/history/${item.id}`, { method: 'DELETE' });
+      history.value = history.value.filter(h => h.id !== item.id);
+    } catch (err) {
+      alert('Failed to delete log: ' + (err.statusMessage || err.message));
+    }
+  }
 }
 
 function formatDate(dateStr) {
