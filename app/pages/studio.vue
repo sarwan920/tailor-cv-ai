@@ -934,17 +934,25 @@ function generateDirectPDF() {
 
 <style>
 /* One-Page Direct Printing Styles - Scoped to .print-mode-layout-only */
+.print-wrapper-offscreen {
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  pointer-events: none !important;
+  display: block !important;
+}
+
 .print-mode-layout-only {
-  position: fixed !important;
-  left: 0 !important;
-  top: 0 !important;
-  width: 7.8in !important; /* Fixed Letter width to capture correctly */
+  position: relative !important; /* Standard layout flow for perfect html2canvas capture */
+  width: 7.5in !important; /* standard width */
   background: #FFFFFF !important;
   color: #111111 !important;
   box-sizing: border-box !important;
-  z-index: -9999 !important;
-  opacity: 1 !important;
-  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0.35in 0.45in !important; /* Margins inside printable canvas */
+  display: block !important;
 }
 
 .print-mode-layout-only .markdown-preview {
