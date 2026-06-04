@@ -21,7 +21,7 @@
             <span class="material-icons mr-2 text-secondary align-bottom">analytics</span>
             AI Tailoring Studio
           </h2>
-          <p class="text-[0.88rem] text-secondary mt-1">Compare original versus tailored CV, view the optimization report, and export your polished resume.</p>
+          <p class="text-[0.88rem] text-secondary mt-1">Refine, validate, and prepare your resume for submission in logical, focused steps.</p>
         </div>
         <!-- Secondary Action Button -->
         <BaseButton @click="resetStudio" variant="secondary" size="sm" class="flex-btn">
@@ -30,167 +30,205 @@
         </BaseButton>
       </div>
 
-      <!-- ATS Scorecard Dashboard Widget (Mintlify Featured Card style) -->
-      <section class="p-4 md:py-4 md:px-8 bg-surface border-2 border-brand-green rounded-lg shadow-[rgba(0,212,164,0.08)_0px_8px_24px]">
-        <div class="flex justify-between items-center border-b border-hairline pb-3 mb-4">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
-            <h4 class="text-[0.72rem] font-medium uppercase tracking-[0.24em] text-secondary">ATS Compatibility Report</h4>
-          </div>
-          <span class="bg-brand-green text-primary font-sans font-bold text-[0.68rem] tracking-[0.18em] py-1 px-2.5 rounded-full">96% ATS MATCH RATING</span>
-        </div>
+      <!-- Studio Navigation Tabs -->
+      <div class="flex border-b border-hairline items-center gap-1 mt-2 overflow-x-auto no-scrollbar">
+        <button 
+          @click="activeStudioTab = 'workspace'" 
+          class="px-5 py-3 font-sans font-medium text-[0.72rem] uppercase tracking-[0.15em] border-b-2 border-transparent text-secondary hover:text-primary transition-all duration-150 inline-flex items-center gap-2 [&.active]:border-brand-green [&.active]:text-primary [&.active]:font-semibold cursor-pointer shrink-0"
+          :class="{ active: activeStudioTab === 'workspace' }"
+        >
+          <span class="material-icons text-[16px]">draw</span>
+          Compare & Refine
+        </button>
+        <button 
+          @click="activeStudioTab = 'ats'" 
+          class="px-5 py-3 font-sans font-medium text-[0.72rem] uppercase tracking-[0.15em] border-b-2 border-transparent text-secondary hover:text-primary transition-all duration-150 inline-flex items-center gap-2 [&.active]:border-brand-green [&.active]:text-primary [&.active]:font-semibold cursor-pointer shrink-0"
+          :class="{ active: activeStudioTab === 'ats' }"
+        >
+          <span class="material-icons text-[16px]">analytics</span>
+          ATS Match Report
+        </button>
+        <button 
+          @click="activeStudioTab = 'safety'" 
+          class="px-5 py-3 font-sans font-medium text-[0.72rem] uppercase tracking-[0.15em] border-b-2 border-transparent text-secondary hover:text-primary transition-all duration-150 inline-flex items-center gap-2 [&.active]:border-brand-green [&.active]:text-primary [&.active]:font-semibold cursor-pointer shrink-0"
+          :class="{ active: activeStudioTab === 'safety' }"
+        >
+          <span class="material-icons text-[16px]">shield</span>
+          Safety & Prep
+        </button>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="border-r-0 md:border-r border-hairline pr-0 md:pr-6">
-            <h5 class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Matched Competencies</h5>
-            <div class="flex flex-wrap gap-1.5">
-              <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="bg-neutral border border-hairline text-primary text-[0.72rem] font-medium py-1 px-2 rounded-md inline-flex items-center">
-                <span class="material-icons mr-1 text-brand-green" style="font-size: 13px;">check_circle</span>
-                {{ skill }}
-              </span>
+      <!-- Tab 1: Compare & Refine Workspace -->
+      <div v-show="activeStudioTab === 'workspace'" class="flex flex-col gap-6">
+        <!-- Comparative Panes -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[64vh] mt-1">
+          <!-- Left: Original Referencing -->
+          <div class="flex flex-col h-[380px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+            <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+              <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Original Master CV</span>
+              <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
+            </div>
+            <div class="flex-1 p-4 bg-neutral overflow-y-auto">
+              <div class="markdown-preview dark-preview" v-html="renderedMaster"></div>
             </div>
           </div>
 
-          <div class="border-r-0 md:border-r border-hairline pr-0 md:pr-6">
-            <h5 class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Integrated Keywords</h5>
-            <div class="flex flex-wrap gap-1.5">
-              <span v-for="kw in tailoredAnalysis.keywordsHighlighted" :key="kw" class="bg-brand-tag/10 border border-brand-tag/20 text-brand-tag font-mono text-[0.7rem] py-0.5 px-1.5 rounded-sm">
-                {{ kw }}
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <h5 class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.18em] text-secondary mb-2.5">Revisions Summary</h5>
-            <ul class="pl-0 list-none flex flex-col gap-1.5">
-              <li v-for="adj in tailoredAnalysis.adjustmentsMade" :key="adj" class="text-[0.78rem] text-primary leading-normal flex items-start">
-                <span class="material-icons mr-1.5 text-brand-green" style="font-size: 11px; margin-top: 3px;">arrow_right</span>
-                {{ adj }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- Comparative Panes -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[52vh] mt-3">
-        <!-- Left: Original Referencing -->
-        <div class="flex flex-col h-[380px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-          <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
-            <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Original Master CV</span>
-            <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
-          </div>
-          <div class="flex-1 p-4 bg-neutral overflow-y-auto">
-            <div class="markdown-preview dark-preview" v-html="renderedMaster"></div>
-          </div>
-        </div>
-
-        <!-- Right: Editable Tailored Output -->
-        <div class="flex flex-col h-[480px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-          <div class="py-2.5 px-4 border-b border-hairline bg-surface flex flex-wrap items-center justify-between gap-3">
-            <div class="flex bg-primary/5 p-0.5 rounded-md border border-hairline items-center overflow-x-auto max-w-full sm:max-w-[365px] no-scrollbar shrink-0">
-              <button 
-                @click="setTab('preview')" 
-                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
-                :class="{ active: rightTab === 'preview' }"
-              >Preview</button>
-              <button 
-                @click="setTab('diff')" 
-                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
-                :class="{ active: rightTab === 'diff' }"
-              >GitHub Diff</button>
-              <button 
-                @click="setTab('ats')" 
-                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
-                :class="{ active: rightTab === 'ats' }"
-              >ATS Parser</button>
-              <button 
-                @click="setTab('edit')" 
-                class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
-                :class="{ active: rightTab === 'edit' }"
-              >Edit Markdown</button>
-            </div>
-
-            <div class="flex items-center gap-1.5 flex-wrap shrink-0">
-              <span class="font-sans text-[0.72rem] text-secondary mr-2 hidden sm:inline shrink-0">{{ getWordCount(tailoredContent) }} words</span>
-              
-              <BaseButton @click="downloadMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Download Markdown (.md)">
-                <span class="material-icons" style="font-size: 16px;">download</span>
-              </BaseButton>
-
-              <BaseButton @click="copyMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Raw Markdown">
-                <span class="material-icons" style="font-size: 16px;">code</span>
-              </BaseButton>
-
-              <BaseButton @click="copyRichText" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Formatted Rich Text (for Google Docs/Word)">
-                <span class="material-icons" style="font-size: 16px;">content_paste_go</span>
-              </BaseButton>
-
-              <BaseButton @click="triggerPrint" variant="primary" size="sm" class="px-3! h-7! inline-flex! items-center! gap-1.5! rounded-md! whitespace-nowrap! shrink-0!" title="Download PDF / Print">
-                <span class="material-icons" style="font-size: 16px;">picture_as_pdf</span>
-                <span class="font-sans text-[0.68rem] uppercase tracking-wider font-semibold whitespace-nowrap">Download PDF</span>
-              </BaseButton>
-            </div>
-          </div>
-          
-          <div class="flex-1 p-0 bg-neutral overflow-hidden flex flex-col">
-            <!-- Live Preview -->
-            <div v-show="rightTab === 'preview'" class="h-full overflow-y-auto p-4 bg-neutral">
-              <div class="markdown-preview light-theme-preview" v-html="renderedTailored"></div>
-            </div>
-
-            <!-- GitHub Diff View -->
-            <div v-show="rightTab === 'diff'" class="h-full overflow-y-auto p-4 bg-neutral">
-              <div class="font-sans text-[0.78rem] text-secondary mb-3 flex items-center gap-2">
-                <span class="text-[18px] text-success material-icons">difference</span>
-                <span>Track Changes: <del class="bg-danger/18 text-[#8A3D35] line-through px-1 py-0.5 rounded-[2px] no-underline">Red represents original text</del> and <ins class="bg-success/22 text-[#2F382A] px-1 py-0.5 rounded-[2px] no-underline">Green represents tailored improvements</ins>.</span>
+          <!-- Right: Editable Tailored Output -->
+          <div class="flex flex-col h-[480px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+            <div class="py-2.5 px-4 border-b border-hairline bg-surface flex flex-wrap items-center justify-between gap-3">
+              <div class="flex bg-primary/5 p-0.5 rounded-md border border-hairline items-center overflow-x-auto max-w-full sm:max-w-[365px] no-scrollbar shrink-0">
+                <button 
+                  @click="setTab('preview')" 
+                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
+                  :class="{ active: rightTab === 'preview' }"
+                >Preview</button>
+                <button 
+                  @click="setTab('diff')" 
+                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
+                  :class="{ active: rightTab === 'diff' }"
+                >GitHub Diff</button>
+                <button 
+                  @click="setTab('edit')" 
+                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
+                  :class="{ active: rightTab === 'edit' }"
+                >Edit Markdown</button>
               </div>
-              <div class="markdown-preview light-theme-preview" v-html="diffHtml"></div>
+
+              <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+                <span class="font-sans text-[0.72rem] text-secondary mr-2 hidden sm:inline shrink-0">{{ getWordCount(tailoredContent) }} words</span>
+                
+                <BaseButton @click="downloadMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Download Markdown (.md)">
+                  <span class="material-icons" style="font-size: 16px;">download</span>
+                </BaseButton>
+
+                <BaseButton @click="copyMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Raw Markdown">
+                  <span class="material-icons" style="font-size: 16px;">code</span>
+                </BaseButton>
+
+                <BaseButton @click="copyRichText" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Formatted Rich Text (for Google Docs/Word)">
+                  <span class="material-icons" style="font-size: 16px;">content_paste_go</span>
+                </BaseButton>
+
+                <BaseButton @click="triggerPrint" variant="primary" size="sm" class="px-3! h-7! inline-flex! items-center! gap-1.5! rounded-md! whitespace-nowrap! shrink-0!" title="Download PDF / Print">
+                  <span class="material-icons" style="font-size: 16px;">picture_as_pdf</span>
+                  <span class="font-sans text-[0.68rem] uppercase tracking-wider font-semibold whitespace-nowrap">Download PDF</span>
+                </BaseButton>
+              </div>
             </div>
+            
+            <div class="flex-1 p-0 bg-neutral overflow-hidden flex flex-col">
+              <!-- Live Preview -->
+              <div v-show="rightTab === 'preview'" class="h-full overflow-y-auto p-4 bg-neutral">
+                <div class="markdown-preview light-theme-preview" v-html="renderedTailored"></div>
+              </div>
 
-            <!-- Edit Markdown -->
-            <textarea 
-              v-show="rightTab === 'edit'" 
-              v-model="tailoredContent" 
-              class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.9rem] p-5 leading-relaxed resize-none outline-none h-full"
-              placeholder="# Styled Markdown..."
-            ></textarea>
-
-            <!-- ATS Parser Simulator View -->
-            <div v-show="rightTab === 'ats'" class="h-full overflow-y-auto p-4 bg-neutral flex flex-col gap-4">
-              <!-- Validator Alerts -->
-              <div class="p-3 bg-surface border border-secondary/25 rounded-md text-[0.8rem]">
-                <div class="font-medium text-primary mb-2 flex items-center gap-1.5">
-                  <span class="material-icons text-tertiary" style="font-size: 16px;">gavel</span>
-                  ATS Parser Compliance Checklist
+              <!-- GitHub Diff View -->
+              <div v-show="rightTab === 'diff'" class="h-full overflow-y-auto p-4 bg-neutral">
+                <div class="font-sans text-[0.78rem] text-secondary mb-3 flex items-center gap-2">
+                  <span class="text-[18px] text-success material-icons">difference</span>
+                  <span>Track Changes: <del class="bg-danger/18 text-[#8A3D35] line-through px-1 py-0.5 rounded-[2px] no-underline">Red represents original text</del> and <ins class="bg-success/22 text-[#2F382A] px-1 py-0.5 rounded-[2px] no-underline">Green represents tailored improvements</ins>.</span>
                 </div>
-                <ul class="flex flex-col gap-1.5 pl-0 list-none">
-                  <li class="flex items-center gap-2 text-[0.75rem]" :class="atsChecks.hasContactInfo ? 'text-success' : 'text-danger'">
-                    <span class="material-icons text-[14px]">{{ atsChecks.hasContactInfo ? 'check_circle' : 'warning' }}</span>
-                    <span>Contact Info Header: {{ atsChecks.hasContactInfo ? 'Contact details isolated in the first 5 lines' : 'Missing email/phone in first 5 lines (ATS engines may fail to parse contact details)' }}</span>
-                  </li>
-                  <li class="flex items-center gap-2 text-[0.75rem]" :class="atsChecks.noTableMarkers ? 'text-success' : 'text-warning'">
-                    <span class="material-icons text-[14px]">{{ atsChecks.noTableMarkers ? 'check_circle' : 'info' }}</span>
-                    <span>Layout Stability: {{ atsChecks.noTableMarkers ? 'No structural HTML tables or markdown pipes' : 'Contains table grid layouts which might disrupt line flow in some parser engines' }}</span>
-                  </li>
-                  <li class="flex items-center gap-2 text-[0.75rem]" :class="atsChecks.wordCountHealthy ? 'text-success' : 'text-warning'">
-                    <span class="material-icons text-[14px]">{{ atsChecks.wordCountHealthy ? 'check_circle' : 'warning' }}</span>
-                    <span>Total Length: {{ atsChecks.wordCountHealthy ? 'Optimized size (400 - 1000 words)' : 'Word count outside standard 400-1000 guidelines' }}</span>
-                  </li>
-                </ul>
+                <div class="markdown-preview light-theme-preview" v-html="diffHtml"></div>
               </div>
 
-              <!-- Plain Text Render -->
-              <div class="flex-1 bg-surface border border-secondary/25 rounded-md p-4 overflow-y-auto font-mono text-[0.75rem] text-primary whitespace-pre-wrap select-all leading-normal" title="Click to copy all plain text">
-                {{ atsPlainText }}
-              </div>
+              <!-- Edit Markdown -->
+              <textarea 
+                v-show="rightTab === 'edit'" 
+                v-model="tailoredContent" 
+                class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.9rem] p-5 leading-relaxed resize-none outline-none h-full"
+                placeholder="# Styled Markdown..."
+              ></textarea>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Resume Trust & Interview Readiness Console -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+      <!-- Tab 2: ATS Match Report -->
+      <div v-show="activeStudioTab === 'ats'" class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-1">
+        <!-- Left: Match Metrics (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-5">
+            <div class="flex justify-between items-center border-b border-secondary/25 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse"></span>
+                <h3 class="font-sans font-medium text-[0.95rem] uppercase tracking-[0.18em] text-primary">ATS Scorecard</h3>
+              </div>
+              <span class="bg-brand-green text-primary font-sans font-bold text-[0.68rem] tracking-[0.18em] py-1 px-3 rounded-full">96% MATCH RATE</span>
+            </div>
+
+            <div class="flex flex-col gap-6">
+              <!-- Matched Skills -->
+              <div>
+                <h4 class="font-sans font-semibold text-[0.78rem] uppercase tracking-[0.12em] text-secondary mb-3">Matched Competencies</h4>
+                <div class="flex flex-wrap gap-2">
+                  <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="bg-neutral border border-hairline text-primary text-[0.75rem] font-medium py-1 px-2.5 rounded-md inline-flex items-center">
+                    <span class="material-icons mr-1.5 text-brand-green" style="font-size: 14px;">check_circle</span>
+                    {{ skill }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Keywords -->
+              <div>
+                <h4 class="font-sans font-semibold text-[0.78rem] uppercase tracking-[0.12em] text-secondary mb-3">Integrated Keywords</h4>
+                <div class="flex flex-wrap gap-2">
+                  <span v-for="kw in tailoredAnalysis.keywordsHighlighted" :key="kw" class="bg-brand-tag/10 border border-brand-tag/20 text-brand-tag font-mono text-[0.75rem] py-1 px-2.5 rounded-md">
+                    {{ kw }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Revisions -->
+              <div>
+                <h4 class="font-sans font-semibold text-[0.78rem] uppercase tracking-[0.12em] text-secondary mb-3">Revisions & Adaptations</h4>
+                <ul class="pl-0 list-none flex flex-col gap-2">
+                  <li v-for="adj in tailoredAnalysis.adjustmentsMade" :key="adj" class="text-[0.82rem] text-primary leading-normal flex items-start">
+                    <span class="material-icons mr-2 text-brand-green" style="font-size: 13px; margin-top: 3px;">arrow_right</span>
+                    {{ adj }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Parser Simulator & Verification (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-4 h-full min-h-[420px]">
+            <div class="flex items-center justify-between border-b border-secondary/25 pb-3">
+              <h3 class="font-sans font-medium text-[0.95rem] uppercase tracking-[0.18em] text-primary flex items-center gap-2">
+                <span class="material-icons text-secondary">gavel</span>
+                ATS Parser Simulator
+              </h3>
+              <span class="bg-primary text-on-primary font-sans font-medium text-[0.6rem] tracking-[0.12em] py-0.5 px-1.5 rounded-sm">COMPLIANCE</span>
+            </div>
+
+            <!-- Compliance Checklist -->
+            <ul class="flex flex-col gap-2.5 pl-0 list-none border-b border-secondary/15 pb-4 mb-2">
+              <li class="flex items-center gap-2.5 text-[0.82rem]" :class="atsChecks.hasContactInfo ? 'text-success' : 'text-danger'">
+                <span class="material-icons text-[18px]">{{ atsChecks.hasContactInfo ? 'check_circle' : 'warning' }}</span>
+                <span>Contact Info Header: {{ atsChecks.hasContactInfo ? 'Contact details isolated in the first 5 lines' : 'Missing email/phone in first 5 lines' }}</span>
+              </li>
+              <li class="flex items-center gap-2.5 text-[0.82rem]" :class="atsChecks.noTableMarkers ? 'text-success' : 'text-warning'">
+                <span class="material-icons text-[18px]">{{ atsChecks.noTableMarkers ? 'check_circle' : 'info' }}</span>
+                <span>Layout Stability: {{ atsChecks.noTableMarkers ? 'No structural HTML tables or markdown pipes' : 'Contains table grid layouts' }}</span>
+              </li>
+              <li class="flex items-center gap-2.5 text-[0.82rem]" :class="atsChecks.wordCountHealthy ? 'text-success' : 'text-warning'">
+                <span class="material-icons text-[18px]">{{ atsChecks.wordCountHealthy ? 'check_circle' : 'warning' }}</span>
+                <span>Total Length: {{ atsChecks.wordCountHealthy ? 'Optimized size (400 - 1000 words)' : 'Word count outside standard guidelines' }}</span>
+              </li>
+            </ul>
+
+            <label class="block font-sans text-[0.68rem] font-medium uppercase tracking-wider text-secondary">Simulated plain text extraction:</label>
+            <div class="flex-1 bg-neutral border border-secondary/25 rounded p-4 overflow-y-auto font-mono text-[0.75rem] text-primary whitespace-pre-wrap select-all leading-normal h-[180px]" title="Click to copy plain text">
+              {{ atsPlainText }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Safety & Prep -->
+      <div v-show="activeStudioTab === 'safety'" class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-1">
         <!-- Left Pane: Trust & Integrity Guardrails (7 cols) -->
         <div class="lg:col-span-7 flex flex-col gap-6">
           <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-5">
@@ -464,6 +502,7 @@ async function fetchMasterCv() {
   }
 }
 
+const activeStudioTab = ref('workspace');
 const rightTab = ref('preview');
 const diffHtml = ref('');
 const isPrintLayoutActive = ref(false);
