@@ -1,9 +1,17 @@
 <template>
   <div class="flex flex-col bg-neutral w-full fade-in">
     <!-- Hero Section -->
-    <section class="py-20 lg:py-24 px-0 bg-neutral border-b border-hairline relative overflow-hidden hero-section-grid">
+    <section 
+      ref="heroSection"
+      @mousemove="handleMouseMove"
+      class="py-20 lg:py-24 px-0 bg-neutral border-b border-hairline relative overflow-hidden hero-section-grid"
+    >
       <!-- Subtle Grid Pattern -->
       <div class="absolute inset-0 bg-grid-pattern opacity-80 dark:opacity-40 pointer-events-none z-0"></div>
+
+      <!-- Interactive Hover Spotlight & Highlight Grid -->
+      <div class="hero-spotlight"></div>
+      <div class="hero-spotlight-grid"></div>
 
       <!-- Modern Ambient Glimmer/Glows -->
       <div class="absolute w-[600px] h-[600px] -left-[10%] -top-[20%] rounded-full bg-[radial-gradient(circle,rgba(0,212,164,0.12)_0%,rgba(0,212,164,0)_70%)] blur-[80px] pointer-events-none z-0"></div>
@@ -331,6 +339,17 @@ definePageMeta({
   layout: 'default'
 });
 
+const heroSection = ref(null);
+
+function handleMouseMove(e) {
+  if (!heroSection.value) return;
+  const rect = heroSection.value.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  heroSection.value.style.setProperty('--mouse-x', `${x}px`);
+  heroSection.value.style.setProperty('--mouse-y', `${y}px`);
+}
+
 const pipelineState = ref('original'); // 'original' | 'parsing' | 'mapping' | 'success'
 const atsScore = ref(45);
 
@@ -413,6 +432,53 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.hero-section-grid {
+  --mouse-x: -1000px;
+  --mouse-y: -1000px;
+}
+
+.hero-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    rgba(0, 212, 164, 0.12),
+    transparent 80%
+  );
+}
+
+.hero-spotlight-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-image: 
+    linear-gradient(to right, rgba(0, 212, 164, 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 212, 164, 0.2) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(
+    300px circle at var(--mouse-x) var(--mouse-y),
+    black 20%,
+    transparent 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    300px circle at var(--mouse-x) var(--mouse-y),
+    black 20%,
+    transparent 80%
+  );
+}
+
+.hero-section-grid:hover .hero-spotlight,
+.hero-section-grid:hover .hero-spotlight-grid {
+  opacity: 1;
+}
+
 .bg-grid-pattern {
   background-image: 
     linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
