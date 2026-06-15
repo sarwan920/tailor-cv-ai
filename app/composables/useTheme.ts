@@ -1,39 +1,19 @@
-import { ref } from 'vue';
-
-const isDark = ref(false);
-
+/**
+ * Thin wrapper around @nuxtjs/color-mode's useColorMode().
+ * Provides a backward-compatible API so existing components
+ * can keep using `isDark` and `toggleTheme()`.
+ */
 export function useTheme() {
+  const colorMode = useColorMode();
+
+  const isDark = computed(() => colorMode.value === 'dark');
+
   const toggleTheme = () => {
-    isDark.value = !isDark.value;
-    if (process.client) {
-      localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
-      updateThemeClass();
-    }
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
   };
 
-  const updateThemeClass = () => {
-    if (process.client) {
-      const root = document.documentElement;
-      if (isDark.value) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-    }
-  };
-
-  const initTheme = () => {
-    if (process.client) {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        isDark.value = savedTheme === 'dark';
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        isDark.value = prefersDark;
-      }
-      updateThemeClass();
-    }
-  };
+  // Kept for backward compatibility — now a no-op since the module handles init.
+  const initTheme = () => {};
 
   return {
     isDark,

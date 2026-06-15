@@ -6,7 +6,7 @@
         <div class="relative w-12 h-12 mx-auto mb-6 flex items-center justify-center">
           <span class="material-icons text-[2.2rem] text-brand-green animate-spin">sync</span>
         </div>
-        <h3 class="text-[1.4rem] font-light text-primary tracking-wide mb-1.5">AI Tailoring Engine Active</h3>
+        <h3 class="text-lg font-light text-primary tracking-wide mb-1.5">AI Tailoring Engine Active</h3>
         <p class="text-[0.85rem] text-secondary mb-8">Rephrasing accomplishments and mapping keywords...</p>
         
         <div class="flex flex-col gap-4 text-left max-w-[320px] mx-auto p-4 bg-neutral border border-hairline rounded-md">
@@ -41,17 +41,17 @@
     <!-- Active Step Workspace -->
     <div v-else class="flex flex-col gap-6 fade-in">
       <div class="step-instruction">
-        <h2 class="text-[1.5rem] font-light text-primary">
-          <span class="material-icons mr-2 text-secondary align-bottom">work_outline</span>
-          Target Job specifications
+        <h2 class="text-lg font-bold font-sans tracking-tight text-primary flex items-center gap-2">
+          <span class="material-icons text-brand-green text-[18px]">work_outline</span>
+          Target Job Specifications
         </h2>
-        <p class="text-[0.88rem] text-secondary mt-1">Provide details of the position you are targeting. Paste the job description copied from LinkedIn or Indeed.</p>
+        <p class="text-xs text-secondary mt-1">Provide details of the position you are targeting. Paste the job description copied from LinkedIn or Indeed.</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[68vh]">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" style="min-height: calc(100vh - 260px);">
         <!-- Job Details and Focus -->
-        <div class="flex flex-col h-full overflow-hidden p-6 lg:p-8 bg-surface border border-secondary/25 rounded-lg">
-          <h3 class="text-[0.72rem] font-medium uppercase tracking-[0.24em] mb-5 text-secondary border-b border-secondary/25 pb-2">Job Information</h3>
+        <div class="flex flex-col h-full overflow-hidden p-6 lg:p-8 bg-surface border border-hairline rounded-lg">
+          <h3 class="text-[0.72rem] font-medium uppercase tracking-[0.24em] mb-5 text-secondary border-b border-hairline pb-2">Job Information</h3>
           
           <div class="flex flex-col md:flex-row gap-4">
             <div class="flex-1 mb-8">
@@ -60,7 +60,7 @@
                 v-model="form.jobTitle" 
                 type="text" 
                 class="w-full bg-surface border text-primary font-sans text-[0.98rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60" 
-                :class="showValidationError && !form.jobTitle.trim() ? 'border-danger bg-danger/5' : 'border-secondary/25'"
+                :class="showValidationError && !form.jobTitle.trim() ? 'border-danger bg-danger/5' : 'border-hairline'"
                 placeholder="e.g. Lead Frontend Architect"
               />
             </div>
@@ -70,7 +70,7 @@
                 v-model="form.company" 
                 type="text" 
                 class="w-full bg-surface border text-primary font-sans text-[0.98rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60" 
-                :class="showValidationError && !form.company.trim() ? 'border-danger bg-danger/5' : 'border-secondary/25'"
+                :class="showValidationError && !form.company.trim() ? 'border-danger bg-danger/5' : 'border-hairline'"
                 placeholder="e.g. Google"
               />
             </div>
@@ -80,15 +80,15 @@
             <label class="block font-sans text-[0.72rem] font-normal uppercase tracking-[0.24em] mb-2 text-secondary">AI Tuning Guidelines (Optional)</label>
             <textarea 
               v-model="form.customDirectives" 
-              class="w-full bg-surface border border-secondary/25 text-primary font-sans text-[0.88rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60 min-h-[140px]"
+              class="w-full bg-surface border border-hairline text-primary font-sans text-[0.88rem] p-3 rounded-md outline-none focus:border-primary transition-colors duration-250 placeholder:text-secondary/60 min-h-[140px]"
               placeholder="Examples: 'Emphasize my cloud engineering achievements', 'Rewrite in an executive tone', or 'Highlight React Native metrics.'"
             ></textarea>
           </div>
         </div>
 
         <!-- Job Description Specifications -->
-        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-          <div class="py-3 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+        <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-hairline rounded-lg">
+          <div class="py-3 px-5 border-b border-hairline bg-surface flex items-center justify-between">
             <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">LinkedIn Job Description Specifications <span class="text-danger ml-0.5 font-bold">*</span></span>
           </div>
           <textarea 
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div class="flex justify-between items-center mt-2.5 border-t border-secondary/25 pt-8">
+      <div class="flex justify-between items-center mt-2.5 border-t border-hairline pt-8">
         <BaseButton @click="navigateBack" variant="secondary" size="lg" class="flex-btn">
           <span class="material-icons">arrow_back</span>
           Back to CV

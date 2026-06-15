@@ -163,6 +163,14 @@
 }
 
 /* Document Reset & Base Customizations */
+html {
+  background-color: var(--colors-neutral);
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
 body {
   background-color: var(--colors-neutral);
   color: var(--colors-primary);
@@ -223,6 +231,21 @@ body {
   background-size: 24px 24px;
   position: relative;
   overflow: hidden;
+}
+
+.dark .dot-matrix-bg {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+}
+
+.flex-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.light-theme-preview {
+  color: var(--color-primary);
 }
 
 /* Micro-fine Film Grain noise overlay */
@@ -396,9 +419,201 @@ body {
   color: var(--colors-primary) !important;
 }
 
+/* ============================================
+   RenderCV-Inspired Document Paper Preview
+   ============================================ */
+.cv-document-paper {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  max-width: 700px;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 48px 52px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+  line-height: 1.55;
+  font-size: 0.88rem;
+  min-height: 500px;
+}
+
+/* Dark mode: keep the paper white for authentic document feel */
+.dark .cv-document-paper {
+  background: #1c1c1e;
+  color: #e8e8e8;
+  border-color: #2a2a2c;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Resume header in document paper */
+.cv-document-paper .resume-header-custom {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1a1a1a;
+  padding-bottom: 14px;
+}
+.dark .cv-document-paper .resume-header-custom {
+  border-bottom-color: #555;
+}
+
+.cv-document-paper .resume-name-custom {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #111111;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+.dark .cv-document-paper .resume-name-custom {
+  color: #f0f0f0;
+}
+
+.cv-document-paper .resume-title-custom {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #444444;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 5px;
+}
+.dark .cv-document-paper .resume-title-custom {
+  color: #aaaaaa;
+}
+
+.cv-document-paper .resume-contacts-custom {
+  font-size: 0.75rem;
+  color: #666666;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+.dark .cv-document-paper .resume-contacts-custom {
+  color: #999999;
+}
+
+/* Section Headings */
+.cv-document-paper h1 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #111111;
+  border-bottom: 1.5px solid #111111;
+  padding-bottom: 3px;
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+.dark .cv-document-paper h1 {
+  color: #e0e0e0;
+  border-bottom-color: #555;
+}
+
+.cv-document-paper h2 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #222222;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  border-bottom: none;
+  padding-bottom: 0;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.dark .cv-document-paper h2 {
+  color: #d0d0d0;
+}
+
+.cv-document-paper h3 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #222222;
+  margin-top: 14px;
+  margin-bottom: 4px;
+}
+.dark .cv-document-paper h3 {
+  color: #d0d0d0;
+}
+
+/* Body Text */
+.cv-document-paper p {
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  color: #333333;
+  line-height: 1.55;
+}
+.dark .cv-document-paper p {
+  color: #cccccc;
+}
+
+/* Lists */
+.cv-document-paper ul {
+  list-style-type: disc !important;
+  margin-bottom: 10px;
+  padding-left: 18px;
+}
+
+.cv-document-paper ol {
+  list-style-type: decimal !important;
+  margin-bottom: 10px;
+  padding-left: 18px;
+}
+
+.cv-document-paper li {
+  margin-bottom: 3px;
+  font-size: 0.82rem;
+  color: #333333;
+  line-height: 1.5;
+}
+.dark .cv-document-paper li {
+  color: #cccccc;
+}
+
+/* Bold / Strong Text */
+.cv-document-paper strong {
+  font-weight: 600;
+  color: #111111;
+}
+.dark .cv-document-paper strong {
+  color: #eeeeee;
+}
+
+/* Inline code */
+.cv-document-paper code {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78em;
+  background: #f3f4f6;
+  color: #333;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.dark .cv-document-paper code {
+  background: #2a2a2c;
+  color: #ccc;
+}
+
+/* Empty state inside document paper */
+.cv-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 40px;
+  min-height: 400px;
+}
+
+.cv-empty-state p {
+  font-size: 0.82rem;
+  color: var(--color-secondary);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
 /* Code block and inline code styling for markdown previews */
 .markdown-preview pre {
-  background-color: #1c1c1e !important;
+  background-color: var(--color-surface) !important;
   color: #ffffff !important;
   padding: 16px;
   border-radius: var(--radius-md);
@@ -412,8 +627,8 @@ body {
 .markdown-preview code {
   font-family: var(--font-mono), monospace !important;
   font-size: 0.88em;
-  background-color: #1c1c1e;
-  color: #00d4a4; /* brand green accent */
+  background-color: var(--color-surface);
+  color: var(--color-brand-green);
   padding: 2px 6px;
   border-radius: var(--radius-xs);
 }

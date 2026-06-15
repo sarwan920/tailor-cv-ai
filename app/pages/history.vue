@@ -2,11 +2,11 @@
   <div class="flex flex-col gap-6 fade-in">
     <div class="flex justify-between items-center">
       <div>
-        <h2 class="text-[1.5rem] font-light text-primary">
-          <span class="material-icons mr-2 text-secondary align-bottom">history</span>
+        <h2 class="text-lg font-bold font-sans tracking-tight text-primary flex items-center gap-2">
+          <span class="material-icons text-brand-green text-[18px]">history</span>
           Adaptation Logs
         </h2>
-        <p class="text-[0.88rem] text-secondary mt-1">Browse through all the previous job descriptions you have tailored your resume for.</p>
+        <p class="text-xs text-secondary mt-1">Browse through all the previous job descriptions you have tailored your resume for.</p>
       </div>
     </div>
 
@@ -14,7 +14,7 @@
     <div v-if="history.length === 0" class="flex items-center justify-center min-h-[50vh]">
       <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-hairline rounded-lg shadow-none">
         <span class="material-icons text-[3.5rem] text-secondary mb-5">receipt_long</span>
-        <h3 class="text-[1.5rem] font-light mb-3">No Logs Found</h3>
+        <h3 class="text-lg font-semibold mb-3">No Logs Found</h3>
         <p class="text-[0.88rem] text-secondary leading-relaxed">You haven't tailored your resume for any positions yet. Run your first adaptation in "Tailor a Job" to start building your log history.</p>
         <BaseButton @click="routeToTailor" variant="primary" class="mt-4 flex-btn mx-auto">
           <span class="material-icons">auto_awesome</span>
@@ -34,9 +34,12 @@
         <div class="flex justify-between items-center mb-2">
           <span class="font-sans font-semibold text-[0.72rem] uppercase tracking-[0.12em] text-primary">{{ item.company }}</span>
           <div class="flex items-center gap-2">
-            <span class="text-[0.68rem] text-success font-medium tracking-[0.08em] inline-flex items-center">
-              <span class="material-icons mr-1" style="font-size: 13px;">check_circle</span>
-              95% ATS MATCH
+            <span 
+              class="text-[0.68rem] font-medium tracking-[0.08em] inline-flex items-center"
+              :class="getAtsScore(item).score >= 80 ? 'text-success' : (getAtsScore(item).score >= 50 ? 'text-warning' : 'text-secondary')"
+            >
+              <span class="material-icons mr-1" style="font-size: 13px;">{{ getAtsScore(item).score >= 80 ? 'check_circle' : (getAtsScore(item).score >= 50 ? 'timelapse' : 'info') }}</span>
+              {{ getAtsScore(item).score }}% ATS MATCH
             </span>
             <button 
               @click.stop="confirmDelete(item)" 
@@ -117,6 +120,28 @@ function formatDate(dateStr) {
 function getSnippet(text) {
   if (!text) return '';
   return text.length > 100 ? text.slice(0, 100) + '...' : text;
+}
+
+function getAtsScore(item) {
+  try {
+    const analysis = typeof item.aiAnalysis === 'string' ? JSON.parse(item.aiAnalysis || '{}') : (item.aiAnalysis || {});
+    const matched = (analysis.matchedSkills || []).length;
+    const keywords = (analysis.keywordsHighlighted || []).length;
+    const totalSignals = matched + keywords;
+    let score;
+    if (totalSignals === 0) {
+      score = 0;
+    } else if (totalSignals <= 3) {
+      score = 40 + totalSignals * 8;
+    } else if (totalSignals <= 8) {
+      score = 64 + (totalSignals - 3) * 5;
+    } else {
+      score = Math.min(89 + Math.floor((totalSignals - 8) * 1.5), 98);
+    }
+    return { score };
+  } catch {
+    return { score: 0 };
+  }
 }
 
 function loadHistoryLog(item) {

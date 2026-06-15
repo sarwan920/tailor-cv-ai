@@ -2,10 +2,10 @@
   <div>
     <!-- Empty State if no tailored CV has been generated/loaded yet -->
     <div v-if="!tailoredResult" class="flex items-center justify-center min-h-[70vh] fade-in">
-      <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-secondary/25 rounded-lg">
+      <div class="max-w-[520px] w-full text-center p-10 bg-surface border border-hairline rounded-lg">
         <span class="material-icons text-[3.5rem] text-secondary mb-5">analytics</span>
-        <h3 class="text-[1.5rem] font-light mb-3">Tailoring Studio</h3>
-        <p class="text-[0.88rem] text-secondary leading-relaxed">No job-specific adaptations have been loaded yet. Head over to the "Tailor a Job" workspace to optimize your resume for your target LinkedIn requisition.</p>
+        <h3 class="text-lg font-semibold mb-3">Tailoring Studio</h3>
+        <p class="text-xs text-secondary leading-relaxed">No job-specific adaptations have been loaded yet. Head over to the "Tailor a Job" workspace to optimize your resume for your target LinkedIn requisition.</p>
         <BaseButton @click="routeToTailor" variant="primary" class="mt-4 flex-btn mx-auto">
           <span class="material-icons">auto_awesome</span>
           Go to Tailoring Workspace
@@ -17,11 +17,11 @@
     <div v-else class="flex flex-col gap-6 fade-in no-print">
       <div class="flex justify-between items-center">
         <div>
-          <h2 class="text-[1.5rem] font-light text-primary">
-            <span class="material-icons mr-2 text-secondary align-bottom">analytics</span>
+          <h2 class="text-lg font-bold font-sans tracking-tight text-primary flex items-center gap-2">
+            <span class="material-icons text-brand-green text-[18px]">analytics</span>
             AI Tailoring Studio
           </h2>
-          <p class="text-[0.88rem] text-secondary mt-1">Refine, validate, and prepare your resume for submission in logical, focused steps.</p>
+          <p class="text-xs text-secondary mt-1">Refine, validate, and prepare your resume for submission in logical, focused steps.</p>
         </div>
         <!-- Secondary Action Button -->
         <BaseButton @click="resetStudio" variant="secondary" size="sm" class="flex-btn">
@@ -61,10 +61,10 @@
       <!-- Tab 1: Compare & Refine Workspace -->
       <div v-show="activeStudioTab === 'workspace'" class="flex flex-col gap-6">
         <!-- Comparative Panes -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[64vh] mt-1">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:min-h-[calc(100vh-220px)] mt-1">
           <!-- Left: Original Referencing -->
-          <div class="flex flex-col h-[380px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
-            <div class="py-3.5 px-5 border-b border-secondary/25 bg-surface flex items-center justify-between">
+          <div class="flex flex-col min-h-[380px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+            <div class="py-3.5 px-5 border-b border-hairline bg-surface flex items-center justify-between">
               <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Original Master CV</span>
               <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
             </div>
@@ -74,22 +74,22 @@
           </div>
 
           <!-- Right: Editable Tailored Output -->
-          <div class="flex flex-col h-[480px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
+          <div class="flex flex-col min-h-[480px] lg:h-full overflow-hidden p-0 bg-surface border border-secondary/25 rounded-lg">
             <div class="py-2.5 px-4 border-b border-hairline bg-surface flex flex-wrap items-center justify-between gap-3">
               <div class="flex bg-primary/5 p-0.5 rounded-md border border-hairline items-center overflow-x-auto max-w-full sm:max-w-[365px] no-scrollbar shrink-0">
                 <button 
                   @click="setTab('preview')" 
-                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
+                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(0,0,0,0.12)] dark:[&.active]:shadow-[0_1px_3px_rgba(255,255,255,0.08)] shrink-0" 
                   :class="{ active: rightTab === 'preview' }"
                 >Preview</button>
                 <button 
                   @click="setTab('diff')" 
-                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
+                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(0,0,0,0.12)] dark:[&.active]:shadow-[0_1px_3px_rgba(255,255,255,0.08)] shrink-0" 
                   :class="{ active: rightTab === 'diff' }"
                 >GitHub Diff</button>
                 <button 
                   @click="setTab('edit')" 
-                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(27,25,23,0.08)] shrink-0" 
+                  class="bg-transparent border-none font-sans font-medium text-[0.65rem] uppercase tracking-[0.12em] py-1.5 px-2.5 rounded-sm text-secondary cursor-pointer transition-colors duration-150 hover:text-primary [&.active]:text-primary [&.active]:bg-surface [&.active]:shadow-[0_1px_3px_rgba(0,0,0,0.12)] dark:[&.active]:shadow-[0_1px_3px_rgba(255,255,255,0.08)] shrink-0" 
                   :class="{ active: rightTab === 'edit' }"
                 >Edit Markdown</button>
               </div>
@@ -98,19 +98,19 @@
                 <span class="font-sans text-[0.72rem] text-secondary mr-2 hidden sm:inline shrink-0">{{ getWordCount(tailoredContent) }} words</span>
                 
                 <BaseButton @click="downloadMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Download Markdown (.md)">
-                  <span class="material-icons" style="font-size: 16px;">download</span>
+                  <span class="material-icons text-[16px]">download</span>
                 </BaseButton>
 
                 <BaseButton @click="copyMarkdown" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Raw Markdown">
-                  <span class="material-icons" style="font-size: 16px;">code</span>
+                  <span class="material-icons text-[16px]">code</span>
                 </BaseButton>
 
                 <BaseButton @click="copyRichText" variant="secondary" size="sm" class="w-7! h-7! p-0! inline-flex! items-center! justify-center! rounded-md! shrink-0!" title="Copy Formatted Rich Text (for Google Docs/Word)">
-                  <span class="material-icons" style="font-size: 16px;">content_paste_go</span>
+                  <span class="material-icons text-[16px]">content_paste_go</span>
                 </BaseButton>
 
                 <BaseButton @click="triggerPrint" variant="primary" size="sm" class="px-3! h-7! inline-flex! items-center! gap-1.5! rounded-md! whitespace-nowrap! shrink-0!" title="Download PDF / Print">
-                  <span class="material-icons" style="font-size: 16px;">picture_as_pdf</span>
+                  <span class="material-icons text-[16px]">picture_as_pdf</span>
                   <span class="font-sans text-[0.68rem] uppercase tracking-wider font-semibold whitespace-nowrap">Download PDF</span>
                 </BaseButton>
               </div>
@@ -126,7 +126,7 @@
               <div v-show="rightTab === 'diff'" class="h-full overflow-y-auto p-4 bg-neutral">
                 <div class="font-sans text-[0.78rem] text-secondary mb-3 flex items-center gap-2">
                   <span class="text-[18px] text-success material-icons">difference</span>
-                  <span>Track Changes: <del class="bg-danger/18 text-[#8A3D35] line-through px-1 py-0.5 rounded-[2px] no-underline">Red represents original text</del> and <ins class="bg-success/22 text-[#2F382A] px-1 py-0.5 rounded-[2px] no-underline">Green represents tailored improvements</ins>.</span>
+                  <span>Track Changes: <del class="bg-danger/18 text-danger line-through px-1 py-0.5 rounded-[2px] no-underline">Red represents original text</del> and <ins class="bg-success/22 text-success px-1 py-0.5 rounded-[2px] no-underline">Green represents tailored improvements</ins>.</span>
                 </div>
                 <div class="markdown-preview light-theme-preview" v-html="diffHtml"></div>
               </div>
@@ -144,16 +144,19 @@
       </div>
 
       <!-- Tab 2: ATS Match Report -->
-      <div v-show="activeStudioTab === 'ats'" class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-1">
+      <div v-show="activeStudioTab === 'ats'" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-1">
         <!-- Left: Match Metrics (7 cols) -->
         <div class="lg:col-span-7 flex flex-col gap-6">
-          <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-5">
-            <div class="flex justify-between items-center border-b border-secondary/25 pb-3">
+          <div class="p-6 bg-surface border border-hairline rounded-lg flex flex-col gap-5">
+            <div class="flex justify-between items-center border-b border-hairline pb-3">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse"></span>
                 <h3 class="font-sans font-medium text-[0.95rem] uppercase tracking-[0.18em] text-primary">ATS Scorecard</h3>
               </div>
-              <span class="bg-brand-green text-primary font-sans font-bold text-[0.68rem] tracking-[0.18em] py-1 px-3 rounded-full">96% MATCH RATE</span>
+              <span 
+                class="font-sans font-bold text-[0.68rem] tracking-[0.18em] py-1 px-3 rounded-full"
+                :class="computedAtsScore >= 80 ? 'bg-brand-green text-primary' : (computedAtsScore >= 50 ? 'bg-warning text-white' : 'bg-secondary/20 text-secondary')"
+              >{{ computedAtsScore }}% MATCH RATE</span>
             </div>
 
             <div class="flex flex-col gap-6">
@@ -162,7 +165,7 @@
                 <h4 class="font-sans font-semibold text-[0.78rem] uppercase tracking-[0.12em] text-secondary mb-3">Matched Competencies</h4>
                 <div class="flex flex-wrap gap-2">
                   <span v-for="skill in tailoredAnalysis.matchedSkills" :key="skill" class="bg-neutral border border-hairline text-primary text-[0.75rem] font-medium py-1 px-2.5 rounded-md inline-flex items-center">
-                    <span class="material-icons mr-1.5 text-brand-green" style="font-size: 14px;">check_circle</span>
+                    <span class="material-icons mr-1.5 text-brand-green text-[14px]">check_circle</span>
                     {{ skill }}
                   </span>
                 </div>
@@ -183,7 +186,7 @@
                 <h4 class="font-sans font-semibold text-[0.78rem] uppercase tracking-[0.12em] text-secondary mb-3">Revisions & Adaptations</h4>
                 <ul class="pl-0 list-none flex flex-col gap-2">
                   <li v-for="adj in tailoredAnalysis.adjustmentsMade" :key="adj" class="text-[0.82rem] text-primary leading-normal flex items-start">
-                    <span class="material-icons mr-2 text-brand-green" style="font-size: 13px; margin-top: 3px;">arrow_right</span>
+                    <span class="material-icons mr-2 text-brand-green text-[13px] mt-[3px]">arrow_right</span>
                     {{ adj }}
                   </li>
                 </ul>
@@ -194,8 +197,8 @@
 
         <!-- Right: Parser Simulator & Verification (5 cols) -->
         <div class="lg:col-span-5 flex flex-col gap-6">
-          <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-4 h-full min-h-[420px]">
-            <div class="flex items-center justify-between border-b border-secondary/25 pb-3">
+          <div class="p-6 bg-surface border border-hairline rounded-lg flex flex-col gap-4 h-full min-h-[420px]">
+            <div class="flex items-center justify-between border-b border-hairline pb-3">
               <h3 class="font-sans font-medium text-[0.95rem] uppercase tracking-[0.18em] text-primary flex items-center gap-2">
                 <span class="material-icons text-secondary">gavel</span>
                 ATS Parser Simulator
@@ -220,7 +223,7 @@
             </ul>
 
             <label class="block font-sans text-[0.68rem] font-medium uppercase tracking-wider text-secondary">Simulated plain text extraction:</label>
-            <div class="flex-1 bg-neutral border border-secondary/25 rounded p-4 overflow-y-auto font-mono text-[0.75rem] text-primary whitespace-pre-wrap select-all leading-normal h-[180px]" title="Click to copy plain text">
+            <div class="flex-1 bg-neutral border border-hairline rounded p-4 overflow-y-auto font-mono text-[0.75rem] text-primary whitespace-pre-wrap select-all leading-normal h-[180px]" title="Click to copy plain text">
               {{ atsPlainText }}
             </div>
           </div>
@@ -228,11 +231,11 @@
       </div>
 
       <!-- Tab 3: Safety & Prep -->
-      <div v-show="activeStudioTab === 'safety'" class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-1">
+      <div v-show="activeStudioTab === 'safety'" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-1">
         <!-- Left Pane: Trust & Integrity Guardrails (7 cols) -->
         <div class="lg:col-span-7 flex flex-col gap-6">
-          <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-5">
-            <div class="flex items-center justify-between border-b border-secondary/25 pb-3">
+          <div class="p-6 bg-surface border border-hairline rounded-lg flex flex-col gap-5">
+            <div class="flex items-center justify-between border-b border-hairline pb-3">
               <h3 class="font-sans font-medium text-[0.95rem] uppercase tracking-[0.18em] text-primary flex items-center gap-2">
                 <span class="material-icons text-secondary">security</span>
                 AI & Factual Safety Console
@@ -282,7 +285,7 @@
 
                 <p class="text-[0.78rem] text-secondary leading-relaxed">Scans vocabulary and sentence variance indicators. Resumes that read too uniform can trigger AI rejection filters.</p>
 
-                <div class="mt-2 p-3 bg-neutral border border-secondary/25 rounded flex flex-col gap-2.5 text-[0.75rem]">
+                <div class="mt-2 p-3 bg-neutral border border-hairline rounded flex flex-col gap-2.5 text-[0.75rem]">
                   <div class="flex justify-between items-center">
                     <span class="text-secondary font-medium uppercase tracking-wider text-[0.68rem]">AI Likeness Risk:</span>
                     <span class="font-semibold px-2 py-0.5 rounded text-[0.68rem]" :class="aiShieldReport.level === 'High' ? 'bg-danger/12 text-danger' : (aiShieldReport.level === 'Medium' ? 'bg-warning/12 text-warning' : 'bg-success/12 text-success')">
@@ -313,8 +316,8 @@
 
         <!-- Right Pane: Recruiter Grill Room Chatbot (5 cols) -->
         <div class="lg:col-span-5">
-          <div class="p-6 bg-surface border border-secondary/25 rounded-lg flex flex-col gap-4 h-full min-h-[380px]">
-            <div class="flex items-center justify-between border-b border-secondary/25 pb-3">
+          <div class="p-6 bg-surface border border-hairline rounded-lg flex flex-col gap-4 h-full min-h-[380px]">
+            <div class="flex items-center justify-between border-b border-hairline pb-3">
               <h3 class="font-sans font-medium text-[0.95rem] uppercase tracking-[0.18em] text-primary flex items-center gap-2">
                 <span class="material-icons text-secondary">forum</span>
                 Recruiter Grill Room
@@ -328,7 +331,7 @@
               
               <div class="flex flex-col gap-2">
                 <label class="block font-sans text-[0.68rem] font-medium uppercase tracking-wider text-secondary">Select a CV accomplishment:</label>
-                <select v-model="selectedBullet" class="w-full bg-neutral border border-secondary/25 text-primary text-[0.82rem] p-2.5 rounded outline-none focus:border-primary">
+                <select v-model="selectedBullet" class="w-full bg-neutral border border-hairline text-primary text-[0.82rem] p-2.5 rounded outline-none focus:border-primary">
                   <option value="" disabled>-- Choose a Bullet Point --</option>
                   <option v-for="(bullet, idx) in extractedBullets" :key="idx" :value="bullet">
                     {{ bullet.length > 80 ? bullet.slice(0, 80) + '...' : bullet }}
@@ -344,7 +347,7 @@
 
             <!-- State 2: Active grill chat -->
             <div v-else class="flex-1 flex flex-col justify-between gap-3 overflow-hidden">
-              <div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3.5 text-[0.82rem] leading-relaxed">
+              <div class="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col gap-3.5 text-[0.82rem] leading-relaxed">
                 <!-- Bullet under review -->
                 <div class="p-2.5 bg-neutral border-l-2 border-secondary rounded-r text-[0.75rem] text-secondary">
                   <strong>Selected point:</strong> "{{ selectedBullet }}"
@@ -353,7 +356,7 @@
                 <!-- Recruiter Question -->
                 <div v-if="grillQuestion" class="flex gap-2">
                   <span class="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 text-[12px] font-semibold text-primary">R</span>
-                  <div class="bg-neutral p-3 rounded-lg border border-secondary/25 text-primary font-serif italic">
+                  <div class="bg-neutral p-3 rounded-lg border border-hairline text-primary font-serif italic">
                     "{{ grillQuestion }}"
                   </div>
                 </div>
@@ -391,11 +394,11 @@
               </div>
 
               <!-- Chat Input / Actions -->
-              <div class="border-t border-secondary/25 pt-3 flex flex-col gap-2">
+              <div class="border-t border-hairline pt-3 flex flex-col gap-2">
                 <textarea 
                   v-if="grillQuestion && !grillCritique"
                   v-model="userGrillAnswer"
-                  class="w-full bg-neutral border border-secondary/25 text-primary text-[0.82rem] p-2.5 rounded outline-none focus:border-primary resize-none h-[64px]"
+                  class="w-full bg-neutral border border-secondary/25 text-primary text-[0.82rem] p-2.5 rounded outline-none focus:border-primary resize-none min-h-[64px]"
                   placeholder="Type how you would explain this bullet..."
                   @keydown.enter.prevent="submitGrillAnswer"
                 ></textarea>
@@ -508,6 +511,15 @@ const diffHtml = ref('');
 const isPrintLayoutActive = ref(false);
 const printContent = ref('');
 
+const computedAtsScore = computed(() => {
+  const matched = (tailoredAnalysis.value?.matchedSkills || []).length;
+  const keywords = (tailoredAnalysis.value?.keywordsHighlighted || []).length;
+  const totalSignals = matched + keywords;
+  if (totalSignals === 0) return 0;
+  if (totalSignals <= 3) return 40 + totalSignals * 8;
+  if (totalSignals <= 8) return 64 + (totalSignals - 3) * 5;
+  return Math.min(89 + Math.floor((totalSignals - 8) * 1.5), 98);
+});
 const atsPlainText = computed(() => {
   if (!tailoredContent.value) return '';
   return tailoredContent.value
@@ -814,77 +826,95 @@ function convertRawToMarkdown(text) {
   let rawLines = text.split('\n');
   const sections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications', 'adaptation logs'];
   
-  // Find first few non-empty lines before any section headers
-  let nonBriefLines = [];
-  let headerIndexes = [];
-  
+  // Detect if content already starts with a section heading (AI-generated output)
+  // If so, skip header extraction entirely
+  let startsWithSection = false;
   for (let i = 0; i < rawLines.length; i++) {
     const trimmed = rawLines[i].trim();
-    if (trimmed) {
-      const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
-      if (sections.includes(normalized)) {
-        break;
-      }
-      if (nonBriefLines.length < 3) {
-        nonBriefLines.push(trimmed);
-        headerIndexes.push(i);
-      }
+    if (!trimmed) continue;
+    // Check if this first non-empty line is a section heading
+    const withoutHash = trimmed.replace(/^#+\s*/, '').trim();
+    const normalized = withoutHash.toLowerCase().replace(/[^a-z]/g, '');
+    if (sections.includes(normalized) && trimmed.startsWith('#')) {
+      startsWithSection = true;
     }
+    break; // only check the first non-empty line
   }
-  
+
   let headerHtml = '';
-  if (nonBriefLines.length >= 1) {
-    let name = nonBriefLines[0].replace(/^#+\s*/, '').trim();
-    let title = '';
-    let contacts = '';
+
+  if (!startsWithSection) {
+    // Find first few non-empty lines before any section headers
+    let nonBriefLines = [];
+    let headerIndexes = [];
     
-    // Check if the first line itself contains a separator (e.g. Name | Title)
-    const separators = [' | ', ' - ', ' – '];
-    let separatorUsed = separators.find(sep => name.includes(sep));
-    if (separatorUsed) {
-      let parts = name.split(separatorUsed);
-      name = parts[0].trim();
-      title = parts.slice(1).join(separatorUsed).trim();
-      contacts = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
-      
-      // Clear the original header lines in rawLines so they aren't parsed
-      rawLines[headerIndexes[0]] = '';
-      if (headerIndexes[1] !== undefined) {
-        rawLines[headerIndexes[1]] = '';
-      }
-    } else {
-      // Standard structure: Line 0 is Name
-      title = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
-      
-      // Check if second line is actually contacts instead of a job title
-      const isContacts = /@|\+?\d[\d\s-]{6,}|\b(?:gmail|linkedin|github|netlify|portfolio)\b/i.test(title);
-      if (isContacts) {
-        contacts = title;
-        title = '';
-      } else {
-        contacts = nonBriefLines[2] ? nonBriefLines[2].replace(/^#+\s*/, '').trim() : '';
-      }
-      
-      // Clear the original header lines in rawLines so they aren't parsed
-      rawLines[headerIndexes[0]] = '';
-      if (headerIndexes[1] !== undefined) {
-        rawLines[headerIndexes[1]] = '';
-      }
-      if (headerIndexes[2] !== undefined && !isContacts) {
-        rawLines[headerIndexes[2]] = '';
+    for (let i = 0; i < rawLines.length; i++) {
+      const trimmed = rawLines[i].trim();
+      if (trimmed) {
+        const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
+        if (sections.includes(normalized)) {
+          break;
+        }
+        if (nonBriefLines.length < 3) {
+          nonBriefLines.push(trimmed);
+          headerIndexes.push(i);
+        }
       }
     }
     
-    // Build clean HTML header block
-    name = name.replace(/[\*_]/g, '').trim();
-    title = title.replace(/[\*_]/g, '').trim();
-    contacts = contacts.replace(/\*/g, '').trim();
+    if (nonBriefLines.length >= 1) {
+      let name = nonBriefLines[0].replace(/^#+\s*/, '').trim();
+      let title = '';
+      let contacts = '';
+      
+      // Check if the first line itself contains a separator (e.g. Name | Title)
+      const separators = [' | ', ' - ', ' – '];
+      let separatorUsed = separators.find(sep => name.includes(sep));
+      if (separatorUsed) {
+        let parts = name.split(separatorUsed);
+        name = parts[0].trim();
+        title = parts.slice(1).join(separatorUsed).trim();
+        contacts = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+        
+        // Clear the original header lines in rawLines so they aren't parsed
+        rawLines[headerIndexes[0]] = '';
+        if (headerIndexes[1] !== undefined) {
+          rawLines[headerIndexes[1]] = '';
+        }
+      } else {
+        // Standard structure: Line 0 is Name
+        title = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+        
+        // Check if second line is actually contacts instead of a job title
+        const isContacts = /@|\+?\d[\d\s-]{6,}|\b(?:gmail|linkedin|github|netlify|portfolio)\b/i.test(title);
+        if (isContacts) {
+          contacts = title;
+          title = '';
+        } else {
+          contacts = nonBriefLines[2] ? nonBriefLines[2].replace(/^#+\s*/, '').trim() : '';
+        }
+        
+        // Clear the original header lines in rawLines so they aren't parsed
+        rawLines[headerIndexes[0]] = '';
+        if (headerIndexes[1] !== undefined) {
+          rawLines[headerIndexes[1]] = '';
+        }
+        if (headerIndexes[2] !== undefined && !isContacts) {
+          rawLines[headerIndexes[2]] = '';
+        }
+      }
+      
+      // Build clean HTML header block
+      name = name.replace(/[\*_]/g, '').trim();
+      title = title.replace(/[\*_]/g, '').trim();
+      contacts = contacts.replace(/\*/g, '').trim();
 
-    headerHtml = `<div class="resume-header-custom">` +
-      `<div class="resume-name-custom">${name}</div>` +
-      (title ? `<div class="resume-title-custom">${title}</div>` : '') +
-      (contacts ? `<div class="resume-contacts-custom">${contacts}</div>` : '') +
-      `</div>\n\n`;
+      headerHtml = `<div class="resume-header-custom">` +
+        `<div class="resume-name-custom">${name}</div>` +
+        (title ? `<div class="resume-title-custom">${title}</div>` : '') +
+        (contacts ? `<div class="resume-contacts-custom">${contacts}</div>` : '') +
+        `</div>\n\n`;
+    }
   }
   
   // Process the rest of the lines normally
@@ -1087,22 +1117,21 @@ function generateDirectPDF() {
 </script>
 
 <style scoped>
-:deep(.markdown-preview ins.diff-added) {
-  background-color: rgba(95, 107, 86, 0.22) !important; /* Sage green addition */
-  color: #2F382A !important;
-  text-decoration: none !important;
-  padding: 1px 4px !important;
-  border-radius: 2px !important;
-  display: inline;
+.markdown-preview :deep(ins) {
+  background-color: rgba(0, 212, 164, 0.15);
+  color: var(--color-success);
+  text-decoration: none;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 500;
 }
-
-:deep(.markdown-preview del.diff-removed) {
-  background-color: rgba(150, 75, 67, 0.18) !important; /* Terracotta red deletion */
-  color: #8A3D35 !important;
-  text-decoration: line-through !important;
-  padding: 1px 4px !important;
-  border-radius: 2px !important;
-  display: inline;
+.markdown-preview :deep(del) {
+  background-color: rgba(212, 86, 86, 0.15);
+  color: var(--color-danger);
+  text-decoration: line-through;
+  padding: 1px 4px;
+  border-radius: 3px;
+  opacity: 0.85;
 }
 
 </style>
@@ -1260,8 +1289,11 @@ function generateDirectPDF() {
   }
 
   /* Force print wrapper to display and position at top left */
-  .print-mode-layout-only,
-  .print-mode-layout-only * {
+  .print-mode-layout-only {
+    visibility: visible !important;
+    display: block !important;
+  }
+  .print-mode-layout-only > * {
     visibility: visible !important;
     display: block !important;
   }

@@ -4,11 +4,18 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  modules: ['@nuxtjs/color-mode'],
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [
       tailwindcss()
     ]
+  },
+  colorMode: {
+    classSuffix: '',       // Use 'dark' class instead of 'dark-mode'
+    preference: 'system',  // Respect OS preference by default
+    fallback: 'light',     // Fallback when no preference is set
+    storageKey: 'theme'    // Keep same localStorage key for backward compat
   },
   app: {
     head: {
@@ -22,4 +29,3 @@ export default defineNuxtConfig({
     }
   }
 })
-

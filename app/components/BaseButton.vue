@@ -3,7 +3,7 @@
     :is="componentType"
     v-bind="componentProps"
     :class="[
-      'inline-flex items-center justify-center gap-2 font-sans font-medium text-[0.75rem] uppercase tracking-[0.16em] rounded-full border transition-all duration-150 select-none cursor-pointer disabled:cursor-not-allowed',
+      'inline-flex items-center justify-center gap-2 font-sans font-medium text-[0.75rem] uppercase tracking-[0.16em] rounded-full border transition-all duration-150 select-none cursor-pointer disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand-green/40 focus-visible:outline-none',
       variantClass,
       sizeClass,
       { 'btn-liquid': liquid, 'opacity-70': loading }

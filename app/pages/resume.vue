@@ -1,60 +1,85 @@
 <template>
   <div class="flex flex-col gap-6 fade-in">
-    <div class="step-instruction">
-      <h2 class="text-[1.5rem] font-light text-primary">
-        <span class="material-icons mr-2 text-secondary align-bottom">folder_open</span>
+    <!-- Page Header -->
+    <div>
+      <h2 class="text-lg font-bold font-sans tracking-tight text-primary flex items-center gap-2">
+        <span class="material-icons text-brand-green text-[18px]">folder_open</span>
         Master Resume Editor
       </h2>
-      <p class="text-[0.88rem] text-secondary mt-1">This is your baseline resume experience. AI will reference this text to re-write and highlight key competencies—nothing is fabricated or invented.</p>
+      <p class="text-xs text-secondary mt-1.5 max-w-2xl">Your baseline resume experience. AI will reference this text to re-write and highlight key competencies — nothing is fabricated or invented.</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-auto lg:h-[68vh]">
-      <!-- Write CV -->
-      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-hairline rounded-lg">
-        <div class="py-3.5 px-5 border-b border-hairline bg-surface flex items-center justify-between">
-          <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Markdown / Plain Text</span>
-          <div class="flex items-center">
-            <BaseButton @click="triggerFileInput" variant="secondary" size="xs" class="flex-btn mr-1.5">
-              <span class="material-icons" style="font-size: 13px;">upload_file</span>
-              Upload File
-            </BaseButton>
-            <BaseButton @click="loadDemoCV" variant="secondary" size="xs" class="flex-btn">
-              <span class="material-icons" style="font-size: 13px;">lightbulb</span>
-              Load Sample Template
-            </BaseButton>
-            <input 
-              type="file" 
-              ref="fileInput" 
-              accept=".txt,.md,.markdown,.pdf" 
-              style="display: none;" 
-              @change="handleFileUpload" 
+    <!-- Editor + Preview Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr,1fr] gap-5 items-stretch" style="min-height: calc(100vh - 260px);">
+
+      <!-- Left: Markdown Editor Card -->
+      <div class="flex flex-col overflow-hidden bg-surface border border-hairline rounded-xl min-h-[400px]">
+        <!-- Editor Toolbar -->
+        <div class="px-5 py-3 border-b border-hairline bg-surface/80 flex items-center justify-between gap-4 shrink-0">
+          <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] font-mono shrink-0">Editor</span>
+          <div class="flex items-center gap-2">
+            <button
+              @click="triggerFileInput"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-secondary hover:text-primary border border-hairline hover:border-secondary/40 rounded-lg bg-transparent hover:bg-neutral transition-all cursor-pointer"
+            >
+              <span class="material-icons" style="font-size: 14px;">upload_file</span>
+              Upload
+            </button>
+            <button
+              @click="loadDemoCV"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-secondary hover:text-primary border border-hairline hover:border-secondary/40 rounded-lg bg-transparent hover:bg-neutral transition-all cursor-pointer"
+            >
+              <span class="material-icons" style="font-size: 14px;">lightbulb</span>
+              Demo CV
+            </button>
+            <input
+              type="file"
+              ref="fileInput"
+              accept=".txt,.md,.markdown,.pdf"
+              style="display: none;"
+              @change="handleFileUpload"
             />
           </div>
         </div>
-        <textarea 
-          v-model="masterCv.content" 
+
+        <!-- Textarea -->
+        <textarea
+          v-model="masterCv.content"
           @input="onContentChange"
-          class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.88rem] p-5 leading-relaxed resize-none outline-none min-h-[240px] lg:min-h-full"
-          :class="showValidationError && !masterCv.content.trim() ? 'border border-danger bg-danger/5' : ''"
-          placeholder="Paste or write your master CV here..."
+          class="w-full flex-1 bg-transparent border-none text-primary font-mono text-[0.82rem] p-5 leading-[1.75] resize-none outline-none min-h-0"
+          :class="showValidationError && !masterCv.content.trim() ? 'ring-1 ring-inset ring-danger bg-danger/5' : ''"
+          placeholder="Paste or write your master resume here in markdown or plain text..."
+          spellcheck="false"
         ></textarea>
+
+        <!-- Editor Footer -->
+        <div class="px-5 py-2.5 border-t border-hairline bg-surface/60 flex items-center justify-between shrink-0">
+          <span class="text-[10px] font-mono text-secondary/60">Markdown / Plain Text</span>
+          <span class="text-[10px] font-mono text-secondary/60">{{ getWordCount(masterCv.content) }} words</span>
+        </div>
       </div>
 
-      <!-- Preview CV -->
-      <div class="flex flex-col h-full overflow-hidden p-0 bg-surface border border-hairline rounded-lg">
-        <div class="py-3.5 px-5 border-b border-hairline bg-surface flex items-center justify-between">
-          <span class="font-sans font-medium text-[0.72rem] uppercase tracking-[0.18em] text-secondary">Live CV Preview</span>
-          <span class="font-sans text-[0.72rem] text-secondary">{{ getWordCount(masterCv.content) }} words</span>
+      <!-- Right: Document Preview Card -->
+      <div class="flex flex-col overflow-hidden bg-surface border border-hairline rounded-xl min-h-[400px]">
+        <!-- Preview Header -->
+        <div class="px-5 py-3 border-b border-hairline bg-surface/80 flex items-center justify-between gap-4 shrink-0">
+          <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] font-mono shrink-0">Live Preview</span>
+          <div class="flex items-center gap-3">
+            <span class="text-[10px] font-mono text-secondary/60">{{ getWordCount(masterCv.content) }} words</span>
+            <span class="w-1.5 h-1.5 rounded-full" :class="masterCv.content?.trim() ? 'bg-brand-green animate-pulse-dot' : 'bg-secondary/30'"></span>
+          </div>
         </div>
-        <div class="flex-1 p-4 bg-neutral overflow-y-auto h-[320px] lg:h-auto">
-          <div class="markdown-preview dark-preview" v-html="renderedMaster"></div>
+
+        <!-- Document Paper Preview -->
+        <div class="flex-1 overflow-y-auto p-6 lg:p-8 bg-neutral">
+          <div class="cv-document-paper mx-auto" v-html="renderedMaster"></div>
         </div>
       </div>
+
     </div>
 
-    <div class="flex justify-between items-center mt-2.5 border-t border-hairline pt-8">
-      <div></div> <!-- Spacer -->
-      <!-- Highlight Interactive CTA -->
+    <!-- Footer CTA -->
+    <div class="flex justify-end items-center pt-4 border-t border-hairline">
       <BaseButton @click="handleNextClick" variant="primary" size="lg" class="flex-btn">
         Next: Tailor a Job
         <span class="material-icons">arrow_forward</span>
@@ -298,77 +323,95 @@ function convertRawToMarkdown(text) {
   let rawLines = text.split('\n');
   const sections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications', 'adaptation logs'];
   
-  // Find first few non-empty lines before any section headers
-  let nonBriefLines = [];
-  let headerIndexes = [];
-  
+  // Detect if content already starts with a section heading (AI-generated output)
+  // If so, skip header extraction entirely
+  let startsWithSection = false;
   for (let i = 0; i < rawLines.length; i++) {
     const trimmed = rawLines[i].trim();
-    if (trimmed) {
-      const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
-      if (sections.includes(normalized)) {
-        break;
-      }
-      if (nonBriefLines.length < 3) {
-        nonBriefLines.push(trimmed);
-        headerIndexes.push(i);
-      }
+    if (!trimmed) continue;
+    // Check if this first non-empty line is a section heading
+    const withoutHash = trimmed.replace(/^#+\s*/, '').trim();
+    const normalized = withoutHash.toLowerCase().replace(/[^a-z]/g, '');
+    if (sections.includes(normalized) && trimmed.startsWith('#')) {
+      startsWithSection = true;
     }
+    break; // only check the first non-empty line
   }
-  
+
   let headerHtml = '';
-  if (nonBriefLines.length >= 1) {
-    let name = nonBriefLines[0].replace(/^#+\s*/, '').trim();
-    let title = '';
-    let contacts = '';
+
+  if (!startsWithSection) {
+    // Find first few non-empty lines before any section headers
+    let nonBriefLines = [];
+    let headerIndexes = [];
     
-    // Check if the first line itself contains a separator (e.g. Name | Title)
-    const separators = [' | ', ' - ', ' – '];
-    let separatorUsed = separators.find(sep => name.includes(sep));
-    if (separatorUsed) {
-      let parts = name.split(separatorUsed);
-      name = parts[0].trim();
-      title = parts.slice(1).join(separatorUsed).trim();
-      contacts = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
-      
-      // Clear the original header lines in rawLines so they aren't parsed
-      rawLines[headerIndexes[0]] = '';
-      if (headerIndexes[1] !== undefined) {
-        rawLines[headerIndexes[1]] = '';
-      }
-    } else {
-      // Standard structure: Line 0 is Name
-      title = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
-      
-      // Check if second line is actually contacts instead of a job title
-      const isContacts = /@|\+?\d[\d\s-]{6,}|\b(?:gmail|linkedin|github|netlify|portfolio)\b/i.test(title);
-      if (isContacts) {
-        contacts = title;
-        title = '';
-      } else {
-        contacts = nonBriefLines[2] ? nonBriefLines[2].replace(/^#+\s*/, '').trim() : '';
-      }
-      
-      // Clear the original header lines in rawLines so they aren't parsed
-      rawLines[headerIndexes[0]] = '';
-      if (headerIndexes[1] !== undefined) {
-        rawLines[headerIndexes[1]] = '';
-      }
-      if (headerIndexes[2] !== undefined && !isContacts) {
-        rawLines[headerIndexes[2]] = '';
+    for (let i = 0; i < rawLines.length; i++) {
+      const trimmed = rawLines[i].trim();
+      if (trimmed) {
+        const normalized = trimmed.toLowerCase().replace(/[^a-z]/g, '');
+        if (sections.includes(normalized)) {
+          break;
+        }
+        if (nonBriefLines.length < 3) {
+          nonBriefLines.push(trimmed);
+          headerIndexes.push(i);
+        }
       }
     }
     
-    // Build clean HTML header block
-    name = name.replace(/[\*_]/g, '').trim();
-    title = title.replace(/[\*_]/g, '').trim();
-    contacts = contacts.replace(/\*/g, '').trim();
+    if (nonBriefLines.length >= 1) {
+      let name = nonBriefLines[0].replace(/^#+\s*/, '').trim();
+      let title = '';
+      let contacts = '';
+      
+      // Check if the first line itself contains a separator (e.g. Name | Title)
+      const separators = [' | ', ' - ', ' – '];
+      let separatorUsed = separators.find(sep => name.includes(sep));
+      if (separatorUsed) {
+        let parts = name.split(separatorUsed);
+        name = parts[0].trim();
+        title = parts.slice(1).join(separatorUsed).trim();
+        contacts = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+        
+        // Clear the original header lines in rawLines so they aren't parsed
+        rawLines[headerIndexes[0]] = '';
+        if (headerIndexes[1] !== undefined) {
+          rawLines[headerIndexes[1]] = '';
+        }
+      } else {
+        // Standard structure: Line 0 is Name
+        title = nonBriefLines[1] ? nonBriefLines[1].replace(/^#+\s*/, '').trim() : '';
+        
+        // Check if second line is actually contacts instead of a job title
+        const isContacts = /@|\+?\d[\d\s-]{6,}|\b(?:gmail|linkedin|github|netlify|portfolio)\b/i.test(title);
+        if (isContacts) {
+          contacts = title;
+          title = '';
+        } else {
+          contacts = nonBriefLines[2] ? nonBriefLines[2].replace(/^#+\s*/, '').trim() : '';
+        }
+        
+        // Clear the original header lines in rawLines so they aren't parsed
+        rawLines[headerIndexes[0]] = '';
+        if (headerIndexes[1] !== undefined) {
+          rawLines[headerIndexes[1]] = '';
+        }
+        if (headerIndexes[2] !== undefined && !isContacts) {
+          rawLines[headerIndexes[2]] = '';
+        }
+      }
+      
+      // Build clean HTML header block
+      name = name.replace(/[\*_]/g, '').trim();
+      title = title.replace(/[\*_]/g, '').trim();
+      contacts = contacts.replace(/\*/g, '').trim();
 
-    headerHtml = `<div class="resume-header-custom">` +
-      `<div class="resume-name-custom">${name}</div>` +
-      (title ? `<div class="resume-title-custom">${title}</div>` : '') +
-      (contacts ? `<div class="resume-contacts-custom">${contacts}</div>` : '') +
-      `</div>\n\n`;
+      headerHtml = `<div class="resume-header-custom">` +
+        `<div class="resume-name-custom">${name}</div>` +
+        (title ? `<div class="resume-title-custom">${title}</div>` : '') +
+        (contacts ? `<div class="resume-contacts-custom">${contacts}</div>` : '') +
+        `</div>\n\n`;
+    }
   }
   
   // Process the rest of the lines normally
@@ -417,7 +460,7 @@ function convertRawToMarkdown(text) {
 
 const renderedMaster = computed(() => {
   if (!masterCv.value.content) {
-    return '<p style="color: var(--colors-secondary); font-style: italic;">A clean styled preview of your resume will be displayed here in real-time as you write...</p>';
+    return '<div class="cv-empty-state"><span class="material-icons" style="font-size: 48px; color: var(--color-hairline); margin-bottom: 16px;">description</span><p>Your resume preview will appear here in real-time as you type or upload a document.</p></div>';
   }
   return marked.parse(convertRawToMarkdown(masterCv.value.content));
 });
@@ -456,4 +499,3 @@ Passion-driven and result-oriented Senior Fullstack Engineer with 6+ years of ex
   saveMasterCv();
 }
 </script>
-
